@@ -16,10 +16,14 @@ class WifiController extends RController {
 			$bssiVector = array();
 			extract(json_decode($_POST), EXTR_OVERWRITE);
 			WiFiSample::createWiFiSample($buildingId, $floor, $x, $y, $bssiVector);
-			echo json_encode("ok");
+			echo json_encode(["result" => "ok"]);
 		} else {
-			echo json_encode("fail");
+			echo json_encode(["result" => "fail"]);
 		}
+	}
+
+	public function actionIndex(){
+		echo json_encode(["response" => "Hello tMap!"]);
 	}
 
 } 

@@ -12,12 +12,12 @@ return array(
 	'name' => 'tMap',
 	'layout' => 'index',
 	'isCleanUrl' => true,
-	'defaultController' => 'site',
+	'defaultController' => 'wifi',
 	'defaultAction' => 'index',
-	'exceptionAction' => 'site/exception',
+//	'exceptionAction' => 'site/exception',
 	'debug' => true,
 
-	'authProvider' => 'User',
+//	'authProvider' => 'User',
 
 	'db' => array(
 		'host' => 'localhost',
@@ -26,10 +26,6 @@ return array(
 		'db_name' => 'tMap',
 		'table_prefix' => '',
 		'charset' => 'utf8',
-	),
-
-	'route' => array(
-		'contact' => 'site/contact',
 	),
 
 	'cache' => array(
