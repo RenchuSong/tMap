@@ -14,7 +14,7 @@ return array(
 	'isCleanUrl' => true,
 	'defaultController' => 'wifi',
 	'defaultAction' => 'index',
-//	'exceptionAction' => 'site/exception',
+	'exceptionAction' => 'exception/exception',
 	'debug' => true,
 
 //	'authProvider' => 'User',
