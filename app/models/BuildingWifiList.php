@@ -34,20 +34,25 @@ class BuildingWifiList extends RModel {
 	}
 
 	/**
-	 * Updata building Wifi list from existing wifi sample collection
+	 * Update building Wifi list from existing wifi sample collection
 	 * @param $jsonWifiSample
 	 * @return WiFiSample
 	 */
 	public function buildingUpdateWifi() {
-		$sample = new WiFiSample();
-		$sample->buildingId = $jsonWifiSample->buildingId;
-		$sample->floor = $jsonWifiSample->floor;
-		$sample->x = $jsonWifiSample->x;
-		$sample->y = $jsonWifiSample->y;
-		$sample->fingerPrintPack = $jsonWifiSample->fingerPrintPack;
-		$sample->save();
-		$sample->unPackBSSIVector();
-		return $sample;
+		$samples = WiFiSample::find("buildingId", $this->buildingId)->all();
+
+		$wifiList = [];
+
+		foreach ($samples as $sample) {
+			$sample->unPackBSSIVector();
+			$wifiList = array_merge($wifiList, $sample->bssiVector);
+		}
+
+		$this->wifiList = array_keys($wifiList);
+		$this->packWifiList();
+		$this->save();
+		echo json_encode($this);exit;
+		return $this;
 	}
 
 	/**

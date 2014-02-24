@@ -6,6 +6,8 @@
  * Time: 4:18 PM
  */
 
+require_once(dirname(__FILE__) . '/../util/Util.php');
+
 class WiFiSample extends RModel {
 	public $id, $buildingId, $floor, $x, $y, $fingerPrintPack;
 	public $bssiVector = array();								   //BSSI name => magnitude vector
@@ -26,9 +28,12 @@ class WiFiSample extends RModel {
 	/**
 	 * Destract wifi magnitude pair into vector
 	 */
-	private function unPackBSSIVector() {
+	public function unPackBSSIVector() {
 		if ($this->fingerPrintPack !== null) {
 			$this->bssiVector = json_decode($this->fingerPrintPack);
+			if (!is_array($this->bssiVector)) {
+				$this->bssiVector = o2a($this->bssiVector);
+			}
 		}
 	}
 

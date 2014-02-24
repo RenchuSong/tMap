@@ -11,16 +11,28 @@ import com.tmap_android_client.datatransfer.Response;
 import com.tmap_android_client.wifi.WifiItem;
 import com.tmap_android_client.wifi.WifiSample;
 
+import android.net.wifi.ScanResult;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.util.Log;
 import android.util.Pair;
 import android.view.Menu;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 public class MainActivity extends Activity {
+	private static final int START = 0x0000;
 	private static final int COMPLETE = 0x1000;
+	
 	public String data = null;
 	private TextView tx;
 	public JsonThread json;
@@ -30,49 +42,127 @@ public class MainActivity extends Activity {
 	
 	public WifiSample ws;
 	
+	public Button sample;
+	public EditText floor, x, y;
+	public Button plusX, minusX, plusY, minusY;
+	public TextView status;
+	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        tx = (TextView) this.findViewById(R.id.show);
+        
+        sample = (Button)this.findViewById(R.id.button5);
+        floor = (EditText)this.findViewById(R.id.EditText01);
+        x = (EditText)this.findViewById(R.id.EditText02);
+        y = (EditText)this.findViewById(R.id.editText1);
+        status = (TextView) this.findViewById(R.id.textView4);
+        
+        plusX = (Button) this.findViewById(R.id.button1);
+        minusX = (Button) this.findViewById(R.id.button2);
+        plusY = (Button) this.findViewById(R.id.button3);
+        minusY = (Button) this.findViewById(R.id.button4);
+        
+        plusX.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				x.setText("" + (Integer.parseInt(x.getText().toString()) + 1));
+			}
+        	
+        });
+        minusX.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				x.setText("" + (Integer.parseInt(x.getText().toString()) - 1));
+			}
+        	
+        });
+        
+        plusY.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				y.setText("" + (Integer.parseInt(y.getText().toString()) + 1));
+			}
+        	
+        });
+        minusY.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				y.setText("" + (Integer.parseInt(y.getText().toString()) - 1));
+			}
+        	
+        });
+                
         
         uri = this.getString(R.string.server_root_url);
         
         ws = new WifiSample();
-        ws.id = 0;
-        ws.buildingId = 1;
-        ws.x = ws.y = 5;
-        ws.floor = 2;
         
-        Map<String, Integer> irr = new HashMap<String, Integer>();
-        irr.put("000sdfdsfs", 12);
-        irr.put("111ssfs", 1);
-        irr.put("2222323s", -20);
-        ws.packFingerPrint2(irr);
-        /*
-        List<WifiItem> iss = new ArrayList<WifiItem>();
+        IntentFilter i = new IntentFilter();
+        i.addAction(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION);
+        registerReceiver(new BroadcastReceiver(){
+        	@Override
+        	public void onReceive(Context c, Intent i){
+		        // Code to execute when SCAN_RESULTS_AVAILABLE_ACTION event
+		        WifiManager w = (WifiManager) c.getSystemService
+		        (Context.WIFI_SERVICE);
+		        //w.getScanResults(); // Returns a <list> of scanResults
+
+				List<ScanResult> scanResults=w.getScanResults();
+			    
+				ws.buildingId = 1;
+		        ws.floor = Integer.parseInt(floor.getText().toString());
+		        ws.x = Integer.parseInt(x.getText().toString());
+		        ws.y = Integer.parseInt(y.getText().toString());
+		        
+		        Map<String, Integer> irr = new HashMap<String, Integer>();
+		        
+			    for (ScanResult scanResult : scanResults) {
+			    	irr.put(scanResult.SSID, scanResult.level);			   
+			    }
+			    
+			    ws.packFingerPrint2(irr);
+			    
+			    json =  new JsonThread();
+		        new Thread(json).start();
+	        }
+        }, i);
         
-        iss.add(new WifiItem("sdfdsfs", 12));
-        iss.add(new WifiItem("ssfs", 1));
-        iss.add(new WifiItem("2323s", -20));
-        
-        ws.packFingerPrint(iss);
-        */
+        sample.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				WifiManager wm = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+				wm.startScan();
+			    
+			}
+        	
+        });
+
         Log.v("srcs", JsonUtils.packObjToJson(ws));
         
-        json =  new JsonThread();
-        new Thread(json).start();
+        
     }
 
     class JsonThread implements Runnable{
         public void run() {
             try {
+            	handler.sendEmptyMessage(START);
             	Log.d("dataing", uri + "tMap/wifi/addWifi");
                 data = HttpUtils.getInstance().postData(uri + "tMap/wifi/addWifi", JsonUtils.packObjToJson(ws));
                 if(data != null){
                     Log.e("dataing", data.toString());
                 }
-                //handler.sendEmptyMessage(COMPLETE);
+                handler.sendEmptyMessage(COMPLETE);
                 Log.e("data", "nullljsdflsdf");
             } catch (Exception e) {
                 e.printStackTrace();
@@ -87,13 +177,14 @@ public class MainActivity extends Activity {
     Handler handler = new Handler(){
         public void handleMessage(android.os.Message msg) {
             switch(msg.what){
+            case START:
+            	status.setText("sending...");
+            	break;
             case COMPLETE:
                 data = json.getData();
-                
+            
                 list = JsonUtils.parseResponse(data);
-                //data = list.response;
-                //Log.e("data", ""+data.toString());
-                tx.setText(list.exception + " " + list.response);
+                status.setText(list.exception + " " + list.response);
                 break;
             }
         };

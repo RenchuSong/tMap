@@ -10,10 +10,12 @@
 class WifiController extends RController {
 
 	public function actionIndex() {
-		$sample = new WiFiSample();
-		echo json_encode($sample->getWiFiSample(4));
-		exit;
 		echo json_encode(["response" => "Hello tMap!"]);
+	}
+
+	public function actionShowSample($sampleId = -1) {
+		$sample = new WiFiSample();
+		echo json_encode($sample->getWiFiSample($sampleId));
 	}
 
 	/**
