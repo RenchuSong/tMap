@@ -36,6 +36,7 @@ public class MainActivity extends Activity {
 	public String data = null;
 	private TextView tx;
 	public JsonThread json;
+	public ScanThread scan;
 	private Response list = null;
 	
 	String uri;
@@ -112,12 +113,14 @@ public class MainActivity extends Activity {
         	@Override
         	public void onReceive(Context c, Intent i){
 		        // Code to execute when SCAN_RESULTS_AVAILABLE_ACTION event
-		        WifiManager w = (WifiManager) c.getSystemService
-		        (Context.WIFI_SERVICE);
+				Log.v("dataing", "srcsrc");
+		        WifiManager w = (WifiManager) c.getSystemService(Context.WIFI_SERVICE);
 		        //w.getScanResults(); // Returns a <list> of scanResults
 
 				List<ScanResult> scanResults=w.getScanResults();
 			    
+				Log.d("dataing", "here");
+				
 				ws.buildingId = 1;
 		        ws.floor = Integer.parseInt(floor.getText().toString());
 		        ws.x = Integer.parseInt(x.getText().toString());
@@ -131,6 +134,8 @@ public class MainActivity extends Activity {
 			    
 			    ws.packFingerPrint2(irr);
 			    
+			    Log.v("dataing", ws.fingerPrintPack);
+			    
 			    json =  new JsonThread();
 		        new Thread(json).start();
 	        }
@@ -142,9 +147,10 @@ public class MainActivity extends Activity {
 			public void onClick(View arg0) {
 				sample.setEnabled(false);
 				// TODO Auto-generated method stub
-				WifiManager wm = (WifiManager) getSystemService(Context.WIFI_SERVICE);
-				wm.startScan();
-			    
+				//WifiManager wm = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+				//wm.startScan();
+				scan =  new ScanThread();
+				new Thread(scan).start();
 			}
         	
         });
@@ -153,7 +159,14 @@ public class MainActivity extends Activity {
         
         
     }
-
+    
+    class ScanThread implements Runnable {
+    	public void run() {
+    		WifiManager wm = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+			wm.startScan();
+    	}
+    }
+    
     class JsonThread implements Runnable{
         public void run() {
             try {
