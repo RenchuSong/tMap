@@ -140,6 +140,7 @@ public class MainActivity extends Activity {
 
 			@Override
 			public void onClick(View arg0) {
+				sample.setEnabled(false);
 				// TODO Auto-generated method stub
 				WifiManager wm = (WifiManager) getSystemService(Context.WIFI_SERVICE);
 				wm.startScan();
@@ -182,7 +183,7 @@ public class MainActivity extends Activity {
             	break;
             case COMPLETE:
                 data = json.getData();
-            
+                sample.setEnabled(true);
                 list = JsonUtils.parseResponse(data);
                 status.setText(list.exception + " " + list.response);
                 break;
