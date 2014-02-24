@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="MSG_START">0x0000</integer>
+    
+    <integer name="MSG_SENSORUPDATE">0x0001</integer>
+    
+    
+    <integer name="MSG_COMPLETE">0x1000</integer>
+    
+</resources>
