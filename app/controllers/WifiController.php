@@ -10,22 +10,19 @@
 class WifiController extends RController {
 
 	public function actionIndex() {
+		$sample = new WiFiSample();
+		echo json_encode($sample->getWiFiSample(4));
+		exit;
 		echo json_encode(["response" => "Hello tMap!"]);
 	}
 
 	/**
 	 * Add a new wifi sample point to database
-	 * @throws RException
 	 */
 	public function actionAddWifi() {
-		/* TODO verify authority */
+		/* TODO verify authority, only admin can add wifi at this time */
 		if (Rays::isPost()) {
-			$buildingId = 0;
-			$floor = 0;
-			$x = 0; $y = 0;
-			$bssiVector = array();
-			extract(json_decode($_POST), EXTR_OVERWRITE);
-			WiFiSample::createWiFiSample($buildingId, $floor, $x, $y, $bssiVector);
+			WiFiSample::createWiFiSample(json_decode($_POST['json']));
 			echo json_encode(["response" => "ok"]);
 		} else {
 			throw new RException("no data received");
@@ -34,9 +31,28 @@ class WifiController extends RController {
 
 	/**
 	 * Update wifi sample point information
-	 * @throws RException
 	 */
 	public function actionUpdateWifi() {
 
+	}
+
+	/**
+	 * Use a json array of <BSSI, magnitude> to judge the location.
+	 * Return a json entity {buildingId:xx, floor:xx, x:xx, y:xx}
+	 */
+	public function actionWifiJudgePosition() {
+		/* TODO verify authority, only our application users can use the wifi positioning function */
+		if (Rays::isPost()) {
+			$wifiPair = json_decode($_POST['json']);
+
+			/**
+			 * Implementation
+			 */
+			$buildingId = -1; $floor = 0; $x = 0; $y = 0;
+
+			echo json_encode(["buildingId" => $buildingId, "floor" => $floor, "x" => $x, "y" => $y]);
+		} else {
+			throw new RException("no data received");
+		}
 	}
 } 
