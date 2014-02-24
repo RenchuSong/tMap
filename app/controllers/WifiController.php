@@ -6,6 +6,7 @@
  * Time: 5:03 PM
  */
 
+require_once(dirname(__FILE__) . '/../util/Util.php');
 
 class WifiController extends RController {
 
@@ -46,6 +47,9 @@ class WifiController extends RController {
 		/* TODO verify authority, only our application users can use the wifi positioning function */
 		if (Rays::isPost()) {
 			$wifiPair = json_decode($_POST['json']);
+			if (!is_array($wifiPair)) {
+				$wifiPair = o2a($wifiPair);
+			}
 
 			/**
 			 * Implementation
