@@ -22,7 +22,7 @@ public class TripleSensor extends SensorActivity {
 		setContentView(R.layout.activity_triple_sensor);
 		x = (TextView) this.findViewById(R.id.TextView02);
 		y = (TextView) this.findViewById(R.id.TextView01);
-		z = (TextView) this.findViewById(R.id.textView1);
+		z = (TextView) this.findViewById(R.id.buildingId);
 		bs = new BaseSensor(this, 0);
 		bs.bindSensorType(Sensor.TYPE_ORIENTATION);
 	}

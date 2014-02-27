@@ -17,7 +17,7 @@
         android:id="@+id/EditText01"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/editText1"
+        android:layout_alignLeft="@+id/bid"
         android:layout_alignTop="@+id/show"
         android:text="0"
         android:ems="10" >
@@ -36,7 +36,7 @@
         android:ems="10" />
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/buildingId"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/show"
@@ -55,20 +55,20 @@
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/editText1"
+        android:layout_alignBottom="@+id/bid"
         android:layout_alignParentLeft="true"
         android:text="Y" />
 
     <Button
-        android:id="@+id/button1"
+        android:id="@+id/upload"
         android:layout_width="100px"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/editText1"
+        android:layout_alignLeft="@+id/bid"
         android:layout_below="@+id/EditText02"
         android:text="+" />
 
     <EditText
-        android:id="@+id/editText1"
+        android:id="@+id/bid"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
@@ -77,11 +77,11 @@
         android:ems="10" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/load"
         android:layout_width="100px"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/button1"
-        android:layout_alignBottom="@+id/button1"
+        android:layout_alignBaseline="@+id/upload"
+        android:layout_alignBottom="@+id/upload"
         android:layout_centerHorizontal="true"
         android:text="-" />
 
@@ -89,8 +89,8 @@
         android:id="@+id/button3"
         android:layout_width="100px"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/editText1"
-        android:layout_below="@+id/editText1"
+        android:layout_alignLeft="@+id/bid"
+        android:layout_below="@+id/bid"
         android:layout_marginTop="22dp"
         android:text="+" />
 
@@ -100,7 +100,7 @@
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/button3"
         android:layout_alignBottom="@+id/button3"
-        android:layout_alignLeft="@+id/button2"
+        android:layout_alignLeft="@+id/load"
         android:text="-" />
 
     <Button
@@ -108,7 +108,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/button3"
-        android:layout_alignRight="@+id/editText1"
+        android:layout_alignRight="@+id/bid"
         android:layout_below="@+id/button3"
         android:layout_marginTop="32dp"
         android:text="sample!" />

@@ -15,7 +15,8 @@ public class MaterialPlane implements Geometry{
 	private FloatBuffer   mVertexBuffer;
     private FloatBuffer mTextureBuffer;
     int vCount=0;
-    int texId;
+    public int texId;
+    public float[] vertices;
     
     private float calRange(float x1, float y1, float z1, float x2, float y2, float z2) {
     	return (float)Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2) + (z1 - z2) * (z1 - z2)) * TEX_PER_METER;
@@ -25,6 +26,7 @@ public class MaterialPlane implements Geometry{
     {
     	this.texId=texId;
     	
+    	this.vertices = vertices;
         vCount=vertices.length / 3;
 		
         ByteBuffer vbb = ByteBuffer.allocateDirect(vertices.length*4);

@@ -3,13 +3,13 @@ package com.tmap_android_client.opengl;
 import javax.microedition.khronos.opengles.GL10;
 
 public class Box implements Geometry{
-	private float cornerX, cornerY, cornerZ, lenX, lenY, lenZ;
-	private float rotateX = 0, rotateY = 0, rotateZ = 0;
-	private double red, green, blue;
-	private int texId;
-	private boolean colorBox = true;
+	public float cornerX, cornerY, cornerZ, lenX, lenY, lenZ;
+	public float rotateX = 0, rotateY = 0, rotateZ = 0;
+	public float red, green, blue;
+	public int texId;
+	public boolean colorBox = true;
 	
-	public Box(float cornerX, float cornerY, float cornerZ, float lenX, float lenY, float lenZ, double red, double green, double blue) {
+	public Box(float cornerX, float cornerY, float cornerZ, float lenX, float lenY, float lenZ, float red, float green, float blue) {
 		this.cornerX = cornerX;
 		this.cornerY = cornerY;
 		this.cornerZ = cornerZ;

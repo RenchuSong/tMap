@@ -29,7 +29,8 @@ public class MySurfaceView extends GLSurfaceView{
     private float mPreviousX;
 	
     public float gluX, gluY, gluZ, targetX, targetY, targetZ, upX, upY, upZ;
-    
+    public float oriX, oriY, oriZ, angle;
+	
 	public MySurfaceView(Context context, ArrayList<Geometry> geoList) {
         super(context);
         mRenderer = new SceneRenderer();
@@ -54,15 +55,15 @@ public class MySurfaceView extends GLSurfaceView{
 	
     @Override 
     public boolean onTouchEvent(MotionEvent e) {
-        /*float x = e.getX();
+        float x = e.getX();
         switch (e.getAction()) {
         case MotionEvent.ACTION_MOVE:
             float dx = x - mPreviousX;
-            mRenderer.angle += dx * TOUCH_SCALE_FACTOR;
-            
-            requestRender();
+            angle += dx * TOUCH_SCALE_FACTOR / 100;
+            setCamera(new float[]{(float) (4 - Math.sin(angle) * 13), (float)(6 - Math.cos(angle) * 13), 9f, 3f, 4f, 0f, 0f, 0f, 3f});
+            //requestRender();
         }   
-        mPreviousX = x;*/
+        mPreviousX = x;
         return true;
     }
 
@@ -122,8 +123,8 @@ public class MySurfaceView extends GLSurfaceView{
             m14 = initTexture(gl, R.drawable.m14);
             m15 = initTexture(gl, R.drawable.m15);
             
-            gl.glEnable(GL10.GL_LIGHTING);
-            initSunLight(gl);
+            //gl.glEnable(GL10.GL_LIGHTING);
+            //initSunLight(gl);
         }
     }
 	

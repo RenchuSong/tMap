@@ -45,7 +45,7 @@ public class GLUDemo extends SensorActivity {
             		-5, -8, 6,
             		5, -8, 6,
             };
-            ColorPlane c2 = new ColorPlane(vertices2, 0.8922, 0.4941, 0.7333);
+            ColorPlane c2 = new ColorPlane(vertices2, 0.8922f, 0.4941f, 0.7333f);
             
             float[] vertices3 = new float[] {
             		-5, 8, 0,
@@ -55,7 +55,7 @@ public class GLUDemo extends SensorActivity {
             		5, 8, 6,
             		-5, 8, 6,
             };
-            ColorPlane c3 = new ColorPlane(vertices3, 0.8922, 0.4941, 0);
+            ColorPlane c3 = new ColorPlane(vertices3, 0.8922f, 0.4941f, 0);
             
             float[] vertices4 = new float[] {
             		-5, -8, 0,
@@ -65,7 +65,7 @@ public class GLUDemo extends SensorActivity {
             		-5, 8, 6,
             		-5, -8, 6,
             };
-            ColorPlane c4 = new ColorPlane(vertices4, 0, 0.4941, 0.7333);
+            ColorPlane c4 = new ColorPlane(vertices4, 0, 0.4941f, 0.7333f);
             
             float[] vertices5 = new float[] {
             		5, -8, 0,
@@ -75,7 +75,7 @@ public class GLUDemo extends SensorActivity {
             		5, 8, 6,
             		5, 8, 0,
             };
-            ColorPlane c5 = new ColorPlane(vertices5, 0.9137, 1, 0);
+            ColorPlane c5 = new ColorPlane(vertices5, 0.9137f, 1, 0);
             
         	float[] vertices6 = new float[] {
         			5, 8, 6,
@@ -91,8 +91,8 @@ public class GLUDemo extends SensorActivity {
         	
         	ArrayList<Geometry> geoList = new ArrayList<Geometry>();
         	geoList.add(c1);
-        	geoList.add(new Box(-2, -5, 3, 1, 2, 3, 0.2, 0.6, 0.9));
-        	geoList.add(new Cylinder(2, -5, -3, 1, 3.5f, 1, 0.6, 0.9));
+        	geoList.add(new Box(-2, -5, 3, 1, 2, 3, 0.2f, 0.6f, 0.9f));
+        	geoList.add(new Cylinder(2, -5, -3, 1, 3.5f, 1, 0.6f, 0.9f));
         	geoList.add(new Director(1, -1, 1, 10, -10, 4));
 //        	geoList.add(new Cylinder(2, -5, 3, 1, 3.5f, 5));
 

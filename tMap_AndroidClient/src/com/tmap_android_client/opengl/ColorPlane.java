@@ -15,14 +15,21 @@ public class ColorPlane implements Geometry{
 	private FloatBuffer   mVertexBuffer;
     private IntBuffer   mColorBuffer;
     int vCount=0;
+    public float[] vertices;
+    public float red, green, blue;
     
-    public ColorPlane(float[] vertices, double red, double green, double blue)
+    public ColorPlane(float[] vertices, float red, float green, float blue)
     {
     	this(vertices, red, green, blue, 0);
     }
     
-    public ColorPlane(float[] vertices, double red, double green, double blue, double alpha)
+    public ColorPlane(float[] vertices, float red, float green, float blue, float alpha)
     {
+    	this.vertices = vertices;
+    	this.red = red;
+    	this.green = green;
+    	this.blue = blue;
+    	
         vCount=vertices.length / 3;
         
         ByteBuffer vbb = ByteBuffer.allocateDirect(vertices.length*4);

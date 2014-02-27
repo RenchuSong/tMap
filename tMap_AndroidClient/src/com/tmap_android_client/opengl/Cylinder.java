@@ -3,13 +3,13 @@ package com.tmap_android_client.opengl;
 import javax.microedition.khronos.opengles.GL10;
 
 public class Cylinder implements Geometry{
-	private float centerX, centerY, centerZ, radius, height;
-	private float rotateX = 0, rotateY = 0, rotateZ = 0;
-	private double red, green, blue;
-	private int texId;
-	private boolean colorCylinder = true;
+	public float centerX, centerY, centerZ, radius, height;
+	public float rotateX = 0, rotateY = 0, rotateZ = 0;
+	public float red, green, blue;
+	public int texId;
+	public boolean colorCylinder = true;
 	
-	public Cylinder(float centerX, float centerY, float centerZ, float radius, float height, double red, double green, double blue) {
+	public Cylinder(float centerX, float centerY, float centerZ, float radius, float height, float red, float green, float blue) {
 		this.centerX = centerX;
 		this.centerY = centerY;
 		this.centerZ = centerZ;

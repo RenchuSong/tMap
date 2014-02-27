@@ -58,11 +58,11 @@ public class MainActivity extends Activity {
         sample = (Button)this.findViewById(R.id.button5);
         floor = (EditText)this.findViewById(R.id.EditText01);
         x = (EditText)this.findViewById(R.id.EditText02);
-        y = (EditText)this.findViewById(R.id.editText1);
+        y = (EditText)this.findViewById(R.id.bid);
         status = (TextView) this.findViewById(R.id.textView4);
         
-        plusX = (Button) this.findViewById(R.id.button1);
-        minusX = (Button) this.findViewById(R.id.button2);
+        plusX = (Button) this.findViewById(R.id.upload);
+        minusX = (Button) this.findViewById(R.id.load);
         plusY = (Button) this.findViewById(R.id.button3);
         minusY = (Button) this.findViewById(R.id.button4);
         
@@ -200,7 +200,9 @@ public class MainActivity extends Activity {
                 data = json.getData();
                 sample.setEnabled(true);
                 list = JsonUtils.parseResponse(data);
-                status.setText(list.exception + " " + list.response);
+                if (list != null) {
+                    status.setText(list.exception + " " + list.response);
+                }
                 break;
             }
         };
