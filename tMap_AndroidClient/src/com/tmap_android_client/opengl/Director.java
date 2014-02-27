@@ -11,6 +11,7 @@ import javax.microedition.khronos.opengles.GL10;
 public class Director implements Geometry{
 	private FloatBuffer   mVertexBuffer;
     private FloatBuffer mTextureBuffer;
+    public float x1, x2, y1, y2, z1, z2;
     int vCount=0;
     
     private float dist(float x1, float y1, float x2, float y2) {
@@ -23,6 +24,9 @@ public class Director implements Geometry{
     
     public Director(float x1, float y1, float z1, float x2, float y2, float z2)
     {
+    	this.x1 = x1; this.y1 = y1; this.z1 = z1;
+    	this.x2 = x2; this.y2 = y2; this.z2 = z2;
+    	
     	float dx = x2 - x1, dy = y2 - y1;
     	float nx = -dy, ny = dx;
     	float d = dist(0, 0, nx, ny);

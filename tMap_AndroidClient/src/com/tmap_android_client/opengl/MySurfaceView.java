@@ -24,7 +24,7 @@ public class MySurfaceView extends GLSurfaceView{
 	private final float TOUCH_SCALE_FACTOR = 180.0f/320;
     private SceneRenderer mRenderer;
     
-    private ArrayList<Geometry> geoList = null;	// geometry list
+    public ArrayList<Geometry> geoList = null;	// geometry list
     
     private float mPreviousX;
 	

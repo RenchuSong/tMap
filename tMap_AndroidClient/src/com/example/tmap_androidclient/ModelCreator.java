@@ -32,6 +32,8 @@ import android.widget.Toast;
 public class ModelCreator extends Activity implements OnClickListener{
 	private static final int START = 0x0000;
 	private static final int COMPLETE = 0x1000;
+	private static final int COMPLETE2 = 0x2000;
+	public ArrayList<Geometry> geoList;
 	
 	Button load, upload;
 	EditText bid, fid, x,y,z;
@@ -61,10 +63,12 @@ public class ModelCreator extends Activity implements OnClickListener{
         upload.setOnClickListener(this);
         
         //creat model region===================================================
-        ArrayList<Geometry> geoList = new ArrayList<Geometry>();
+        geoList = new ArrayList<Geometry>();
     	
-        /* This is Boobo's Lab's model
-        	//floor
+        /*
+         *  This is Boobo's Lab's model
+         */
+        /*	//floor
         	float[] vertices1 = new float[] {
         			0, 0, 0,
         			8.3f, 0, 0,
@@ -110,8 +114,8 @@ public class ModelCreator extends Activity implements OnClickListener{
         	
         	// server
         	geoList.add(new Box(7.8f, 2, 0, 0.5f, 0.8f, 2, 10));
-        	
         	*/
+        	
         //end creating=========================================================
         	objs = packGeoList(geoList);
         	
@@ -134,7 +138,7 @@ public class ModelCreator extends Activity implements OnClickListener{
             
         }
     	
-    	private ArrayList<ObjectDescription> packGeoList(ArrayList<Geometry> geoList) {
+    	public ArrayList<ObjectDescription> packGeoList(ArrayList<Geometry> geoList) {
     		ArrayList<ObjectDescription> result = new ArrayList<ObjectDescription>();
     		ObjectDescription os2 = new ObjectDescription();
     		os2.type = "rotator";
@@ -202,6 +206,14 @@ public class ModelCreator extends Activity implements OnClickListener{
     				os.data[p + 1] = ((ColorPlane) geo).green;
     				os.data[p + 2] = ((ColorPlane) geo).blue;
     			}
+    			if (geo instanceof Director) {
+    				os.type = "Director";
+    				os.data = new float[] {
+    						((Director) geo).x1, ((Director) geo).y1, ((Director) geo).z1,
+    						((Director) geo).x2, ((Director) geo).y2, ((Director) geo).z2
+    				};
+    			}
+    			
     			result.add(os);
     		}
     		return result;
@@ -229,6 +241,12 @@ public class ModelCreator extends Activity implements OnClickListener{
 				json.action = "saveModel";
 		        new Thread(json).start();
 			}
+			if (v.getId() == R.id.load) {
+				load.setEnabled(false);
+				json =  new JsonThread();
+				json.action = "getModel";
+		        new Thread(json).start();
+			}
 		}  
 		
 		class JsonThread implements Runnable{
@@ -237,13 +255,17 @@ public class ModelCreator extends Activity implements OnClickListener{
 	        public void run() {
 	            try {
 	            	handler.sendEmptyMessage(START);
-	                data = HttpUtils.getInstance().postData(uri + "tMap/building/" + action + "/" + bid.getText().toString() + "/" + fid.getText().toString(), JsonUtils.packListToJson(objs));
+	                data = HttpUtils.getInstance().postData(uri + "tMap/building/" + action + "/" + bid.getText().toString() + "/" + fid.getText().toString(), action.equalsIgnoreCase("saveModel") ? JsonUtils.packListToJson(objs) : "");
 	                Log.d("dataing", uri + "tMap/building/" + action + "/" + bid.getText().toString() + "/" + fid.getText().toString() + "   "+ JsonUtils.packListToJson(objs));
 	                if(data != null){
 	                    Log.e("dataing", data.toString());
 	                }
-	                handler.sendEmptyMessage(COMPLETE);
 	                
+	                if (action.equalsIgnoreCase("saveModel")) {
+	                	 handler.sendEmptyMessage(COMPLETE);
+	                } else {
+	                	 handler.sendEmptyMessage(COMPLETE2);
+	                }
 	            } catch (Exception e) {
 	                e.printStackTrace();
 	                Log.e("JsonThread", e.getMessage());
@@ -253,6 +275,10 @@ public class ModelCreator extends Activity implements OnClickListener{
 	            return data;
 	        }
 	    }
+		
+		public void updateGeometry() {
+			mGLSurfaceView.geoList = this.geoList;
+		}
 		
 		Handler handler = new Handler(){
 	        public void handleMessage(android.os.Message msg) {
@@ -269,7 +295,19 @@ public class ModelCreator extends Activity implements OnClickListener{
 		                Toast.makeText(ModelCreator.this, list.exception + " " + list.response, Toast.LENGTH_LONG).show();
 	                }
 	                break;
+	            case COMPLETE2:
+	                data = json.getData();
+	                Log.v("dataing", data + "");
+	                load.setEnabled(true);
+	                ObjectDescription[] objs = JsonUtils.parseModelList(data);
+	                
+	                if (objs != null) {
+	                	ModelCreator.this.geoList = (new ObjectDescription()).createGeometryList(objs);
+	                	ModelCreator.this.updateGeometry();
+	                }
+	                break;
 	            }
+	        
 	        };
 	    };
 }

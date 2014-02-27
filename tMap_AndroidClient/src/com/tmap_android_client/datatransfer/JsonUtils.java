@@ -7,6 +7,7 @@ import java.util.Map;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.tmap_android_client.opengl.ObjectDescription;
 
 public class JsonUtils {
 	private JsonUtils() {}
@@ -35,5 +36,10 @@ public class JsonUtils {
 	public static Response parseResponse(String data) {
 		Gson gson = new Gson();
 		return gson.fromJson(data, Response.class);
+	}
+	
+	public static ObjectDescription[] parseModelList(String data) {
+		Gson gson = new Gson();
+		return gson.fromJson(data, ObjectDescription[].class);
 	}
 }
