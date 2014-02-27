@@ -7,6 +7,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.util.Log;
 
 public class BaseSensor implements SensorEventListener {
 	private int id;
@@ -14,6 +15,7 @@ public class BaseSensor implements SensorEventListener {
 	private SensorManager sensorManager = null;
 	private Sensor sensor = null;
 	public float[] sensorValues;		// sensor values
+	public boolean sensorExist = true;
 	
 	// Construct with an activity
 	public BaseSensor(SensorActivity bindActivity, int id) {
@@ -25,15 +27,21 @@ public class BaseSensor implements SensorEventListener {
 	public void bindSensorType(int SENSOR_TYPE) {
 		sensorManager = (SensorManager) this.bindActivity.getSystemService(Activity.SENSOR_SERVICE);
 		sensor = sensorManager.getDefaultSensor(SENSOR_TYPE);
+		Log.d("dataing", sensor + "");
+		if (sensor == null) {
+			this.sensorExist = false;
+		}
 	}
 	
 	// Call when the activity pauses
-	public void activityPause() {
+	public void sensorRelease() {
 		sensorManager.unregisterListener(this);
 	}
 	
-	public void activityResume() {
-		sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL);
+	public void sensorResume() {
+		if (this.sensorExist) {
+			sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL);
+		}
 	}
 	
 	@Override

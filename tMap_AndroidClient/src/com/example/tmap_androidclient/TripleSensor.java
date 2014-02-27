@@ -38,14 +38,14 @@ public class TripleSensor extends SensorActivity {
 	protected void onPause() {
 		// TODO Auto-generated method stub
 		super.onPause();
-		bs.activityPause();
+		bs.sensorRelease();
 	}
 	
 	@Override
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-		bs.activityResume();
+		bs.sensorResume();
 	}
 
 	@Override

@@ -131,7 +131,7 @@ public class MainActivity extends Activity {
 		        Map<String, Integer> irr = new HashMap<String, Integer>();
 		        
 			    for (ScanResult scanResult : scanResults) {
-			    	irr.put(scanResult.SSID, scanResult.level);			   
+			    	irr.put(scanResult.BSSID, scanResult.level);			   
 			    }
 			    
 			    ws.packFingerPrint2(irr);
