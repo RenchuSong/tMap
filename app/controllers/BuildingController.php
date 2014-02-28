@@ -9,7 +9,7 @@
 class BuildingController extends RController {
 
 	public function actionIndex() {
-		echo json_encode(["response" => "Hello tMap!"]);
+		echo json_encode(array("response" => "Hello tMap!"));
 	}
 
 	/**
@@ -18,10 +18,14 @@ class BuildingController extends RController {
 	public function actionBuildingUpdateWifi($buildingId = null) {
 		/* TODO verify authority, only admin can update building wifi */
 		if ($buildingId !== null && is_numeric($buildingId)) {			// update a single building
-			$buildingWifi = new BuildingWifiList();
-			$buildingWifi->buildingId = $buildingId;
+			$buildingWifi = BuildingWifiList::find("buildingId", $buildingId)->first();
+			if ($buildingWifi === null) {
+				$buildingWifi = new BUildingWifiList();
+				$buildingWifi->buildingId = $buildingId;
+			}
+
 			$buildingWifi->buildingUpdateWifi();
-			echo json_encode(["response" => "ok"]);
+			echo json_encode(array("response" => "ok"));
 			return;
 		}
 		/* TODO update all buildings */
@@ -54,7 +58,7 @@ class BuildingController extends RController {
 			}
 			$floor->modelPack = $_POST['json'];
 			$floor->save();
-			echo json_encode(["response" => "ok"]);
+			echo json_encode(array("response" => "ok"));
 		} else {
 			throw new RException("no data received");
 		}

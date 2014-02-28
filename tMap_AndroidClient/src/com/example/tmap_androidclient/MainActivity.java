@@ -45,7 +45,7 @@ public class MainActivity extends Activity {
 	public WifiSample ws;
 	
 	public Button sample;
-	public EditText floor, x, y;
+	public EditText bid,floor, x, y;
 	public Button plusX, minusX, plusY, minusY;
 	public TextView status;
 	
@@ -55,6 +55,7 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
         
+        bid = (EditText)this.findViewById(R.id.editText1);
         sample = (Button)this.findViewById(R.id.button5);
         floor = (EditText)this.findViewById(R.id.EditText01);
         x = (EditText)this.findViewById(R.id.EditText02);
@@ -123,7 +124,7 @@ public class MainActivity extends Activity {
 			    
 				Log.d("dataing", "here");
 				
-				ws.buildingId = 1;
+				ws.buildingId = Integer.parseInt(bid.getText().toString());
 		        ws.floor = Integer.parseInt(floor.getText().toString());
 		        ws.x = Integer.parseInt(x.getText().toString());
 		        ws.y = Integer.parseInt(y.getText().toString());

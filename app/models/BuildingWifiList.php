@@ -7,12 +7,13 @@
  */
 
 class BuildingWifiList extends RModel {
-	public $buildingId, $wifiPack;
+	public $id, $buildingId, $wifiPack;
 	public $wifiList = array();								   // Wifi name list that can be received within the building
 
 	public static $table = "building_wifi_list";
-	public static $primary_key = "building_id";
+	public static $primary_key = "id";
 	public static $mapping = array(
+		"id" => "id",
 		"buildingId" => "building_id",
 		"wifiPack" => "wifi_name_list",
 	);
@@ -20,7 +21,7 @@ class BuildingWifiList extends RModel {
 	/**
 	 * Destract wifi name list into vector
 	 */
-	private function unPackWifiList() {
+	public function unPackWifiList() {
 		if ($this->wifiPack !== null) {
 			$this->wifiList = json_decode($this->wifiPack);
 		}
@@ -50,9 +51,7 @@ class BuildingWifiList extends RModel {
 
 		$this->wifiList = array_keys($wifiList);
 		$this->packWifiList();
-		$this->save();
-		echo json_encode($this);exit;
-		return $this;
+		return $this->save();
 	}
 
 	/**

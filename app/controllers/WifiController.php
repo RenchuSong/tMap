@@ -11,7 +11,7 @@ require_once(dirname(__FILE__) . '/../util/Util.php');
 class WifiController extends RController {
 
 	public function actionIndex() {
-		echo json_encode(["response" => "Hello tMap!"]);
+		echo json_encode(array("response" => "Hello tMap!"));
 	}
 
 	public function actionShowSample($sampleId = -1) {
@@ -26,7 +26,7 @@ class WifiController extends RController {
 		/* TODO verify authority, only admin can add wifi at this time */
 		if (Rays::isPost()) {
 			WiFiSample::createWiFiSample(json_decode($_POST['json']));
-			echo json_encode(["response" => "ok"]);
+			echo json_encode(array("response" => "ok"));
 		} else {
 			throw new RException("no data received");
 		}
@@ -46,7 +46,8 @@ class WifiController extends RController {
 	public function actionWifiJudgePosition() {
 		/* TODO verify authority, only our application users can use the wifi positioning function */
 		if (Rays::isPost()) {
-			$wifiPair = json_decode($_POST['json']);
+			$wifiReceive = json_decode($_POST['json']);
+			$wifiPair = $wifiReceive->wifiPair;
 			if (!is_array($wifiPair)) {
 				$wifiPair = o2a($wifiPair);
 			}
@@ -54,9 +55,65 @@ class WifiController extends RController {
 			/**
 			 * Implementation
 			 */
-			$buildingId = -1; $floor = 0; $x = 0; $y = 0;
+			if (!count($wifiPair)) {
+				throw new RException("wifi empty");
+			}
+			$wifiList = array_keys($wifiPair);
 
-			echo json_encode(["buildingId" => $buildingId, "floor" => $floor, "x" => $x, "y" => $y]);
+			$result = new Location();
+			$result->score = -1e100;
+
+			if ($wifiReceive->buildingId !== "all") {
+				$buildingWifiSet = array(BuildingWifiList::get($wifiReceive->buildingId));
+			} else {
+				$buildingWifiSet = BuildingWifiList::find()->all();
+			}
+
+			foreach ($buildingWifiSet as $building) {
+				$building->unPackWifiList();
+				// filter out buildings with low similarity
+				if (count(array_intersect($wifiList, $building->wifiList)) / count($wifiList) < 0.5) {
+					continue;
+				}
+				// get points of the building
+				$wifiSamples = WiFiSample::find("buildingId", $building->buildingId)->all();
+				foreach ($wifiSamples as $wifiSample) {
+					$wifiSample->unPackBSSIVector();
+					$tmp = new Location();
+					$tmp->buildingId = $wifiSample->buildingId;
+					$tmp->floor = $wifiSample->floor;
+					$tmp->x = $wifiSample->x;
+					$tmp->y = $wifiSample->y;
+
+					/** TODO do experiments to select which algorithm to use */
+					$tmp->score = cosDistance($wifiSample->bssiVector, $wifiPair);
+					//$tmp->score = -euclideanDistance($wifiSample->bssiVector, $wifiPair);
+					//$tmp->score = weighedDistance($wifiSample->bssiVector, $wifiPair);
+					if ($tmp->betterThan($result)) {
+						$result = $tmp;
+					}
+				}
+			}
+
+			// score too small
+			if ($result->score < 0.3) {
+				throw new RException("locating failed");
+			}
+			/** TODO do experiments to select which algorithm to use */
+			/*//For euclidean distance
+			if ($result->score < -1e10) {
+				throw new RException("locating failed");
+			}*/
+			/*//For weighed distance
+			if ($result->score < 0.1) {
+				throw new RException("locating failed");
+			}*/
+
+
+			echo json_encode(array("buildingId" => $result->buildingId,
+				"floor" => $result->floor,
+				"x" => $result->x, "y" => $result->y)
+			);
 		} else {
 			throw new RException("no data received");
 		}

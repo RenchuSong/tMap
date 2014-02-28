@@ -9,7 +9,7 @@
 class ExceptionController  extends RController {
 
 	public function actionException(RException $e){
-		echo json_encode(["exception" => $e->getMessage()]);
+		echo json_encode(array("exception" => $e->getMessage()));
 	}
 
 } 
