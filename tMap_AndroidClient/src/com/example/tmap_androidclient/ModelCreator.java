@@ -1,8 +1,12 @@
 package com.example.tmap_androidclient;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import com.example.tmap_androidclient.MainActivity.JsonThread;
+import com.example.tmap_androidclient.MainActivity.ScanThread;
 import com.tmap_android_client.datatransfer.HttpUtils;
 import com.tmap_android_client.datatransfer.JsonUtils;
 import com.tmap_android_client.datatransfer.Response;
@@ -15,10 +19,17 @@ import com.tmap_android_client.opengl.MaterialPlane;
 import com.tmap_android_client.opengl.MySurfaceView;
 import com.tmap_android_client.opengl.ObjectDescription;
 import com.tmap_android_client.sensor.BaseSensor;
+import com.tmap_android_client.wifi.Location;
 import com.tmap_android_client.wifi.WifiSample;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.hardware.Sensor;
+import android.net.wifi.ScanResult;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -33,13 +44,21 @@ public class ModelCreator extends Activity implements OnClickListener{
 	private static final int START = 0x0000;
 	private static final int COMPLETE = 0x1000;
 	private static final int COMPLETE2 = 0x2000;
+	private static final int COMPLETE3 = 0x3000;
+	
 	public ArrayList<Geometry> geoList;
 	
-	Button load, upload;
+	Button load, upload, locating;
 	EditText bid, fid, x,y,z;
-	public String data = null;
+	public String data = null, 
+			data2 = null;
 	String uri;
 	public JsonThread json;
+	public JsonThread2 json2;
+	
+	public WifiSample ws;
+	public ScanThread scan;
+	
 	private Response list = null;
 	public ArrayList<ObjectDescription> objs;
 	
@@ -49,8 +68,58 @@ public class ModelCreator extends Activity implements OnClickListener{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.model_creator);
+        
+        
+        //=============wifi======================================
+        
+
+        uri = this.getString(R.string.server_root_url);
+        
+        ws = new WifiSample();
+        
+        IntentFilter i = new IntentFilter();
+        i.addAction(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION);
+        registerReceiver(new BroadcastReceiver(){
+        	@Override
+        	public void onReceive(Context c, Intent i){
+		        // Code to execute when SCAN_RESULTS_AVAILABLE_ACTION event
+				Log.v("dataing", "srcsrc");
+		        WifiManager w = (WifiManager) c.getSystemService(Context.WIFI_SERVICE);
+		        //w.getScanResults(); // Returns a <list> of scanResults
+
+				List<ScanResult> scanResults=w.getScanResults();
+			    
+				Log.d("dataing", "here");
+				
+				ws.buildingId = 1;
+		        ws.floor = -1;
+		        ws.x = -1;
+		        ws.y = -1;
+		        
+		        Map<String, Integer> irr = new HashMap<String, Integer>();
+		        
+			    for (ScanResult scanResult : scanResults) {
+			    	irr.put(scanResult.BSSID, scanResult.level);			   
+			    }
+			    
+			    ws.packFingerPrint2(irr);
+			    
+			    //Log.v("dataing", ws.fingerPrintPack);
+			    
+			    json2 =  new JsonThread2();
+		        new Thread(json2).start();
+	        }
+        }, i);
+        
+
+
+        
+        //=======================================================
+        
         load = (Button) this.findViewById(R.id.load);
         upload = (Button) this.findViewById(R.id.upload);
+        locating = (Button) this.findViewById(R.id.locating);
+        
         bid = (EditText) this.findViewById(R.id.bid);
         fid = (EditText) this.findViewById(R.id.fid);
         x = (EditText) this.findViewById(R.id.x);
@@ -61,6 +130,8 @@ public class ModelCreator extends Activity implements OnClickListener{
         
         load.setOnClickListener(this);
         upload.setOnClickListener(this);
+        locating.setOnClickListener(this);
+        
         
         //creat model region===================================================
         geoList = new ArrayList<Geometry>();
@@ -68,7 +139,7 @@ public class ModelCreator extends Activity implements OnClickListener{
         /*
          *  This is Boobo's Lab's model
          */
-        /*	//floor
+        	//floor
         	float[] vertices1 = new float[] {
         			0, 0, 0,
         			8.3f, 0, 0,
@@ -114,7 +185,7 @@ public class ModelCreator extends Activity implements OnClickListener{
         	
         	// server
         	geoList.add(new Box(7.8f, 2, 0, 0.5f, 0.8f, 2, 10));
-        	*/
+        	
         	
         //end creating=========================================================
         	objs = packGeoList(geoList);
@@ -231,7 +302,13 @@ public class ModelCreator extends Activity implements OnClickListener{
             mGLSurfaceView.onPause();
         }
 
-
+        class ScanThread implements Runnable {
+        	public void run() {
+        		WifiManager wm = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+    			wm.startScan();
+        	}
+        }
+        
 		@Override
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
@@ -246,7 +323,23 @@ public class ModelCreator extends Activity implements OnClickListener{
 				json =  new JsonThread();
 				json.action = "getModel";
 		        new Thread(json).start();
+		        
+//		        // scan wifi
+//		        scan =  new ScanThread();
+//				new Thread(scan).start();
+//				
 			}
+			if (v.getId() == R.id.locating) {
+				locating.setEnabled(false);
+				
+		        // scan wifi
+		        scan =  new ScanThread();
+				new Thread(scan).start();
+				
+			}
+			
+			
+			
 		}  
 		
 		class JsonThread implements Runnable{
@@ -256,7 +349,7 @@ public class ModelCreator extends Activity implements OnClickListener{
 	            try {
 	            	handler.sendEmptyMessage(START);
 	                data = HttpUtils.getInstance().postData(uri + "tMap/building/" + action + "/" + bid.getText().toString() + "/" + fid.getText().toString(), action.equalsIgnoreCase("saveModel") ? JsonUtils.packListToJson(objs) : "");
-	                Log.d("dataing", uri + "tMap/building/" + action + "/" + bid.getText().toString() + "/" + fid.getText().toString() + "   "+ JsonUtils.packListToJson(objs));
+	                Log.d("dataing2", uri + "tMap/building/" + action + "/" + bid.getText().toString() + "/" + fid.getText().toString() + "   "+ JsonUtils.packListToJson(objs));
 	                if(data != null){
 	                    Log.e("dataing", data.toString());
 	                }
@@ -276,8 +369,30 @@ public class ModelCreator extends Activity implements OnClickListener{
 	        }
 	    }
 		
+		class JsonThread2 implements Runnable{
+	        public void run() {
+	            try {
+	            	handler.sendEmptyMessage(START);
+	            	Log.d("dataing", uri + "tMap/wifi/wifiJudgePosition");
+	                data2 = HttpUtils.getInstance().postData(uri + "tMap/wifi/wifiJudgePosition", JsonUtils.packObjToJson(ws));
+	                if(data2 != null){
+	                    Log.e("dataing", data2.toString());
+	                }
+	                handler.sendEmptyMessage(COMPLETE3);
+	                Log.e("data", "nullljsdflsdf");
+	            } catch (Exception e) {
+	                e.printStackTrace();
+	                Log.e("JsonThread", e.getMessage());
+	            }
+	        }
+	        public String getData(){
+	            return data2;
+	        }
+	    }
+		
 		public void updateGeometry() {
 			mGLSurfaceView.geoList = this.geoList;
+			objs = packGeoList(geoList);
 		}
 		
 		Handler handler = new Handler(){
@@ -303,9 +418,25 @@ public class ModelCreator extends Activity implements OnClickListener{
 	                
 	                if (objs != null) {
 	                	ModelCreator.this.geoList = (new ObjectDescription()).createGeometryList(objs);
+	                	
+	                	ModelCreator.this.geoList.add(new Box(-1, -1, 0, 0.5f, 0.5f, 1.8f, 1, 0, 0));
+	                	
 	                	ModelCreator.this.updateGeometry();
 	                }
 	                break;
+	            case COMPLETE3:
+	            	Log.v("dataing",data2);
+	            	Location loc = JsonUtils.parseLocation(data2);
+	            	locating.setEnabled(true);
+	            	if (ModelCreator.this.geoList == null) {
+	            		ModelCreator.this.geoList = new ArrayList<Geometry>();
+	            	}
+	            	
+	            	int index = ModelCreator.this.geoList.size();
+	            	((Box)ModelCreator.this.geoList.get(index - 1)).cornerX = loc.x;
+	            	((Box)ModelCreator.this.geoList.get(index - 1)).cornerY = loc.y;
+	         
+	            	Log.d("dataing", data2);
 	            }
 	        
 	        };

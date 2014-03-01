@@ -72,7 +72,12 @@ function weighedDistance(array $arr1, array $arr2) {
 	$arr3 = array_intersect(array_keys($arr1), array_keys($arr2));
 	$result = 0;
 	foreach ($arr3 as $key) {
+		var_dump(abs($arr1[$key] - $arr2[$key]) / abs($arr1[$key] + $arr2[$key]));
 		$result += 1 - abs($arr1[$key] - $arr2[$key]) / abs($arr1[$key] + $arr2[$key]);
 	}
 	return $result / count(array_merge($arr1, $arr2));
+}
+
+function setDistance(array $arr1, array $arr2) {
+	return count(array_intersect(array_keys($arr1), array_keys($arr2))) / count(array_merge($arr1, $arr2));
 }

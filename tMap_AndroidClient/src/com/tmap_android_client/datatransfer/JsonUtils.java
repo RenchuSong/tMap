@@ -8,6 +8,7 @@ import java.util.Map;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.tmap_android_client.opengl.ObjectDescription;
+import com.tmap_android_client.wifi.Location;
 
 public class JsonUtils {
 	private JsonUtils() {}
@@ -42,4 +43,10 @@ public class JsonUtils {
 		Gson gson = new Gson();
 		return gson.fromJson(data, ObjectDescription[].class);
 	}
+	
+	public static Location parseLocation(String data) {
+		Gson gson = new Gson();
+		return gson.fromJson(data, Location.class);
+	}
+	
 }
