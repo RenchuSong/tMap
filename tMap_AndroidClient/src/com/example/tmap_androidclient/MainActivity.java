@@ -119,7 +119,12 @@ public class MainActivity extends Activity {
 				Log.v("dataing", "srcsrc");
 		        WifiManager w = (WifiManager) c.getSystemService(Context.WIFI_SERVICE);
 		        //w.getScanResults(); // Returns a <list> of scanResults
-
+		        try {
+					Thread.sleep(500);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				List<ScanResult> scanResults=w.getScanResults();
 			    
 				Log.d("dataing", "here");

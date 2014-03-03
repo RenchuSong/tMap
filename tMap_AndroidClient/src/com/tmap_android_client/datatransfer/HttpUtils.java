@@ -36,41 +36,39 @@ public class HttpUtils {
 		return instance;
 	}
 	
-	public String getData(String url) throws Exception{
-        StringBuffer sb = new StringBuffer();
-        HttpClient httpClient = new DefaultHttpClient();
-        HttpGet httpGet = new HttpGet(url);
-        HttpResponse response = httpClient.execute(httpGet);
-        HttpEntity httpEntity = response.getEntity();
-        if(httpEntity != null){
-            InputStream in = httpEntity.getContent();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-            String line = null;
-            while((line= reader.readLine())!=null){
-                sb.append(line);
-            }
-        }
-        return sb.toString();
-    }
+//	public String getData(String url) throws Exception{
+//        StringBuffer sb = new StringBuffer();
+//        HttpClient httpClient = new DefaultHttpClient();
+//        HttpGet httpGet = new HttpGet(url);
+//        HttpResponse response = httpClient.execute(httpGet);
+//        HttpEntity httpEntity = response.getEntity();
+//        if(httpEntity != null){
+//            InputStream in = httpEntity.getContent();
+//            BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+//            String line = null;
+//            while((line= reader.readLine())!=null){
+//                sb.append(line);
+//            }
+//        }
+//        return sb.toString();
+//    }
 	
-	public String postData(String url, String jsonData) {		
+	public String postData(String url, String jsonData) throws Exception{		
 	    HttpPost httpRequest = new HttpPost(url);
 	    List<NameValuePair> params = new ArrayList<NameValuePair>();
 	    params.add(new BasicNameValuePair("json", jsonData));
-	    try {
-	        HttpEntity httpEntity = new UrlEncodedFormEntity(params,"utf-8");
-	        httpRequest.setEntity(httpEntity); 
-	        HttpClient httpClient = new DefaultHttpClient();
-	        HttpResponse httpResponse = httpClient.execute(httpRequest);
-	        if(httpResponse.getStatusLine().getStatusCode() == HttpStatus.SC_OK){
-	            String result = EntityUtils.toString(httpResponse.getEntity());
-	            return result;
-	        }else{
-	        	Log.i("dataing", "request error");
-	        }
-	    } catch (Exception e) {
-	        e.printStackTrace();
+
+	    HttpEntity httpEntity = new UrlEncodedFormEntity(params,"utf-8");
+	    httpRequest.setEntity(httpEntity); 
+	    HttpClient httpClient = new DefaultHttpClient();
+	    HttpResponse httpResponse = httpClient.execute(httpRequest);
+	    if(httpResponse.getStatusLine().getStatusCode() == HttpStatus.SC_OK){
+	    	String result = EntityUtils.toString(httpResponse.getEntity());
+	    	return result;
+	    }else{
+	    	Log.i("dataing", "request error");
 	    }
+
 	    return null;
 	}
 }

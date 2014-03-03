@@ -81,3 +81,51 @@ function weighedDistance(array $arr1, array $arr2) {
 function setDistance(array $arr1, array $arr2) {
 	return count(array_intersect(array_keys($arr1), array_keys($arr2))) / count(array_merge($arr1, $arr2));
 }
+
+function knnDistance(array $arr1, array $arr2) {
+//	$arr3 = array_intersect(array_keys($arr1), array_keys($arr2));
+//
+//	$similarity = count($arr3) / count(array_merge(array_keys($arr1), array_keys($arr2)));
+//	if ($similarity < 0.1) {
+//		return -1e100;
+//	}
+//
+//	$result = 0;
+//	foreach ($arr3 as $key) {
+//		if (isset($arr1[$key]) && isset($arr2[$key])) {
+//			$result += abs($arr1[$key] - $arr2[$key]);
+//		}/* else if (isset($arr1[$key])) {
+//			$result += abs(-110 - $arr1[$key]);
+//		} else if (isset($arr2[$key])) {
+//			$result += abs(-110 - $arr2[$key]);
+//		}*/
+//	}
+//
+//	return -$result / $similarity / $similarity;
+	$arr3 = array_merge(array_keys($arr1), array_keys($arr2));
+	$result = 0;
+	foreach ($arr3 as $key) {
+		if (isset($arr1[$key]) && isset($arr2[$key])) {
+			$result += abs($arr1[$key] - $arr2[$key]);
+		} else if (isset($arr1[$key])) {
+			$result += abs(-110 - $arr1[$key]);
+		} else if (isset($arr2[$key])) {
+			$result += abs(-110 - $arr2[$key]);
+		}
+	}
+
+	return -$result;
+}
+
+function myKNNDistance(array $arr1, array $arr2) {
+	$result = 0;
+	foreach ($arr2 as $key) {
+		if (isset($arr1[$key])) {
+			$result += abs($arr1[$key] - $arr2[$key]);
+		} else {
+			$result += abs($arr2[$key]);
+		}
+	}
+
+	return -$result;
+}

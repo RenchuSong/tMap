@@ -2,6 +2,7 @@ package com.example.tmap_androidclient;
 
 import java.util.ArrayList;
 
+import com.tmap_android_client.activities.BaseActivity;
 import com.tmap_android_client.activities.SensorActivity;
 import com.tmap_android_client.opengl.Box;
 import com.tmap_android_client.opengl.ColorPlane;
@@ -16,7 +17,7 @@ import android.app.Activity;
 import android.hardware.Sensor;
 import android.os.Bundle;
 
-public class GLUDemo extends SensorActivity {
+public class GLUDemo extends BaseActivity implements SensorActivity {
 	
 	private BaseSensor bs = null;
 	

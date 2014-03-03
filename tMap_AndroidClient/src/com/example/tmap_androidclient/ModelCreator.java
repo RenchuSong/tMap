@@ -153,40 +153,61 @@ public class ModelCreator extends Activity implements OnClickListener{
 
         	geoList.add(c1);
         	
-        	// four walls
-        	geoList.add(new Box(0, 0, 0, 8.3f, 0.1f, 3, 1, 1, 1));
+        	geoList.add(new Box(0, 0, 0, 2.5f, 0.1f, 1.5f, 1, 1, 1));
+        	geoList.add(new Box(0, 0, 0, 0.1f, 6, 1.5f, 1, 1, 1));
+        	geoList.add(new Box(2.5f, 0, 0, 0.1f, 4, 1.5f, 1, 1, 1));
+        	geoList.add(new Box(4, 4, 0, 0.1f, 2, 1.5f, 1, 1, 1));
+        	geoList.add(new Box(0, 6, 0, 4, 0.1f, 1.5f, 1, 1, 1));
+        	geoList.add(new Box(2.5f, 4, 0, 1.5f, 0.1f, 1.5f, 1, 1, 1));
         	
-        	geoList.add(new Box(0, 0, 0, 0.1f, 12.5f, 1, 1, 1, 1));
-        	geoList.add(new Box(0, 4, 1, 0.1f, 0.5f, 2, 1, 1, 1));
-        	geoList.add(new Box(0, 8, 1, 0.1f, 0.5f, 2, 1, 1, 1));
-        	
-        	geoList.add(new Box(8.2f, 0, 0, 0.1f, 10.5f, 3, 1, 1, 1));
-        	
-        	geoList.add(new Box(0, 12.4f, 0, 8.3f, 0.1f, 3, 1, 1, 1));
-        	
-        	//cells
-        	geoList.add(new Box(3.5f, 0, 0, 0.05f, 1.6f, 1.2f, 12));
-        	geoList.add(new Box(3.5f, 11, 0, 0.05f, 1.6f, 1.2f, 12));
-        	geoList.add(new Box(4.8f, 6.9f, 0, 0.05f, 1.6f, 1.2f, 12));
-        	
-        	geoList.add(new Box(3.5f, 2.6f, 0, 0.05f, 3.2f, 1.2f, 12));
-        	geoList.add(new Box(3.5f, 6.8f, 0, 0.05f, 3.2f, 1.2f, 12));
-        	geoList.add(new Box(4.8f, 2.8f, 0, 0.05f, 3.2f, 1.2f, 12));
-        	
-        	
-        	geoList.add(new Box(0, 4.2f, 0, 3.5f, 0.05f, 1.2f, 12));
-        	geoList.add(new Box(4.8f, 4.4f, 0, 3.5f, 0.05f, 1.2f, 12));
-        	
-        	geoList.add(new Box(0, 8.3f, 0, 3.5f, 0.05f, 1.2f, 12));
-        	geoList.add(new Box(4.8f, 8.5f, 0, 3.5f, 0.05f, 1.2f, 12));
-        	
-        	// closet
-        	geoList.add(new Box(3.7f, 12, 0, 1, 0.55f, 2, 11));
-        	
-        	// server
-        	geoList.add(new Box(7.8f, 2, 0, 0.5f, 0.8f, 2, 10));
-        	
-        	
+        	geoList.add(new Box(0, 1, 0, 2, 0.1f, 0.5f, 12));
+        	geoList.add(new Box(1, 0.5f, 0, 0.1f, 1, 0.5f, 12));
+        	geoList.add(new Box(0, 3, 0, 2, 0.1f, 0.5f, 12));
+        	geoList.add(new Box(1, 2.5f, 0, 0.1f, 1, 0.5f, 12));
+        	geoList.add(new Box(0, 5, 0, 2, 0.1f, 0.5f, 12));
+        	geoList.add(new Box(1, 4.5f, 0, 0.1f, 0.5f, 0.5f, 12));
+
+        	geoList.add(new Box(0, 1, 0.5f, 2, 0.1f, 0.2f, 13));
+        	geoList.add(new Box(1, 0.5f, 0.5f, 0.1f, 1, 0.2f, 13));
+        	geoList.add(new Box(0, 3, 0.5f, 2, 0.1f, 0.2f, 13));
+        	geoList.add(new Box(1, 2.5f, 0.5f, 0.1f, 1, 0.2f, 13));
+        	geoList.add(new Box(0, 5, 0.5f, 2, 0.1f, 0.2f, 13));
+        	geoList.add(new Box(1, 4.5f, 0.5f, 0.1f, 0.5f, 0.2f, 13));
+
+//        	// four walls
+//        	geoList.add(new Box(0, 0, 0, 8.3f, 0.1f, 3, 1, 1, 1));
+//        	
+//        	geoList.add(new Box(0, 0, 0, 0.1f, 12.5f, 1, 1, 1, 1));
+//        	geoList.add(new Box(0, 4, 1, 0.1f, 0.5f, 2, 1, 1, 1));
+//        	geoList.add(new Box(0, 8, 1, 0.1f, 0.5f, 2, 1, 1, 1));
+//        	
+//        	geoList.add(new Box(8.2f, 0, 0, 0.1f, 10.5f, 3, 1, 1, 1));
+//        	
+//        	geoList.add(new Box(0, 12.4f, 0, 8.3f, 0.1f, 3, 1, 1, 1));
+//        	
+//        	//cells
+//        	geoList.add(new Box(3.5f, 0, 0, 0.05f, 1.6f, 1.2f, 12));
+//        	geoList.add(new Box(3.5f, 11, 0, 0.05f, 1.6f, 1.2f, 12));
+//        	geoList.add(new Box(4.8f, 6.9f, 0, 0.05f, 1.6f, 1.2f, 12));
+//        	
+//        	geoList.add(new Box(3.5f, 2.6f, 0, 0.05f, 3.2f, 1.2f, 12));
+//        	geoList.add(new Box(3.5f, 6.8f, 0, 0.05f, 3.2f, 1.2f, 12));
+//        	geoList.add(new Box(4.8f, 2.8f, 0, 0.05f, 3.2f, 1.2f, 12));
+//        	
+//        	
+//        	geoList.add(new Box(0, 4.2f, 0, 3.5f, 0.05f, 1.2f, 12));
+//        	geoList.add(new Box(4.8f, 4.4f, 0, 3.5f, 0.05f, 1.2f, 12));
+//        	
+//        	geoList.add(new Box(0, 8.3f, 0, 3.5f, 0.05f, 1.2f, 12));
+//        	geoList.add(new Box(4.8f, 8.5f, 0, 3.5f, 0.05f, 1.2f, 12));
+//        	
+//        	// closet
+//        	geoList.add(new Box(3.7f, 12, 0, 1, 0.55f, 2, 11));
+//        	
+//        	// server
+//        	geoList.add(new Box(7.8f, 2, 0, 0.5f, 0.8f, 2, 10));
+//        	
+//        	
         //end creating=========================================================
         	objs = packGeoList(geoList);
         	

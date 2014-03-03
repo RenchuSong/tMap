@@ -9,7 +9,7 @@
 require_once(dirname(__FILE__) . '/../util/Util.php');
 
 class WiFiSample extends RModel {
-	public $id, $buildingId, $floor, $x, $y, $fingerPrintPack;
+	public $id, $buildingId, $floor, $x, $y, $fingerPrintPack, $wifiSampleTime;
 	public $bssiVector = array();								   //BSSI name => magnitude vector
 
 	public static $table = "wifi_map";
@@ -21,6 +21,7 @@ class WiFiSample extends RModel {
 		"x" => "wifi_x",
 		"y" => "wifi_y",
 		"fingerPrintPack" => "wifi_digram",
+		"wifiSampleTime" => "wifi_sample_times",
 	);
 
 	public static $protected = array("id");
@@ -50,12 +51,37 @@ class WiFiSample extends RModel {
 	 * @return WiFiSample
 	 */
 	public static function createWiFiSample($jsonWifiSample) {
-		$sample = new WiFiSample();
-		$sample->buildingId = $jsonWifiSample->buildingId;
-		$sample->floor = $jsonWifiSample->floor;
-		$sample->x = $jsonWifiSample->x;
-		$sample->y = $jsonWifiSample->y;
-		$sample->fingerPrintPack = $jsonWifiSample->fingerPrintPack;
+
+		$sample = WiFiSample::where("[buildingId] = ?", $jsonWifiSample->buildingId)
+							->where("[floor] = ?", $jsonWifiSample->floor)
+							->where("[x] = ?", $jsonWifiSample->x)
+							->where("[y] = ?", $jsonWifiSample->y)->first();
+
+		if ($sample !== null) {
+			$sample->unPackBSSIVector();
+			$sample2 = new WiFiSample();
+			$sample2->fingerPrintPack = $jsonWifiSample->fingerPrintPack;
+			$sample2->unPackBSSIVector();
+			$wifiList = array_merge(array_keys($sample->bssiVector), array_keys($sample2->bssiVector));
+			foreach ($wifiList as $wifiName) {
+				$newRssi = (isset($sample->bssiVector[$wifiName]) ?
+							$sample->bssiVector[$wifiName]: 0) *
+							$sample->wifiSampleTime +
+							(isset($sample2->bssiVector[$wifiName]) ?
+								$sample2->bssiVector[$wifiName]: 0);
+				$sample->bssiVector[$wifiName] = $newRssi / ($sample->wifiSampleTime + 1);
+			}
+			$sample->wifiSampleTime = $sample->wifiSampleTime + 1;
+			$sample->packBSSIVector();
+		} else {
+			$sample = new WiFiSample();
+			$sample->buildingId = $jsonWifiSample->buildingId;
+			$sample->floor = $jsonWifiSample->floor;
+			$sample->x = $jsonWifiSample->x;
+			$sample->y = $jsonWifiSample->y;
+			$sample->fingerPrintPack = $jsonWifiSample->fingerPrintPack;
+			$sample->wifiSampleTime = 1;
+		}
 		$sample->save();
 		$sample->unPackBSSIVector();
 		return $sample;

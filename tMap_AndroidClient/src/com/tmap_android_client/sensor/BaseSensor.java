@@ -25,7 +25,7 @@ public class BaseSensor implements SensorEventListener {
 	
 	// Bind sensor to a specific sensor
 	public void bindSensorType(int SENSOR_TYPE) {
-		sensorManager = (SensorManager) this.bindActivity.getSystemService(Activity.SENSOR_SERVICE);
+		sensorManager = (SensorManager) ((Activity)this.bindActivity).getSystemService(Activity.SENSOR_SERVICE);
 		sensor = sensorManager.getDefaultSensor(SENSOR_TYPE);
 		Log.d("dataing", sensor + "");
 		if (sensor == null) {

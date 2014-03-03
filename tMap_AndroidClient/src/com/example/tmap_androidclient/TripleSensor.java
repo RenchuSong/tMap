@@ -1,5 +1,6 @@
 package com.example.tmap_androidclient;
 
+import com.tmap_android_client.activities.BaseActivity;
 import com.tmap_android_client.activities.SensorActivity;
 import com.tmap_android_client.sensor.BaseSensor;
 
@@ -12,7 +13,7 @@ import android.view.Menu;
 import android.widget.Button;
 import android.widget.TextView;
 
-public class TripleSensor extends SensorActivity {
+public class TripleSensor extends BaseActivity implements SensorActivity {
 	
 	private BaseSensor bs = null;
 	

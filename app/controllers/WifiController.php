@@ -49,7 +49,7 @@ class WifiController extends RController {
 		//echo json_encode($wifiSample2->bssiVector);exit;
 
 
-		var_dump(setDistance($wifiSample1->bssiVector, $wifiSample2->bssiVector));
+		var_dump(knnDistance($wifiSample1->bssiVector, $wifiSample2->bssiVector));
 
 	}
 
@@ -84,7 +84,6 @@ class WifiController extends RController {
 				$buildingWifiSet = BuildingWifiList::find()->all();
 			}
 
-			//var_dump($buildingWifiSet);
 			foreach ($buildingWifiSet as $building) {
 				$building->unPackWifiList();
 				// filter out buildings with low similarity
@@ -102,7 +101,9 @@ class WifiController extends RController {
 					$tmp->y = $wifiSample->y;
 
 					/** TODO do experiments to select which algorithm to use */
-					$tmp->score = cosDistance($wifiSample->bssiVector, $wifiPair);
+					$tmp->score = knnDistance($wifiSample->bssiVector, $wifiPair);
+
+					//$tmp->score = cosDistance($wifiSample->bssiVector, $wifiPair);
 					//$tmp->score = -euclideanDistance($wifiSample->bssiVector, $wifiPair);
 					//$tmp->score = weighedDistance($wifiSample->bssiVector, $wifiPair);
 					//$tmp->score = setDistance($wifiSample->bssiVector, $wifiPair);
@@ -114,9 +115,9 @@ class WifiController extends RController {
 			}
 
 			// score too small
-			if ($result->score < 0.3) {
-				throw new RException("locating failed");
-			}
+//			if ($result->score < 0.3) {
+//				throw new RException("locating failed");
+//			}
 
 			/** TODO do experiments to select which algorithm to use */
 			/*//For euclidean distance
