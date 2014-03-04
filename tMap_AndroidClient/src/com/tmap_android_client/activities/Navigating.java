@@ -15,7 +15,15 @@ import com.tmap_android_client.opengl.ObjectDescription;
 import com.tmap_android_client.sensor.BaseSensor;
 import com.tmap_android_client.wifi.WifiFactory;
 
+import android.annotation.TargetApi;
+import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.graphics.drawable.Drawable;
 import android.hardware.Sensor;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -23,6 +31,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -46,14 +55,20 @@ public class Navigating extends BaseActivity implements SensorActivity {
 	private float stepMax = 50, stepMin = 150;
 	private int stepState = 0;
 	
+	// compass
+	private Bitmap compassLogo, compassRotate;
+	private int compassWidth = 72;
+	private ImageView compass;
+	
 	// 3d accelerate meter sensor
 	private BaseSensor oriSensor = null, accSensor = null;
 	
 	// UI components
+	private Resources resources;	// resources
 	private RelativeLayout panel;	// panel layer
 	private LinearLayout mapLayer;	// map layer
 	private Map3DSurfaceView mapSurface = null;	// 3d map model layer
-	private Button leftButtonBtn;
+	private Button leftButtonBtn, distance;
 	
 	// HTTP results
 	private String modelPack;
@@ -67,6 +82,10 @@ public class Navigating extends BaseActivity implements SensorActivity {
         this.panel = (RelativeLayout) this.findViewById(R.id.panel_container);
         this.mapLayer = (LinearLayout) this.findViewById(R.id.map_container);
         this.leftButtonBtn = (Button) this.findViewById(R.id.left_button_panel);
+        this.distance = (Button) this.findViewById(R.id.distance);
+        distance.setVisibility(View.INVISIBLE);	// hide distance as default
+        
+        resources = this.getResources();  
         
         this.leftButtonBtn.setOnClickListener(new OnClickListener() {
 
@@ -76,6 +95,13 @@ public class Navigating extends BaseActivity implements SensorActivity {
 				if (mapSurface != null) {
 					Environment.getInstance().orientationAdjusting = !Environment.getInstance().orientationAdjusting;
 					/** TODO change view image */
+					if (Environment.getInstance().orientationAdjusting) {
+						Drawable btnDrawable = resources.getDrawable(R.drawable.panel_close);  
+						leftButtonBtn.setBackgroundDrawable(btnDrawable);   
+					} else {
+						Drawable btnDrawable = resources.getDrawable(R.drawable.panel_open);  
+						leftButtonBtn.setBackgroundDrawable(btnDrawable);   
+					}
 				}
 			}
         	
@@ -97,17 +123,95 @@ public class Navigating extends BaseActivity implements SensorActivity {
         accSensor.bindSensorType(Sensor.TYPE_ACCELEROMETER);
         accSensor.sensorRelease();
         
+        // compass
+        compassLogo = BitmapFactory.decodeResource(getResources(), R.drawable.compass);
+        compassWidth = compassLogo.getWidth();
+        Log.v("dataing2", compassWidth+"");
+        compass = (ImageView) this.findViewById(R.id.compass);
+        compass.setImageBitmap(compassLogo);
+        
+        // bind listeners
+        bindToolbarListener();
 	}
 
+	// bind four toobars their listeners
+	private void bindToolbarListener() {
+		this.findViewById(R.id.map_home).setOnClickListener(
+			new OnClickListener() {
+				@Override
+				public void onClick(View arg0) {
+					// TODO Auto-generated method stub
+					if (mapSurface != null) {
+						mapSurface.endGuidance();
+					}
+					distance.setVisibility(View.INVISIBLE);
+					toolbarFocus(MAP_HOME);
+				}
+			}
+		);
+		
+		this.findViewById(R.id.search_place).setOnClickListener(
+			new OnClickListener() {
+				@Override
+				public void onClick(View arg0) {
+					// TODO Auto-generated method stub
+					Intent intent = new Intent(Navigating.this, SearchGate.class);
+					startActivity(intent);
+				}
+			}
+		);
+		
+		
+	}
+	
 	// get bundle data
 	private void getBundleData() {
 		Bundle bundle = getIntent().getExtras();
 		String action = bundle.getString("action");
-		if (action.equalsIgnoreCase("locating")) {
+		
+		if (action.equalsIgnoreCase("locating")) {	// From welcome page
 			Environment.getInstance(this).buildingId = bundle.getInt("buildingId");
 			Environment.getInstance(this).floor = bundle.getInt("floor");
 			Environment.getInstance(this).x = bundle.getFloat("x");
 			Environment.getInstance(this).y = bundle.getFloat("y");
+			
+			toolbarFocus(MAP_HOME);
+		}
+	}
+	
+	// change toolbar focus
+	private final int MAP_HOME = 1;
+	private final int SEARCH_PLACE = 2;
+	private final int MEET_PERSON = 3;
+	private final int SETTINGS = 4;
+	private void toolbarFocus(int order) {
+		Drawable btnDrawable = resources.getDrawable(R.drawable.home_btn_bg_d);
+		Drawable iconDrawable = null;
+		switch (order) {
+		case MAP_HOME:
+			this.findViewById(R.id.map_home).setBackgroundDrawable(btnDrawable);  
+			iconDrawable = resources.getDrawable(R.drawable.tabbar_1_highlight);
+			iconDrawable.setBounds(0, 0, iconDrawable.getMinimumWidth(), iconDrawable.getMinimumHeight());
+			((Button) this.findViewById(R.id.map_home)).setCompoundDrawables(null, iconDrawable, null, null);
+			break;
+		case SEARCH_PLACE:
+			this.findViewById(R.id.search_place).setBackgroundDrawable(btnDrawable);  
+			iconDrawable = resources.getDrawable(R.drawable.tabbar_2_highlight);
+			iconDrawable.setBounds(0, 0, iconDrawable.getMinimumWidth(), iconDrawable.getMinimumHeight());
+			((Button) this.findViewById(R.id.search_place)).setCompoundDrawables(null, iconDrawable, null, null);
+			break;
+		case MEET_PERSON:
+			this.findViewById(R.id.meet_person).setBackgroundDrawable(btnDrawable);  
+			iconDrawable = resources.getDrawable(R.drawable.tabbar_3_highlight);
+			iconDrawable.setBounds(0, 0, iconDrawable.getMinimumWidth(), iconDrawable.getMinimumHeight());
+			((Button) this.findViewById(R.id.meet_person)).setCompoundDrawables(null, iconDrawable, null, null);
+			break;
+		case SETTINGS:
+			this.findViewById(R.id.settings).setBackgroundDrawable(btnDrawable);  
+			iconDrawable = resources.getDrawable(R.drawable.tabbar_4_highlight);
+			iconDrawable.setBounds(0, 0, iconDrawable.getMinimumWidth(), iconDrawable.getMinimumHeight());
+			((Button) this.findViewById(R.id.settings)).setCompoundDrawables(null, iconDrawable, null, null);
+			break;
 		}
 	}
 	
@@ -139,12 +243,14 @@ public class Navigating extends BaseActivity implements SensorActivity {
         }
 	}
 	
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	@Override
 	public void SensorChanged(int id) {
 		// TODO Auto-generated method stub
 		switch (id) {
 		case ORIENTATION_SENSOR_ID:
 			if (this.mode3D && this.map3DComplete) {
+				//=========================== Map View Angle Change ============================
 				// Y direction
 				float uper = -90 - oriSensor.sensorValues[1];
 					
@@ -165,6 +271,25 @@ public class Navigating extends BaseActivity implements SensorActivity {
 					
 				mapSurface.setCamera(camera);
 				Environment.getInstance().direction = oriSensor.sensorValues[0] + orientationBias;
+				
+				//=========================== Compass Direction Change ==========================
+				Matrix mt = new Matrix();
+		        mt.setRotate(-Environment.getInstance().direction);
+		        //mt.setTranslate(dx, dy);
+		        compassRotate = Bitmap.createBitmap(compassLogo,0,0,compassWidth,compassWidth,mt,true);
+		        compass.setImageBitmap(compassRotate);
+		        //compassRotate.recycle();
+		        
+		        double direction = Math.abs(Environment.getInstance().direction);
+		        while (direction > 360) direction -= 360;
+		        while (direction > 90) direction -= 90;
+		        double angle = direction < 45 ? 90 - direction : direction;
+		        
+		        double cosin = Math.abs(Math.cos(angle / 180.0 * Math.PI));
+		        double minus = cosin * 30 * Math.sqrt(2) / 2.0;
+		        compass.setX((float)(15 - minus));
+		        compass.setY((float)(15 - minus));
+		        
 			}
 			break;
 		case ACCELEROMETER_SENSOR_ID:

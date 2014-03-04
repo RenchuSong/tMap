@@ -40,7 +40,7 @@ public class BaseSensor implements SensorEventListener {
 	
 	public void sensorResume() {
 		if (this.sensorExist) {
-			sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_GAME);
+			sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL);
 		}
 	}
 	

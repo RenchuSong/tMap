@@ -7,7 +7,7 @@
  */
 
 class BusinessItem extends RModel{
-	public $id, $buildingId, $floor, $x, $y, $title, $content, $imageURL, $extra;
+	public $id, $buildingId, $floor, $x, $y, $title, $type, $content, $imageURL, $extra;
 
 	public static $table = "business_item";
 	public static $primary_key = "id";
@@ -18,6 +18,7 @@ class BusinessItem extends RModel{
 		"x" => "wifi_x",
 		"y" => "wifi_y",
 		"title" => "title",
+		"type" => "item_type",
 		"content" => "content",
 		"imageURL" => "image_url",
 		"extra" => "extra",

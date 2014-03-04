@@ -30,7 +30,7 @@
         
         <activity
             android:name="com.tmap_android_client.activities.Welcome"
-            android:label="@string/welcome">
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -42,6 +42,13 @@
             android:label="@string/welcome" >
         </activity>
         
+        <activity
+            android:name="com.tmap_android_client.activities.SearchGate"
+            android:label="@string/welcome" >
+            
+        </activity>
+        
+        <!-- Tool Activities -->
         <activity
             android:name="com.example.tmap_androidclient.ModelCreator"
             android:label="@string/app_name" >

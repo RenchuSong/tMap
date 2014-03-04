@@ -57,7 +57,7 @@ public class Welcome extends BaseActivity {
         
         ImageView imageView = (ImageView) findViewById(R.id.welcome_page);  
         TransitionDrawable transitionDrawable = (TransitionDrawable) imageView.getDrawable();  
-        transitionDrawable.startTransition(500);  
+        transitionDrawable.startTransition(2000);  
         
         // Config
         // Get server URL from config
@@ -89,6 +89,12 @@ public class Welcome extends BaseActivity {
 			    	Log.v("dataing2", "" + scanCounter);
 			    	wm.startScan();
 			    } else {
+			    	try {
+						Thread.sleep(2000);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 			    	json = new JsonThread();
 			    	new Thread(json).start();
 			    }
