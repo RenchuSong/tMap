@@ -96,17 +96,17 @@ class BuildingController extends RController {
 	}
 
 
-	public function actionShortestPath() {
-		$buildingId = 1;
-		$person1_floor = 2;
-		$person1_x = 4;
-		$person1_y = -4;
-		$person1_cell = -1;
-
-		$person2_floor = 1;
-		$person2_x = 0;
-		$person2_y = 2;
-		$person2_cell = -1;
+	public function actionShortestPath($building1Id, $person1_floor, $person1_x, $person1_y, $person2_floor, $person2_x, $person2_y) {
+//		$buildingId = 1;
+//		$person1_floor = 2;
+//		$person1_x = 4;
+//		$person1_y = -4;
+//		$person1_cell = -1;
+//
+//		$person2_floor = 1;
+//		$person2_x = 0;
+//		$person2_y = 2;
+//		$person2_cell = -1;
 
 		//$cellList = Cell::getCellList($buildingId);
 		$cellList = Cell::find("buildingId", $buildingId)->all();
