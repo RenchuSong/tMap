@@ -115,6 +115,7 @@ public class Welcome extends BaseActivity {
             	//location.setText(Welcome.this.ws.x + " " + Welcome.this.ws.y);
             	if (ws.valid()) {
             		Welcome.this.gotoNavigating();
+            		finish();
             	} else {
             		locating();
             	}

@@ -130,10 +130,17 @@ class WifiController extends RController {
 			}
 			*/
 
-			echo json_encode(array("buildingId" => $result->buildingId,
-				"floor" => $result->floor,
-				"x" => $result->x, "y" => $result->y)
+//			echo json_encode(array("buildingId" => $result->buildingId,
+//				"floor" => $result->floor,
+//				"x" => $result->x, "y" => $result->y)
+//			);
+
+			echo json_encode(array("buildingId" => 1,
+					"floor" => 0,
+					"x" => 3, "y" => 2
+				)
 			);
+
 		} else {
 			throw new RException("no data received");
 		}

@@ -85,7 +85,8 @@ public class Director implements Geometry{
         gl.glEnable(GL10.GL_TEXTURE_2D);   
         gl.glEnableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
         gl.glTexCoordPointer(2, GL10.GL_FLOAT, 0, mTextureBuffer);
-        gl.glBindTexture(GL10.GL_TEXTURE_2D, MySurfaceView.getMaterialId(0));
+        //gl.glBindTexture(GL10.GL_TEXTURE_2D, MySurfaceView.getMaterialId(0));
+        gl.glBindTexture(GL10.GL_TEXTURE_2D, Map3DSurfaceView.getMaterialId(0));
 		
         gl.glDrawArrays
         (

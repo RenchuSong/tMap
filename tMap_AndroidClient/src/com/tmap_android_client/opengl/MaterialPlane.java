@@ -70,7 +70,8 @@ public class MaterialPlane implements Geometry{
         gl.glEnable(GL10.GL_TEXTURE_2D);   
         gl.glEnableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
         gl.glTexCoordPointer(2, GL10.GL_FLOAT, 0, mTextureBuffer);
-        gl.glBindTexture(GL10.GL_TEXTURE_2D, MySurfaceView.getMaterialId(texId));
+        //gl.glBindTexture(GL10.GL_TEXTURE_2D, MySurfaceView.getMaterialId(texId));
+        gl.glBindTexture(GL10.GL_TEXTURE_2D, Map3DSurfaceView.getMaterialId(texId));
 		
         gl.glDrawArrays
         (

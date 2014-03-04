@@ -24,7 +24,9 @@ public class Map3DSurfaceView extends GLSurfaceView{
 						m6, m7, m8, m9, m10,
 						m11, m12, m13, m14, m15;
 	
-	private final float TOUCH_SCALE_FACTOR = 180.0f/320;
+	private final float TOUCH_SCALE_FACTOR = 180.0f/500;
+	private final float ONE_STEP_LENGTH = 0.4f;		// one step 0.4m
+	
     private SceneRenderer mRenderer;
     
     public ArrayList<Geometry> geoList = null;	// geometry list
@@ -48,6 +50,10 @@ public class Map3DSurfaceView extends GLSurfaceView{
 		this.hasGuidance = true;
 	}
 	
+	public void endGuidance() {
+		this.hasGuidance = false;
+	}
+	
 	public void setCamera(float[] args) {	// set camera settings
 		this.gluX = args[0];
 		this.gluY = args[1];
@@ -62,17 +68,37 @@ public class Map3DSurfaceView extends GLSurfaceView{
 		this.upZ = args[8];
 	}
 	
+	// go one step further
+	public void stepFurther() {
+		// direction
+		float direction = Environment.getInstance().direction;
+		Environment.getInstance().x += (float)(Math.sin(direction / 180 * Math.PI)) * ONE_STEP_LENGTH;
+		Environment.getInstance().y += (float)(Math.cos(direction / 180 * Math.PI)) * ONE_STEP_LENGTH;
+//		setCamera(new float[] {
+//			this.gluX + (float)(Math.sin(direction / 180 * Math.PI)) * ONE_STEP_LENGTH,
+//			this.gluY + (float)(Math.cos(direction / 180 * Math.PI)) * ONE_STEP_LENGTH,
+//			this.gluZ,
+//			
+//			this.targetX + (float)(Math.sin(direction / 180 * Math.PI)) * ONE_STEP_LENGTH, 
+//			this.targetY + (float)(Math.cos(direction / 180 * Math.PI)) * ONE_STEP_LENGTH, 
+//			this.targetZ,
+//			
+//			0, 0, 3 
+//		});
+	}
+	
     @Override 
     public boolean onTouchEvent(MotionEvent e) {
-        float x = e.getX();
-        switch (e.getAction()) {
-        case MotionEvent.ACTION_MOVE:
-            float dx = x - mPreviousX;
-            Environment.getInstance().orientationBias += dx * TOUCH_SCALE_FACTOR / 100;
-            //setCamera(new float[]{(float) (4 - Math.sin(angle) * 13), (float)(6 - Math.cos(angle) * 13), 9f, 3f, 4f, 0f, 0f, 0f, 3f});
-            //requestRender();
-        }   
-        mPreviousX = x;
+    	if (Environment.getInstance().orientationAdjusting) {
+    		float x = e.getX();
+	        switch (e.getAction()) {
+	        case MotionEvent.ACTION_MOVE:
+	            float dx = x - mPreviousX;
+	            Environment.getInstance().orientationBias -= dx * TOUCH_SCALE_FACTOR;
+	        }
+	        mPreviousX = x;
+    	}
+        
         return true;
     }
 
@@ -110,7 +136,7 @@ public class Map3DSurfaceView extends GLSurfaceView{
             gl.glMatrixMode(GL10.GL_PROJECTION);
             gl.glLoadIdentity();
             float ratio = (float) height/width ;
-            gl.glFrustumf( -1, 1,-ratio, ratio, 1, 15);
+            gl.glFrustumf( -1, 1,-ratio, ratio, 0.6f, 15);
         }
 
         public void onSurfaceCreated(GL10 gl, EGLConfig config) {

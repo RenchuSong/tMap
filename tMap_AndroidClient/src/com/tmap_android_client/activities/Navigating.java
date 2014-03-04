@@ -20,6 +20,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -28,18 +31,29 @@ import android.widget.Toast;
 public class Navigating extends BaseActivity implements SensorActivity {
 	
 	private static final int ORIENTATION_SENSOR_ID = 0;
+	private static final int ACCELEROMETER_SENSOR_ID = 1;
+	
 	
 	// default as 3d mode
 	private boolean mode3D = true;
 	// 3d map loading complete
 	private boolean map3DComplete = false;
+	// 3d map direction adjusting
+	private boolean adjusting = false;
+	
+	// step counter related
+	private final float lowThreshold = 90, highThreshold = 105, delta = 50;
+	private float stepMax = 50, stepMin = 150;
+	private int stepState = 0;
+	
 	// 3d accelerate meter sensor
-	private BaseSensor accSensor = null;
+	private BaseSensor oriSensor = null, accSensor = null;
 	
 	// UI components
 	private RelativeLayout panel;	// panel layer
 	private LinearLayout mapLayer;	// map layer
 	private Map3DSurfaceView mapSurface = null;	// 3d map model layer
+	private Button leftButtonBtn;
 	
 	// HTTP results
 	private String modelPack;
@@ -52,6 +66,20 @@ public class Navigating extends BaseActivity implements SensorActivity {
         // Get UI components
         this.panel = (RelativeLayout) this.findViewById(R.id.panel_container);
         this.mapLayer = (LinearLayout) this.findViewById(R.id.map_container);
+        this.leftButtonBtn = (Button) this.findViewById(R.id.left_button_panel);
+        
+        this.leftButtonBtn.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				if (mapSurface != null) {
+					Environment.getInstance().orientationAdjusting = !Environment.getInstance().orientationAdjusting;
+					/** TODO change view image */
+				}
+			}
+        	
+        });
         
         // get bundle data
         getBundleData();
@@ -59,12 +87,16 @@ public class Navigating extends BaseActivity implements SensorActivity {
         // load map
         loadMap();
         
-        // bind accelerate meter sensor
-        accSensor = new BaseSensor(this, ORIENTATION_SENSOR_ID);
-        accSensor.bindSensorType(Sensor.TYPE_ORIENTATION);
+        // bind orientation meter sensor
+        oriSensor = new BaseSensor(this, ORIENTATION_SENSOR_ID);
+        oriSensor.bindSensorType(Sensor.TYPE_ORIENTATION);
+        oriSensor.sensorRelease();
+        
+        // bind accelerometer sensor
+        accSensor = new BaseSensor(this, ACCELEROMETER_SENSOR_ID);
+        accSensor.bindSensorType(Sensor.TYPE_ACCELEROMETER);
         accSensor.sensorRelease();
         
-		
 	}
 
 	// get bundle data
@@ -85,7 +117,7 @@ public class Navigating extends BaseActivity implements SensorActivity {
             JsonThread loadMap = new JsonThread("building", "getModel", new String[]{Environment.getInstance(this).buildingId + "", Environment.getInstance(this).floor + ""}, "");
             new Thread(loadMap).start();
 		} else {
-			// load 2d model
+			// TODO load 2d model
 		}
 	}
 	
@@ -96,9 +128,13 @@ public class Navigating extends BaseActivity implements SensorActivity {
 		if (objs != null) {
         	ArrayList<Geometry> geoList = (new ObjectDescription()).createGeometryList(objs);
         	mapSurface = new Map3DSurfaceView(this, geoList);
+        	mapSurface.requestFocus();
+			mapSurface.setFocusableInTouchMode(true);
         	mapLayer.addView(mapSurface);
         	map3DComplete = true;
         	// start orientation sensing
+        	oriSensor.sensorResume();
+        	// start accelermeter sensing
         	accSensor.sensorResume();
         }
 	}
@@ -108,27 +144,60 @@ public class Navigating extends BaseActivity implements SensorActivity {
 		// TODO Auto-generated method stub
 		switch (id) {
 		case ORIENTATION_SENSOR_ID:
-			if (id == ORIENTATION_SENSOR_ID) {
-				if (this.mode3D && this.map3DComplete) {
-					// Y direction
-					double uper = -90 - accSensor.sensorValues[1];
+			if (this.mode3D && this.map3DComplete) {
+				// Y direction
+				float uper = -90 - oriSensor.sensorValues[1];
 					
-					// bias
-					float orientationBias = Environment.getInstance(this).orientationBias;
-		        	// camera matrix
-					float[] camera = new float[]{
-							Environment.getInstance(this).x, 
-							Environment.getInstance(this).y, 
-							1, 
-							(float)(Math.sin(accSensor.sensorValues[0] / 180 * Math.PI)*Math.cos(uper / 180 * Math.PI)),
-							(float)(Math.cos(accSensor.sensorValues[0] / 180 * Math.PI)*Math.cos(uper / 180 * Math.PI)), 
-							1 + (float)Math.sin(uper / 180 * Math.PI), 
-							0, 
-							0, 
-							3
-					};
-		    
-					mapSurface.setCamera(camera);
+				// bias
+				float orientationBias = Environment.getInstance(this).orientationBias;
+		       	// camera matrix
+				float[] camera = new float[]{
+						Environment.getInstance(this).x, 
+						Environment.getInstance(this).y, 
+						1.7f, 
+						Environment.getInstance(this).x + (float)(Math.sin((oriSensor.sensorValues[0] + orientationBias) / 180 * Math.PI)*Math.cos(uper / 180 * Math.PI)),
+						Environment.getInstance(this).y + (float)(Math.cos((oriSensor.sensorValues[0] + orientationBias) / 180 * Math.PI)*Math.cos(uper / 180 * Math.PI)), 
+						1.7f + (float)Math.sin(uper / 180 * Math.PI), 
+						0, 
+						0, 
+						3
+				};
+					
+				mapSurface.setCamera(camera);
+				Environment.getInstance().direction = oriSensor.sensorValues[0] + orientationBias;
+			}
+			break;
+		case ACCELEROMETER_SENSOR_ID:
+			if (this.mode3D && this.map3DComplete) {
+				float x = 	accSensor.sensorValues[0] * accSensor.sensorValues[0] +
+							accSensor.sensorValues[1] * accSensor.sensorValues[1] +
+							accSensor.sensorValues[2] * accSensor.sensorValues[2];
+				if (stepState == 0) {
+					if (x > this.highThreshold) {
+						stepState = 1;
+						if (x > stepMax) {
+							stepMax = x;
+						}
+					}
+				} else if (stepState == 1) {
+					if (x < this.lowThreshold) {
+						stepState = 2;
+					} else if (x > stepMax) {
+						stepMax = x;
+					}
+				} else if (stepState == 2) {
+					if (x > this.highThreshold) {
+						if (stepMax - stepMin > delta) {			            	
+							if (mapSurface != null) {
+								mapSurface.stepFurther();
+							}
+						}
+						stepMax = 50;
+						stepMin = 150;
+						stepState = 1;
+					} else if (x < stepMin) {
+						stepMin = x;
+					}
 				}
 			}
 			break;
@@ -210,4 +279,34 @@ public class Navigating extends BaseActivity implements SensorActivity {
         }
     }
 
+	@Override
+    protected void onResume() {
+        super.onResume();
+        if (mapSurface != null) {
+        	mapSurface.onResume();
+        }
+        
+        if (oriSensor != null) {
+        	oriSensor.sensorResume();
+        }
+        if (accSensor != null) {
+        	accSensor.sensorResume();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (mapSurface != null) {
+        	mapSurface.onPause();
+        }
+        
+        if (oriSensor != null) {
+        	oriSensor.sensorRelease();
+        }
+        if (accSensor != null) {
+        	accSensor.sensorRelease();
+        }
+        
+    }    
 }

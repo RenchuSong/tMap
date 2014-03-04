@@ -12,10 +12,11 @@ public class Environment {
 	
 	// current locating result
 	public int buildingId, floor;
-	public float x, y;
+	public float x, y, direction;
 		
 	// orientation rotate bias
 	public float orientationBias = 0;
+	public boolean orientationAdjusting = false;
 	
 	private Environment(Activity activity) {
 		this.serverURL = activity.getString(R.string.server_root_url);
