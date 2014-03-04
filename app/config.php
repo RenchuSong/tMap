@@ -22,7 +22,7 @@ return array(
 	'db' => array(
 		'host' => 'localhost',
 		'user' => 'root',
-		'password' => '8dxkc8x',
+		'password' => '',
 		'db_name' => 'tMap',
 		'table_prefix' => '',
 		'charset' => 'utf8',
