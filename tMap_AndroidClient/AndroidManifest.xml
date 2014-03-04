@@ -48,6 +48,13 @@
             
         </activity>
         
+        <activity
+            android:name="com.tmap_android_client.activities.SearchResult"
+            android:label="@string/welcome" >
+            
+        </activity>
+        
+        
         <!-- Tool Activities -->
         <activity
             android:name="com.example.tmap_androidclient.ModelCreator"

@@ -25,7 +25,7 @@ public class Map3DSurfaceView extends GLSurfaceView{
 						m11, m12, m13, m14, m15;
 	
 	private final float TOUCH_SCALE_FACTOR = 180.0f/500;
-	private final float ONE_STEP_LENGTH = 0.45f;		// one step 0.45m
+	private final float ONE_STEP_LENGTH = 0.55f;		// one step 0.55m
 	
     private SceneRenderer mRenderer;
     

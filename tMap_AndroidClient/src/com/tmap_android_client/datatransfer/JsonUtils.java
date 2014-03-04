@@ -20,6 +20,11 @@ public class JsonUtils {
 		return list;
 	}*/
 	
+	public static String packStringToJson(String obj) {
+		Gson gson = new Gson();
+		return gson.toJson(obj);
+	}
+	
 	public static String packObjToJson(Object obj) {
 		Gson gson = new Gson();
 		return gson.toJson(obj);

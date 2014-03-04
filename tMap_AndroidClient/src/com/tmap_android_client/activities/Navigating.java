@@ -134,6 +134,10 @@ public class Navigating extends BaseActivity implements SensorActivity {
         bindToolbarListener();
 	}
 
+	private final int SEARCH_PLACE_CODE = 0x0001;
+	private final int MEET_PERSON_CODE = 0x0002;
+	private final int SETTINGS_CODE = 0x0003;
+	
 	// bind four toobars their listeners
 	private void bindToolbarListener() {
 		this.findViewById(R.id.map_home).setOnClickListener(
@@ -156,7 +160,7 @@ public class Navigating extends BaseActivity implements SensorActivity {
 				public void onClick(View arg0) {
 					// TODO Auto-generated method stub
 					Intent intent = new Intent(Navigating.this, SearchGate.class);
-					startActivity(intent);
+					startActivityForResult(intent, SEARCH_PLACE_CODE);
 				}
 			}
 		);
@@ -214,6 +218,20 @@ public class Navigating extends BaseActivity implements SensorActivity {
 			break;
 		}
 	}
+	
+	// callback function from other activities
+	@Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // TODO Auto-generated method stub
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == SEARCH_PLACE_CODE){
+            if(resultCode==RESULT_CANCELED) {
+            	// DO NOTHING
+            } else if (resultCode==RESULT_OK) {
+                 
+            }
+        }
+    }
 	
 	// load map
 	private void loadMap() {

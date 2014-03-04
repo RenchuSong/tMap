@@ -96,7 +96,7 @@ class BuildingController extends RController {
 	}
 
 
-	public function actionShortestPath($building1Id, $person1_floor, $person1_x, $person1_y, $person2_floor, $person2_x, $person2_y) {
+	public function actionShortestPath($buildingId, $person1_floor, $person1_x, $person1_y, $person2_floor, $person2_x, $person2_y) {
 //		$buildingId = 1;
 //		$person1_floor = 2;
 //		$person1_x = 4;

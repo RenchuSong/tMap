@@ -13,10 +13,10 @@ class BusinessItem extends RModel{
 	public static $primary_key = "id";
 	public static $mapping = array(
 		"id" => "id",
-		"buildingId" => "wifi_building_id",
-		"floor" => "wifi_floor",
-		"x" => "wifi_x",
-		"y" => "wifi_y",
+		"buildingId" => "building_id",
+		"floor" => "floor",
+		"x" => "x",
+		"y" => "y",
 		"title" => "title",
 		"type" => "item_type",
 		"content" => "content",
@@ -24,5 +24,14 @@ class BusinessItem extends RModel{
 		"extra" => "extra",
 	);
 
-
+	public function createBusinessItem($buildingId, $floor, $x, $y, $title, $type, $content, $imageURL) {
+		$this->buildingId = $buildingId;
+		$this->floor = $floor;
+		$this->x = $x;
+		$this->y = $y;
+		$this->title = $title;
+		$this->type = $type;
+		$this->content = $content;
+		$this->imageURL = $imageURL;
+	}
 } 
