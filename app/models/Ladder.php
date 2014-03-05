@@ -12,13 +12,13 @@ class Ladder extends RModel {
 
 	public static $table = "ladder";
 	public static $primary_key = "id";
-	public static $mapping = [
+	public static $mapping = array(
 		"id" => "id",
 		"shapePack" => "ladder_shape",
 		"lowCellId" => "ladder_low_cell_id",
 		"highCellId" => "ladder_high_cell_id",
 		"buildingId" => "ladder_building_id",
-	];
+	);
 
 	/**
 	 * Destract wifi name list into vector

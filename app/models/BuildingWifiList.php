@@ -42,7 +42,7 @@ class BuildingWifiList extends RModel {
 	public function buildingUpdateWifi() {
 		$samples = WiFiSample::find("buildingId", $this->buildingId)->all();
 
-		$wifiList = [];
+		$wifiList = array();
 
 		foreach ($samples as $sample) {
 			$sample->unPackBSSIVector();
