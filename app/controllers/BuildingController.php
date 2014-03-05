@@ -121,8 +121,29 @@ class BuildingController extends RController {
 			$keyCellList[$cell->id] = $cell;
 		}
 
-		if (!isset($person1_cell) || !isset($person2_cell)) {
-			throw new RException("directing failed");
+		if (!isset($person1_cell)) {
+			$min = 1e100;
+			foreach ($cellList as $cell) {
+				if ($cell->distance($person1_floor, $person1_x, $person1_y) < $min) {
+					$min = $cell->distance($person1_floor, $person1_x, $person1_y);
+					$person1_cell = $cell->id;
+				}
+			}
+		}
+
+		if (!isset($person2_cell)) {
+			$min = 1e100;
+			foreach ($cellList as $cell) {
+				if ($cell->distance($person2_floor, $person2_x, $person2_y) < $min) {
+					$min = $cell->distance($person2_floor, $person2_x, $person2_y);
+					$person2_cell = $cell->id;
+				}
+			}
+		}
+
+		if ($person1_cell == $person2_cell) {
+			echo json_encode(array(new _3DPoint($person1_x, $person1_y, 0), new _3DPoint($person2_x, $person2_y, 0)));
+			exit;
 		}
 
 		//add ladders information into the keyCellList

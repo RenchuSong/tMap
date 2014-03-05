@@ -54,6 +54,11 @@
             
         </activity>
         
+        <activity
+            android:name="com.tmap_android_client.activities.Settings"
+            android:label="@string/welcome" >
+            
+        </activity>
         
         <!-- Tool Activities -->
         <activity

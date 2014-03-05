@@ -86,5 +86,11 @@ class Cell extends RModel {
 		return $cellList;
 	}
 
+	public function distance($floor, $x, $y) {
+		if ($floor !== $this->floorId) {
+			return 1e100;
+		}
 
+		return BaseStaticFun::getDistance(($this->minX + $this->maxX) / 2, ($this->minY + $this->maxY) / 2, $x, $y);
+	}
 } 

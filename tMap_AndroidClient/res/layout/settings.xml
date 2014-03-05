@@ -7,160 +7,118 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-
-        <LinearLayout
-	        android:focusable="true" android:focusableInTouchMode="true"
-	        android:layout_width="0px" android:layout_height="0px">
-	        <requestFocus />
-	    </LinearLayout>
-        <EditText
-            android:id="@+id/searchText"
-            android:layout_width="0dip"
-            android:layout_height="48dp"
-            android:hint="@string/hint_search"
-            android:layout_weight="1"
-            android:background="@drawable/go_search_title"
-            android:paddingLeft="10dp"
-            android:ems="10" >
-
-        </EditText>
-
-        <Button
-            android:id="@+id/go_search"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:background="@drawable/go_search_btn_bg" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_marginLeft="40dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="35dp"
         android:layout_marginRight="40dp"
-        android:background="@drawable/type_list_bg"
          >
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="67dp" >
-
-            <Button
-                android:id="@+id/type_1"
+            android:layout_height="wrap_content"
+            android:background="@drawable/setting_item"
+            >
+            <ImageView
+                android:id="@+id/imageView1"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:layout_weight="1"
-                android:text="@string/type_1"
-                android:drawableTop="@drawable/type_1"
-                android:background="@drawable/type_list_btn_bg"
-                style="@style/main_tab_bottom" />
-
-            <Button
-                android:id="@+id/type_2"
+                android:src="@drawable/author1" />
+            <TextView
+                android:id="@+id/textView1"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_margin="5dp"
-                android:layout_weight="1"
-                android:text="@string/type_2"
-                android:drawableTop="@drawable/type_2"
-                android:background="@drawable/type_list_btn_bg"
-                style="@style/main_tab_bottom" />
-
-            <Button
-                android:id="@+id/type_3"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_margin="5dp"
-                android:layout_weight="1"
-                android:text="@string/type_3"
-                android:drawableTop="@drawable/type_3"
-                android:background="@drawable/type_list_btn_bg"
-                style="@style/main_tab_bottom"/>
-
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="宋壬初\n工程师\nFrom 复旦计算机"
+                android:textColor="#666666"
+                android:textSize="15sp" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="67dp" >
-
-            <Button
-                android:id="@+id/type_4"
+            android:layout_height="wrap_content"
+            android:background="@drawable/setting_item"
+            >
+            <ImageView
+                android:id="@+id/imageView2"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:layout_weight="1"
-                android:text="@string/type_4"
-                android:drawableTop="@drawable/type_4"
-                android:background="@drawable/type_list_btn_bg"
-                style="@style/main_tab_bottom" />
-
-            <Button
-                android:id="@+id/type_5"
+                android:src="@drawable/author2" />
+            <TextView
+                android:id="@+id/textView2"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_margin="5dp"
-                android:layout_weight="1"
-                android:text="@string/type_5"
-                android:drawableTop="@drawable/type_5"
-                android:background="@drawable/type_list_btn_bg"
-                style="@style/main_tab_bottom" />
-
-            <Button
-                android:id="@+id/type_6"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="白彦博\n工程师\nFrom 复旦计算机"
+                android:textColor="#666666"
+                android:textSize="15sp" />
+        </LinearLayout>
+     
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/setting_item"
+            >
+            <ImageView
+                android:id="@+id/imageView3"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:layout_weight="1"
-                android:text="@string/type_6"
-                android:drawableTop="@drawable/type_6"
-                android:background="@drawable/type_list_btn_bg"
-                style="@style/main_tab_bottom" />
-
+                android:src="@drawable/author3" />
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="李隋凯\n工程师\nFrom 复旦计算机"
+                android:textColor="#666666"
+                android:textSize="15sp" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="67dp" >
-
-            <Button
-                android:id="@+id/type_7"
+            android:layout_height="wrap_content"
+            android:background="@drawable/setting_item"
+            >
+            <ImageView
+                android:id="@+id/imageView4"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:layout_weight="1"
-                android:text="@string/type_7"
-                android:drawableTop="@drawable/type_7"
-                android:background="@drawable/type_list_btn_bg"
-                style="@style/main_tab_bottom" />
-
-            <Button
-                android:id="@+id/type_8"
+                android:src="@drawable/author4" />
+            <TextView
+                android:id="@+id/textView4"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_margin="5dp"
-                android:layout_weight="1"
-                android:text="@string/type_8"
-                android:drawableTop="@drawable/type_8"
-                android:background="@drawable/type_list_btn_bg"
-                style="@style/main_tab_bottom" />
-
-            <Button
-                android:id="@+id/type_9"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_margin="5dp"
-                android:layout_weight="1"
-                android:text="@string/type_9"
-                android:drawableTop="@drawable/type_9"
-                android:background="@drawable/type_list_btn_bg"
-                style="@style/main_tab_bottom" />
-
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="王伟民\n美工/交互设计师\nFrom 北邮工业设计"
+                android:textColor="#666666"
+                android:textSize="15sp" />
         </LinearLayout>
-
+        
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/setting_item"
+            >
+            <ImageView
+                android:id="@+id/imageView5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:src="@drawable/author5" />
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="杨诗旻\n产品/市场\nFrom 复旦日语"
+                android:textColor="#666666"
+                android:textSize="15sp" />
+        </LinearLayout>
+        
     </LinearLayout>
 
 </LinearLayout>

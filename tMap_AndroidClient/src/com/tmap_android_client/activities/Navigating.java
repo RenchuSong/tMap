@@ -174,7 +174,17 @@ public class Navigating extends BaseActivity implements SensorActivity {
 			}
 		);
 		
-		
+		// search place to go
+		this.findViewById(R.id.settings).setOnClickListener(
+			new OnClickListener() {
+				@Override
+				public void onClick(View arg0) {
+					// TODO Auto-generated method stub
+					Intent intent = new Intent(Navigating.this, Settings.class);
+					startActivity(intent);
+				}
+			}
+		);
 	}
 	
 	// get bundle data
