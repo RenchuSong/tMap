@@ -28,8 +28,21 @@ class BuildingController extends RController {
 		throw new RException("Update all building wifi not implemented");
 	}
 
-	public function actionAddCell($x0, $y0, $x1, $y1, $x2, $y2, $x3, $y3) {
-		var_dump($x3);
+	public function actionAddOneCell($id, $buildingId, $floorId,$x0, $y0, $x1, $y1, $adjacentlist)
+	{
+		$cell = new Cell();
+		$cell->buildingId = $buildingId;
+		$cell->floorId = $floorId;
+		$verticeList = array();
+		array_push($verticeList,new _2DPoint($x0,$y0));
+		array_push($verticeList,new _2DPoint($x1,$y0));
+		array_push($verticeList,new _2DPoint($x1,$y1));
+		array_push($verticeList,new _2DPoint($x0,$y1));
+		$cell->shapePack = json_encode($verticeList);
+		$cell->adjacentPack = json_encode($adjacentlist);
+		var_dump($cell);
+		$cell->save();
+		//var_dump($x3);
 	}
 
 	//store the distance of the ladder
@@ -60,14 +73,14 @@ class BuildingController extends RController {
 
 	public function actionShortestPath() {
 		$buildingId = 1;
-		$person1_floor = 2;
-		$person1_x = 4;
-		$person1_y = -4;
+		$person1_floor = 1;
+		$person1_x = 0;
+		$person1_y = 0;
 		$person1_cell = -1;
 
 		$person2_floor = 1;
 		$person2_x = 0;
-		$person2_y = 2;
+		$person2_y = 8.5;
 		$person2_cell = -1;
 
 		//$cellList = Cell::getCellList($buildingId);
@@ -103,17 +116,20 @@ class BuildingController extends RController {
 		$pointQueue = array(); array_push($pointQueue,$point1);
 		$cellIdQueue = array(); array_push($cellIdQueue,$person1_cell);
 
-		$distance = [];
-		$prePoint = [];
-		$ladderListForPrePoint = [];
-		$distance[$point1->x][$point1->y][$point1->floor] = 0;
-		$prePoint[$point1->x][$point1->y][$point1->floor] = null;
+		$distance = array();
+		$prePoint = array();
+		$ladderListForPrePoint = array();
+		$distance[$point1->x*1000][$point1->y*1000][$point1->floor] = 0;
+		$prePoint[$point1->x*1000][$point1->y*1000][$point1->floor] = null;
 		while (count($cellIdQueue)>0) {
 			$point = array_shift($pointQueue);
 			$i = array_shift($cellIdQueue);
+			/*echo " <br> ------------------------------<br>";
+			echo json_encode($point);
+			echo ": <br>";*/
 			$cell = $keyCellList[$i];
 			$adjacentList = $cell->adjacentCellList;
-			$disNow = $distance[$point->x][$point->y][$point->floor];
+			$disNow = $distance[$point->x*1000][$point->y*1000][$point->floor];
 			foreach ($adjacentList as $j) {
 				//$dis = -1;
 				$point2 = null;
@@ -126,7 +142,7 @@ class BuildingController extends RController {
 					if ($ladder->lowCellId == $i) {
 						$point2 = new Point($ladder->highPoint->x,$ladder->highPoint->y,$keyCellList[$ladder->highCellId]->floorId);
 						$dis += BaseStaticFun::getDistance($ladder->lowPoint->x,$ladder->lowPoint->y,$point->x,$point->y);
-						$ladderListForPrePoint[$point2->x][$point2->y][$point2->floor] = $ladder->verticeList;
+						$ladderListForPrePoint[$point2->x*1000][$point2->y*1000][$point2->floor] = $ladder->verticeList;
 					}
 					else {
 						$point2 = new Point($ladder->lowPoint->x,$ladder->lowPoint->y,$keyCellList[$ladder->lowCellId]->floorId);
@@ -136,16 +152,17 @@ class BuildingController extends RController {
 							$temp[$i]->z = -$temp[$i-1]->z;
 						$temp[0]->z = 0;
 						//var_dump($temp);
-						$ladderListForPrePoint[$point2->x][$point2->y][$point2->floor] = $temp;
+						$ladderListForPrePoint[$point2->x*1000][$point2->y*1000][$point2->floor] = $temp;
 					}
 				}
 				else {
 					$point2 = $this->getTwoCellsMiddlePoint($cell,$keyCellList[$j]);
 					$dis = BaseStaticFun::getDistance($point->x,$point->y,$point2->x,$point2->y) + $disNow;
 				}
-				if (! isset($distance[$point2->x][$point2->y][$point2->floor]) || (isset($distance[$point2->x][$point2->y][$point2->floor]) && $dis<$distance[$point2->x][$point2->y][$point2->floor])) {
-					$distance[$point2->x][$point2->y][$point2->floor] = $dis;
-					$prePoint[$point2->x][$point2->y][$point2->floor] = $point;
+				//echo json_encode($point2); echo "   ;";
+				if (! isset($distance[$point2->x*1000][$point2->y*1000][$point2->floor]) || (isset($distance[$point2->x*1000][$point2->y*1000][$point2->floor]) && $dis<$distance[$point2->x*1000][$point2->y*1000][$point2->floor])) {
+					$distance[$point2->x*1000][$point2->y*1000][$point2->floor] = $dis;
+					$prePoint[$point2->x*1000][$point2->y*1000][$point2->floor] = $point;
 					array_push($pointQueue,$point2);
 					array_push($cellIdQueue,$j);
 				}
@@ -160,8 +177,8 @@ class BuildingController extends RController {
 			$endCell = $keyCellList[$endCellId];
 			$tempPoint = $this->getTwoCellsMiddlePoint($endCell,$keyCellList[$person2_cell]);
 			//var_dump($tempPoint);
-			if (isset($distance[$tempPoint->x][$tempPoint->y][$tempPoint->floor])) {
-				$tempDis = $distance[$tempPoint->x][$tempPoint->y][$tempPoint->floor] + BaseStaticFun::getDistance($tempPoint->x,$tempPoint->y,$person2_x,$person2_y);
+			if (isset($distance[$tempPoint->x*1000][$tempPoint->y*1000][$tempPoint->floor])) {
+				$tempDis = $distance[$tempPoint->x*1000][$tempPoint->y*1000][$tempPoint->floor] + BaseStaticFun::getDistance($tempPoint->x,$tempPoint->y,$person2_x,$person2_y);
 				if ($tempDis<$ansDistance) {
 					$ansDistance = $tempDis;
 					$endPoint = $tempPoint;
@@ -169,23 +186,41 @@ class BuildingController extends RController {
 			}
 		}
 		//var_dump($prePoint[2][2]);
-		$ansList = [];
+		$ansList = array();
 		array_push($ansList,new _3DPoint($person2_x,$person2_y,0));
 		$point = $endPoint;
 		while ($point != null) {
-			if (isset($ladderListForPrePoint[$point->x][$point->y][$point->floor])) {
-				foreach (array_reverse($ladderListForPrePoint[$point->x][$point->y][$point->floor]) as $p) {
+			if (isset($ladderListForPrePoint[$point->x*1000][$point->y*1000][$point->floor])) {
+				foreach (array_reverse($ladderListForPrePoint[$point->x*1000][$point->y*1000][$point->floor]) as $p) {
 					array_unshift($ansList,$p);
 				}
 				array_shift($ansList);
 			}
 			array_unshift($ansList,new _3DPoint($point->x,$point->y,0));
-			$point = $prePoint[$point->x][$point->y][$point->floor];
+			$point = $prePoint[$point->x*1000][$point->y*1000][$point->floor];
 		}
 		echo json_encode($ansList);
 	}
 
 
+	public function actionBuildCells() {
+		$this->actionAddOneCell(1,1,1,	0,		0,	3.5,	4.2,	array(7));
+		$this->actionAddOneCell(2,1,1,	4.5,	0,	8.3,	4.5,	array(7));
+		$this->actionAddOneCell(3,1,1,	0,	4.2,	3.5,	8.5,	array(8));
+		$this->actionAddOneCell(4,1,1,	4.5,4.5,	8.3,	9,		array(8));
+		$this->actionAddOneCell(5,1,1,	0,	8.5,	3.5,	12.55,	array(9));
+		$this->actionAddOneCell(6,1,1,	4.5,	9,	8.3,	12.55,	array(9));
+
+		$this->actionAddOneCell(7,1,1,	3.5,1.6,	4.5,	2.6,	array(1,2,10,12));
+		$this->actionAddOneCell(8,1,1,	3.5,5.8,	4.5,	6.8,	array(3,4,10,11));
+		$this->actionAddOneCell(9,1,1,	3.5,10.1,	4.5,	11.1,	array(5,6,11,13));
+
+		$this->actionAddOneCell(10,1,1,	3.5,2.6,	4.5,	5.8,	array(7,8));
+		$this->actionAddOneCell(11,1,1,	3.5,6.8,	4.5,	10.1,	array(8,9));
+
+		$this->actionAddOneCell(12,1,1,	3.5,0,		4.5,	1.6,	array(7));
+		$this->actionAddOneCell(13,1,1,	3.5,11.1,	4.5,	12.55,	array(9));
+	}
 
 	public function actionTest(){
 		//$cellList = Cell::find()->all();
@@ -203,6 +238,7 @@ class BuildingController extends RController {
 		$aa[1]->y = 1;
 		$aa[2]->x = 0;
 		$aa[2]->y = 0;*/
+		/*
 		array_push($aa,new Point(2,0));
 		array_push($aa,new Point(2,-4));
 		array_push($aa,new Point(4,-4));
@@ -224,7 +260,11 @@ class BuildingController extends RController {
 		echo "<br>";
 		var_dump( $ladderList);
 		echo "<br>";
-		var_dump($cellList);
+		var_dump($cellList);*/
+		$a = array();
+		$a[4][6.8] = 0;
+		var_dump($a);
+
 	}
 
 
