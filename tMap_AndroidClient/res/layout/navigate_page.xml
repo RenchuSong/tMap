@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TabHost xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@android:id/tabhost"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+        <FrameLayout 
+            android:id="@android:id/tabcontent"
+            android:layout_width="fill_parent"  
+    		android:layout_height="0dp"  
+    		android:layout_weight="0.0"
+            >
+        </FrameLayout>
+        
+        <FrameLayout
+            android:id="@+android:id/tabcontent"
+		    android:layout_width="fill_parent"  
+		    android:layout_height="fill_parent"  
+		    android:layout_weight="1.0"
+		    >
+
+            <LinearLayout
+                android:id="@+id/map_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:background="@drawable/map_loading" >
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/panel_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ProgressBar
+                    android:id="@+id/loading_map"
+                    style="?android:attr/progressBarStyleLarge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true" />
+
+                <ImageView
+                    android:id="@+id/compass"
+                    android:contentDescription="@string/compass_description"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                  
+                    android:src="@drawable/compass" />
+					<!--android:layout_marginLeft="@dimen/compass_margin_left"
+                    android:layout_marginTop="@dimen/compass_margin_top" -->
+                    
+                <Button
+                    android:id="@+id/switch2D3D"
+                    android:layout_width="@dimen/right_top_button_width"
+                    android:layout_height="@dimen/right_top_button_height"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginRight="@dimen/switch_margin_right"
+                    android:layout_marginTop="@dimen/switch_margin_top"
+                    android:background="@drawable/map_2d" />
+
+                <Button
+                    android:id="@+id/left_button_panel"
+                    android:layout_width="@dimen/left_button_panel_size"
+                    android:layout_height="@dimen/left_button_panel_size"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="@dimen/panel_margin_left"
+                    android:layout_marginBottom="@dimen/panel_margin_bottom"
+                    android:background="@drawable/panel_open" />
+
+                <Button
+                    android:id="@+id/distance"
+                    android:layout_width="@dimen/distance_width"
+                    android:layout_height="@dimen/distance_height"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/distance_margin_right"
+                    android:layout_marginBottom="@dimen/distance_margin_bottom"
+                    android:background="@drawable/distance"
+                    android:textColor="#666666" />
+
+            </RelativeLayout>
+
+		</FrameLayout>
+		
+        <TabWidget 
+            android:id="@android:id/tabs"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.0"
+            android:visibility="gone"/>
+        <RadioGroup
+            android:id="@+id/main_tab"
+            android:background="@drawable/maintab_toolbar_bg"
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_gravity="bottom">
+            <RadioButton 
+                android:id="@+id/map_home"
+                android:layout_marginTop="0.0dip"
+                android:text="@string/main_home"
+                android:drawableTop="@drawable/tabbar_1"
+                style="@style/main_tab_bottom"/>
+            <RadioButton 
+                android:id="@+id/search_place"
+                android:layout_marginTop="0.0dip"
+                android:text="@string/main_news"
+                android:drawableTop="@drawable/tabbar_2"
+                style="@style/main_tab_bottom"/>
+            <RadioButton 
+                android:id="@+id/meet_person"
+                android:layout_marginTop="0.0dip"
+                android:text="@string/main_my_info"
+                android:drawableTop="@drawable/tabbar_3"
+                style="@style/main_tab_bottom"/>
+            <RadioButton 
+                android:id="@+id/settings"
+                android:layout_marginTop="0.0dip"
+                android:text="@string/menu_search"
+                android:drawableTop="@drawable/tabbar_4"
+                style="@style/main_tab_bottom"/>
+        </RadioGroup>
+        
+    </LinearLayout>
+</TabHost>

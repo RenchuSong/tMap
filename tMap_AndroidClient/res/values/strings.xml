@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">土豪地图</string>
+    <string name="welcome">欢迎进入土豪地图</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="server_root_url">http://175.186.106.125:80/</string>
+    
+    <string name="main_home">地图</string>
+    <string name="main_news">搜索</string>
+    <string name="main_my_info">相遇</string>
+    <string name="menu_search">设置</string>
+    <string name="more">More</string>
+    
+    <string name="quit_hint">再按一次返回键退出</string>
+    <string name="web_link_fail_hint">网络连接异常</string>
+    <string name="search_null">请输入搜索关键字</string>
+    
+    <string name="compass_description">compass</string>
+    <string name="hint_search">搜索</string>
+    
+    <string name="type_1">餐饮</string>
+    <string name="type_2">KTV</string>
+    <string name="type_3">服装</string>
+    <string name="type_4">精品</string>
+    <string name="type_5">亲子</string>
+    <string name="type_6">活动</string>
+    <string name="type_7">优惠</string>
+    <string name="type_8">健身</string>
+    <string name="type_9">丽人</string>
+    
+    <string name="type_1_map">food</string>
+    <string name="type_2_map">ktv</string>
+    <string name="type_3_map">clothes</string>
+    <string name="type_4_map">good</string>
+    <string name="type_5_map">family</string>
+    <string name="type_6_map">event</string>
+    <string name="type_7_map">discount</string>
+    <string name="type_8_map">exercise</string>
+    <string name="type_9_map">beauty</string>
+    
+    <string name="floor_unit">层</string>
+    
+</resources>
