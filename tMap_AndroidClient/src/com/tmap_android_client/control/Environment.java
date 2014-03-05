@@ -13,7 +13,8 @@ public class Environment {
 	// current locating result
 	public int buildingId, floor;
 	public float x, y, direction;
-		
+	public boolean located = false;
+	
 	// orientation rotate bias
 	public float orientationBias = 0;
 	public boolean orientationAdjusting = false;

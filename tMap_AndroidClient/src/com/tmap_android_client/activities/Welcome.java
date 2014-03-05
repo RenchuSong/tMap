@@ -48,103 +48,103 @@ public class Welcome extends BaseActivity {
 	private WifiSample ws;
 	
 	@Override
-    protected void onCreate(Bundle savedInstanceState) {
+	protected void onCreate(Bundle savedInstanceState) {
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, 
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        super.onCreate(savedInstanceState);
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
-        this.setContentView(R.layout.welcome);
-        
-        ImageView imageView = (ImageView) findViewById(R.id.welcome_page);  
-        TransitionDrawable transitionDrawable = (TransitionDrawable) imageView.getDrawable();  
-        transitionDrawable.startTransition(2000);  
-        
-        // Config
-        // Get server URL from config
-        serverURL = Environment.getInstance(this).serverURL;
-        
-        scanCounter = Integer.parseInt(this.getString(R.integer.INIT_SAMPLE_UNIT_TIMES));
-     
-        // Init scan set
-        scanSet = new ArrayList<Map<String, Float>>();
-        
-        // Resigter receiver to guarantee scan results being used after finishing scan
-        IntentFilter i = new IntentFilter();
-        i.addAction(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION);
-        registerReceiver(new BroadcastReceiver() {
-        	@Override
-        	public void onReceive(Context c, Intent i){
-		        WifiManager w = (WifiManager) c.getSystemService(Context.WIFI_SERVICE);
+		super.onCreate(savedInstanceState);
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
+		this.setContentView(R.layout.welcome);
+		
+		ImageView imageView = (ImageView) findViewById(R.id.welcome_page);  
+		TransitionDrawable transitionDrawable = (TransitionDrawable) imageView.getDrawable();  
+		transitionDrawable.startTransition(2000);  
+		
+		// Config
+		// Get server URL from config
+		serverURL = Environment.getInstance(this).serverURL;
+		
+		scanCounter = Integer.parseInt(this.getString(R.integer.INIT_SAMPLE_UNIT_TIMES));
+	 
+		// Init scan set
+		scanSet = new ArrayList<Map<String, Float>>();
+		
+		// Resigter receiver to guarantee scan results being used after finishing scan
+		IntentFilter i = new IntentFilter();
+		i.addAction(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION);
+		registerReceiver(new BroadcastReceiver() {
+			@Override
+			public void onReceive(Context c, Intent i){
+				WifiManager w = (WifiManager) c.getSystemService(Context.WIFI_SERVICE);
 				List<ScanResult> scanResults=w.getScanResults();
-		        
-		        Map<String, Float> scanResultList = new HashMap<String, Float>();
-		        
-			    for (ScanResult scanResult : scanResults) {
-			    	scanResultList.put(scanResult.BSSID, (float)scanResult.level);			   
-			    }
-			    
-			    scanSet.add(scanResultList);
-			    if (scanCounter > 0) {
-			    	scanCounter--;
-			    	Log.v("dataing2", "" + scanCounter);
-			    	wm.startScan();
-			    } else {
-			    	try {
+				
+				Map<String, Float> scanResultList = new HashMap<String, Float>();
+				
+				for (ScanResult scanResult : scanResults) {
+					scanResultList.put(scanResult.BSSID, (float)scanResult.level);			   
+				}
+				
+				scanSet.add(scanResultList);
+				if (scanCounter > 0) {
+					scanCounter--;
+					Log.v("dataing2", "" + scanCounter);
+					wm.startScan();
+				} else {
+					try {
 						Thread.sleep(2000);
 					} catch (InterruptedException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-			    	json = new JsonThread();
-			    	new Thread(json).start();
-			    }
-	        }
-        }, i);
-        
-        locating();
+					json = new JsonThread();
+					new Thread(json).start();
+				}
+			}
+		}, i);
+		
+		locating();
 	}
 	
 	private void locating() {
 		try {
-        	Initiate init = new Initiate();
-            new Thread(init).start();
-        } catch (Exception e) {
-        	Toast.makeText(getApplicationContext(), R.string.web_link_fail_hint, Toast.LENGTH_SHORT).show();
-        }
+			Initiate init = new Initiate();
+			new Thread(init).start();
+		} catch (Exception e) {
+			Toast.makeText(getApplicationContext(), R.string.web_link_fail_hint, Toast.LENGTH_SHORT).show();
+		}
 	}
 	
 	Handler handler = new Handler(){
-        public void handleMessage(android.os.Message msg) {
-            switch(msg.what){
-            case R.integer.MSG_COMPLETE:
-            	Log.v("dataing2", json.data);
-            	//location.setText(Welcome.this.ws.x + " " + Welcome.this.ws.y);
-            	if (ws.valid()) {
-            		Welcome.this.gotoNavigating();
-            		finish();
-            	} else {
-            		locating();
-            	}
-                break;
-            case R.integer.MSG_NET_FAIL:
-            	Toast.makeText(getApplicationContext(), R.string.web_link_fail_hint, Toast.LENGTH_SHORT).show();
-            	break;
-            }
+		public void handleMessage(android.os.Message msg) {
+			switch(msg.what){
+			case R.integer.MSG_COMPLETE:
+				Log.v("dataing2", json.data);
+				//location.setText(Welcome.this.ws.x + " " + Welcome.this.ws.y);
+				if (ws.valid()) {
+					Welcome.this.gotoNavigating();
+					finish();
+				} else {
+					locating();
+				}
+				break;
+			case R.integer.MSG_NET_FAIL:
+				Toast.makeText(getApplicationContext(), R.string.web_link_fail_hint, Toast.LENGTH_SHORT).show();
+				break;
+			}
 
-        };
-    };
-    
-    private void gotoNavigating() {
-    	Intent intent = new Intent(Welcome.this, Navigating.class);
-    	Bundle bundle=new Bundle();
-    	bundle.putString("action", "locating");
-    	bundle.putInt("buildingId", ws.buildingId);
-    	bundle.putInt("floor", ws.floor);
-    	bundle.putFloat("x", ws.x);
-    	bundle.putFloat("y", ws.y);
-    	intent.putExtras(bundle); 
-    	this.startActivity(intent);
-    }
+		};
+	};
+	
+	private void gotoNavigating() {
+		Intent intent = new Intent(Welcome.this, Navigating.class);
+		Bundle bundle=new Bundle();
+		bundle.putString("action", "locating");
+		bundle.putInt("buildingId", ws.buildingId);
+		bundle.putInt("floor", ws.floor);
+		bundle.putFloat("x", ws.x);
+		bundle.putFloat("y", ws.y);
+		intent.putExtras(bundle); 
+		this.startActivity(intent);
+	}
 	
 	class Initiate implements Runnable {
 
@@ -159,21 +159,21 @@ public class Welcome extends BaseActivity {
 	class JsonThread implements Runnable{
 		public String data = null;
 		
-        public void run() {
-        	ws = WifiFactory.combineScanResult(scanSet);
-        	
-            try {
-                data = HttpUtils.getInstance().postData(serverURL + "tMap/wifi/wifiJudgePosition", JsonUtils.packObjToJson(ws));
-                if(data != null){
-                	ws = JsonUtils.parseWifiSample(data);
-                } else {
-                	ws = null;
-                }
-                handler.sendEmptyMessage(R.integer.MSG_COMPLETE);
-            } catch (Exception e) {
-            	handler.sendEmptyMessage(R.integer.MSG_NET_FAIL);                         
-            }
-        }
-        
-    }
+		public void run() {
+			ws = WifiFactory.combineScanResult(scanSet);
+			
+			try {
+				data = HttpUtils.getInstance().postData(serverURL + "tMap/wifi/wifiJudgePosition", JsonUtils.packObjToJson(ws));
+				if(data != null){
+					ws = JsonUtils.parseWifiSample(data);
+				} else {
+					ws = null;
+				}
+				handler.sendEmptyMessage(R.integer.MSG_COMPLETE);
+			} catch (Exception e) {
+				handler.sendEmptyMessage(R.integer.MSG_NET_FAIL);						 
+			}
+		}
+		
+	}
 }

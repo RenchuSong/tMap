@@ -25,7 +25,7 @@ class BusinessController extends RController{
 		$searchText = "";
 		if (Rays::isPost()) {
 			if (isset($_POST['json'])) {
-				$searchText = json_decode($_POST['json']);
+				$searchText = trim($_POST['json']);
 			}
 		}
 		$businessList = BusinessItem::where("[buildingId] = ? ", $buildingId)

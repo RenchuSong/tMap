@@ -20,6 +20,7 @@ public class JsonUtils {
 		return list;
 	}*/
 	
+	/** Packing */
 	public static String packStringToJson(String obj) {
 		Gson gson = new Gson();
 		return gson.toJson(obj);
@@ -40,6 +41,8 @@ public class JsonUtils {
 		return gson.toJson(objs);
 	}
 	
+	
+	/** Unpacking */
 	public static Response parseResponse(String data) {
 		Gson gson = new Gson();
 		return gson.fromJson(data, Response.class);
@@ -60,4 +63,8 @@ public class JsonUtils {
 		return gson.fromJson(data, WifiSample.class);
 	}
 	
+	public static BusinessItem[] parseBusinessList(String data) {
+		Gson gson = new Gson();
+		return gson.fromJson(data, BusinessItem[].class);
+	}
 }

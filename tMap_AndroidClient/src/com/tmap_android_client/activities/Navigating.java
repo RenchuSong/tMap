@@ -74,20 +74,20 @@ public class Navigating extends BaseActivity implements SensorActivity {
 	private String modelPack;
 	
 	@Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        this.setContentView(R.layout.navigate_page);
-        
-        // Get UI components
-        this.panel = (RelativeLayout) this.findViewById(R.id.panel_container);
-        this.mapLayer = (LinearLayout) this.findViewById(R.id.map_container);
-        this.leftButtonBtn = (Button) this.findViewById(R.id.left_button_panel);
-        this.distance = (Button) this.findViewById(R.id.distance);
-        distance.setVisibility(View.INVISIBLE);	// hide distance as default
-        
-        resources = this.getResources();  
-        
-        this.leftButtonBtn.setOnClickListener(new OnClickListener() {
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		this.setContentView(R.layout.navigate_page);
+		
+		// Get UI components
+		this.panel = (RelativeLayout) this.findViewById(R.id.panel_container);
+		this.mapLayer = (LinearLayout) this.findViewById(R.id.map_container);
+		this.leftButtonBtn = (Button) this.findViewById(R.id.left_button_panel);
+		this.distance = (Button) this.findViewById(R.id.distance);
+		distance.setVisibility(View.INVISIBLE);	// hide distance as default
+		
+		resources = this.getResources();  
+		
+		this.leftButtonBtn.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
@@ -104,34 +104,34 @@ public class Navigating extends BaseActivity implements SensorActivity {
 					}
 				}
 			}
-        	
-        });
-        
-        // get bundle data
-        getBundleData();
-        
-        // load map
-        loadMap();
-        
-        // bind orientation meter sensor
-        oriSensor = new BaseSensor(this, ORIENTATION_SENSOR_ID);
-        oriSensor.bindSensorType(Sensor.TYPE_ORIENTATION);
-        oriSensor.sensorRelease();
-        
-        // bind accelerometer sensor
-        accSensor = new BaseSensor(this, ACCELEROMETER_SENSOR_ID);
-        accSensor.bindSensorType(Sensor.TYPE_ACCELEROMETER);
-        accSensor.sensorRelease();
-        
-        // compass
-        compassLogo = BitmapFactory.decodeResource(getResources(), R.drawable.compass);
-        compassWidth = compassLogo.getWidth();
-        Log.v("dataing2", compassWidth+"");
-        compass = (ImageView) this.findViewById(R.id.compass);
-        compass.setImageBitmap(compassLogo);
-        
-        // bind listeners
-        bindToolbarListener();
+			
+		});
+		
+		// get bundle data
+		getBundleData();
+		
+		// load map
+		loadMap();
+		
+		// bind orientation meter sensor
+		oriSensor = new BaseSensor(this, ORIENTATION_SENSOR_ID);
+		oriSensor.bindSensorType(Sensor.TYPE_ORIENTATION);
+		oriSensor.sensorRelease();
+		
+		// bind accelerometer sensor
+		accSensor = new BaseSensor(this, ACCELEROMETER_SENSOR_ID);
+		accSensor.bindSensorType(Sensor.TYPE_ACCELEROMETER);
+		accSensor.sensorRelease();
+		
+		// compass
+		compassLogo = BitmapFactory.decodeResource(getResources(), R.drawable.compass);
+		compassWidth = compassLogo.getWidth();
+		Log.v("dataing2", compassWidth+"");
+		compass = (ImageView) this.findViewById(R.id.compass);
+		compass.setImageBitmap(compassLogo);
+		
+		// bind listeners
+		bindToolbarListener();
 	}
 
 	private final int SEARCH_PLACE_CODE = 0x0001;
@@ -178,6 +178,7 @@ public class Navigating extends BaseActivity implements SensorActivity {
 			Environment.getInstance(this).floor = bundle.getInt("floor");
 			Environment.getInstance(this).x = bundle.getFloat("x");
 			Environment.getInstance(this).y = bundle.getFloat("y");
+			Environment.getInstance(this).located = true;
 			
 			toolbarFocus(MAP_HOME);
 		}
@@ -221,23 +222,23 @@ public class Navigating extends BaseActivity implements SensorActivity {
 	
 	// callback function from other activities
 	@Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // TODO Auto-generated method stub
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == SEARCH_PLACE_CODE){
-            if(resultCode==RESULT_CANCELED) {
-            	// DO NOTHING
-            } else if (resultCode==RESULT_OK) {
-                 
-            }
-        }
-    }
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		// TODO Auto-generated method stub
+		super.onActivityResult(requestCode, resultCode, data);
+		if (requestCode == SEARCH_PLACE_CODE){
+			if(resultCode==RESULT_CANCELED) {
+				// DO NOTHING
+			} else if (resultCode==RESULT_OK) {
+				 
+			}
+		}
+	}
 	
 	// load map
 	private void loadMap() {
 		if (this.mode3D) {	// load 3d model
-            JsonThread loadMap = new JsonThread("building", "getModel", new String[]{Environment.getInstance(this).buildingId + "", Environment.getInstance(this).floor + ""}, "");
-            new Thread(loadMap).start();
+			JsonThread loadMap = new JsonThread("building", "getModel", new String[]{Environment.getInstance(this).buildingId + "", Environment.getInstance(this).floor + ""}, "");
+			new Thread(loadMap).start();
 		} else {
 			// TODO load 2d model
 		}
@@ -248,17 +249,17 @@ public class Navigating extends BaseActivity implements SensorActivity {
 		// objs
 		ObjectDescription[] objs = JsonUtils.parseModelList(this.modelPack);
 		if (objs != null) {
-        	ArrayList<Geometry> geoList = (new ObjectDescription()).createGeometryList(objs);
-        	mapSurface = new Map3DSurfaceView(this, geoList);
-        	mapSurface.requestFocus();
+			ArrayList<Geometry> geoList = (new ObjectDescription()).createGeometryList(objs);
+			mapSurface = new Map3DSurfaceView(this, geoList);
+			mapSurface.requestFocus();
 			mapSurface.setFocusableInTouchMode(true);
-        	mapLayer.addView(mapSurface);
-        	map3DComplete = true;
-        	// start orientation sensing
-        	oriSensor.sensorResume();
-        	// start accelermeter sensing
-        	accSensor.sensorResume();
-        }
+			mapLayer.addView(mapSurface);
+			map3DComplete = true;
+			// start orientation sensing
+			oriSensor.sensorResume();
+			// start accelermeter sensing
+			accSensor.sensorResume();
+		}
 	}
 	
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
@@ -274,7 +275,7 @@ public class Navigating extends BaseActivity implements SensorActivity {
 					
 				// bias
 				float orientationBias = Environment.getInstance(this).orientationBias;
-		       	// camera matrix
+			   	// camera matrix
 				float[] camera = new float[]{
 						Environment.getInstance(this).x, 
 						Environment.getInstance(this).y, 
@@ -292,22 +293,22 @@ public class Navigating extends BaseActivity implements SensorActivity {
 				
 				//=========================== Compass Direction Change ==========================
 				Matrix mt = new Matrix();
-		        mt.setRotate(-Environment.getInstance().direction);
-		        //mt.setTranslate(dx, dy);
-		        compassRotate = Bitmap.createBitmap(compassLogo,0,0,compassWidth,compassWidth,mt,true);
-		        compass.setImageBitmap(compassRotate);
-		        //compassRotate.recycle();
-		        
-		        double direction = Math.abs(Environment.getInstance().direction);
-		        while (direction > 360) direction -= 360;
-		        while (direction > 90) direction -= 90;
-		        double angle = direction < 45 ? 90 - direction : direction;
-		        
-		        double cosin = Math.abs(Math.cos(angle / 180.0 * Math.PI));
-		        double minus = cosin * 30 * Math.sqrt(2) / 2.0;
-		        compass.setX((float)(15 - minus));
-		        compass.setY((float)(15 - minus));
-		        
+				mt.setRotate(-Environment.getInstance().direction);
+				//mt.setTranslate(dx, dy);
+				compassRotate = Bitmap.createBitmap(compassLogo,0,0,compassWidth,compassWidth,mt,true);
+				compass.setImageBitmap(compassRotate);
+				//compassRotate.recycle();
+				
+				double direction = Math.abs(Environment.getInstance().direction);
+				while (direction > 360) direction -= 360;
+				while (direction > 90) direction -= 90;
+				double angle = direction < 45 ? 90 - direction : direction;
+				
+				double cosin = Math.abs(Math.cos(angle / 180.0 * Math.PI));
+				double minus = cosin * 30 * Math.sqrt(2) / 2.0;
+				compass.setX((float)(15 - minus));
+				compass.setY((float)(15 - minus));
+				
 			}
 			break;
 		case ACCELEROMETER_SENSOR_ID:
@@ -330,7 +331,7 @@ public class Navigating extends BaseActivity implements SensorActivity {
 					}
 				} else if (stepState == 2) {
 					if (x > this.highThreshold) {
-						if (stepMax - stepMin > delta) {			            	
+						if (stepMax - stepMin > delta) {							
 							if (mapSurface != null) {
 								mapSurface.stepFurther();
 							}
@@ -348,40 +349,40 @@ public class Navigating extends BaseActivity implements SensorActivity {
 	}
 	
 	Handler handler = new Handler(){
-        public void handleMessage(android.os.Message msg) {
-            switch(msg.what){
-            // process data after receiving from server
-            case R.integer.MSG_3D_MODEL_LOAD_COMPLETE:
-            	// load end, remove progress bar
-            	panel.removeView(Navigating.this.findViewById(R.id.loading_map));
-            	// construct 3d model
-            	initiate3DModel();
-            	break;
-            case R.integer.MSG_COMPLETE:
-            	
-            // network failure
-            case R.integer.MSG_NET_FAIL:
-            	Toast.makeText(getApplicationContext(), R.string.web_link_fail_hint, Toast.LENGTH_SHORT).show();
-            	break;
-            }
-        };
-    };
-    
+		public void handleMessage(android.os.Message msg) {
+			switch(msg.what){
+			// process data after receiving from server
+			case R.integer.MSG_3D_MODEL_LOAD_COMPLETE:
+				// load end, remove progress bar
+				panel.removeView(Navigating.this.findViewById(R.id.loading_map));
+				// construct 3d model
+				initiate3DModel();
+				break;
+			case R.integer.MSG_COMPLETE:
+				
+			// network failure
+			case R.integer.MSG_NET_FAIL:
+				Toast.makeText(getApplicationContext(), R.string.web_link_fail_hint, Toast.LENGTH_SHORT).show();
+				break;
+			}
+		};
+	};
+	
 	
 	// exit program by double click return button
 	private long exitTime = 0;
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-	    if(keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN){   
-	        if((System.currentTimeMillis()-exitTime) > 2000){  
-	            Toast.makeText(getApplicationContext(), R.string.quit_hint, Toast.LENGTH_SHORT).show();                                
-	            exitTime = System.currentTimeMillis();   
-	        } else {
-	            ExitApplication.getInstance().exit();
-	        }
-	        return true;   
-	    }
-	    return super.onKeyDown(keyCode, event);
+		if(keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN){   
+			if((System.currentTimeMillis()-exitTime) > 2000){  
+				Toast.makeText(getApplicationContext(), R.string.quit_hint, Toast.LENGTH_SHORT).show();								
+				exitTime = System.currentTimeMillis();   
+			} else {
+				ExitApplication.getInstance().exit();
+			}
+			return true;   
+		}
+		return super.onKeyDown(keyCode, event);
 	}
 	
 	// network data transfer
@@ -399,57 +400,57 @@ public class Navigating extends BaseActivity implements SensorActivity {
 			this.json = json;
 		}
 		
-        public void run() {
-            try {
-            	String url = Environment.getInstance(Navigating.this).serverURL + "tMap/"+controller+"/" + action;
-            	for (String param: params) {
-            		url += "/" + param;
-            	}
-                data = HttpUtils.getInstance().postData(url, json);
-                
-                // Judge action and set handler message
-                if (controller.equalsIgnoreCase("building") && action.equalsIgnoreCase("getModel")) {
-                	// model data received
-                	modelPack = data;
-                	handler.sendEmptyMessage(R.integer.MSG_3D_MODEL_LOAD_COMPLETE);
-                } else {
-                	handler.sendEmptyMessage(R.integer.MSG_COMPLETE);
-                }
-                
-            } catch (Exception e) {
-            	handler.sendEmptyMessage(R.integer.MSG_NET_FAIL);                         
-            }
-        }
-    }
+		public void run() {
+			try {
+				String url = Environment.getInstance(Navigating.this).serverURL + "tMap/"+controller+"/" + action;
+				for (String param: params) {
+					url += "/" + param;
+				}
+				data = HttpUtils.getInstance().postData(url, json);
+				
+				// Judge action and set handler message
+				if (controller.equalsIgnoreCase("building") && action.equalsIgnoreCase("getModel")) {
+					// model data received
+					modelPack = data;
+					handler.sendEmptyMessage(R.integer.MSG_3D_MODEL_LOAD_COMPLETE);
+				} else {
+					handler.sendEmptyMessage(R.integer.MSG_COMPLETE);
+				}
+				
+			} catch (Exception e) {
+				handler.sendEmptyMessage(R.integer.MSG_NET_FAIL);						 
+			}
+		}
+	}
 
 	@Override
-    protected void onResume() {
-        super.onResume();
-        if (mapSurface != null) {
-        	mapSurface.onResume();
-        }
-        
-        if (oriSensor != null) {
-        	oriSensor.sensorResume();
-        }
-        if (accSensor != null) {
-        	accSensor.sensorResume();
-        }
-    }
+	protected void onResume() {
+		super.onResume();
+		if (mapSurface != null) {
+			mapSurface.onResume();
+		}
+		
+		if (oriSensor != null) {
+			oriSensor.sensorResume();
+		}
+		if (accSensor != null) {
+			accSensor.sensorResume();
+		}
+	}
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        if (mapSurface != null) {
-        	mapSurface.onPause();
-        }
-        
-        if (oriSensor != null) {
-        	oriSensor.sensorRelease();
-        }
-        if (accSensor != null) {
-        	accSensor.sensorRelease();
-        }
-        
-    }    
+	@Override
+	protected void onPause() {
+		super.onPause();
+		if (mapSurface != null) {
+			mapSurface.onPause();
+		}
+		
+		if (oriSensor != null) {
+			oriSensor.sensorRelease();
+		}
+		if (accSensor != null) {
+			accSensor.sensorRelease();
+		}
+		
+	}	
 }
