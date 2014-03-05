@@ -6,12 +6,18 @@ import com.example.tmap_androidclient.ModelCreator;
 import com.example.tmap_androidclient.R;
 import com.tmap_android_client.control.Environment;
 import com.tmap_android_client.control.ExitApplication;
+import com.tmap_android_client.datatransfer.DirectorPoint;
 import com.tmap_android_client.datatransfer.HttpUtils;
 import com.tmap_android_client.datatransfer.JsonUtils;
+import com.tmap_android_client.opengl.Ball;
 import com.tmap_android_client.opengl.Box;
+import com.tmap_android_client.opengl.Circle;
+import com.tmap_android_client.opengl.Director;
 import com.tmap_android_client.opengl.Geometry;
 import com.tmap_android_client.opengl.Map3DSurfaceView;
 import com.tmap_android_client.opengl.ObjectDescription;
+import com.tmap_android_client.opengl.PositionCircle;
+import com.tmap_android_client.opengl.Target;
 import com.tmap_android_client.sensor.BaseSensor;
 import com.tmap_android_client.wifi.WifiFactory;
 
@@ -37,6 +43,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public class Navigating extends BaseActivity implements SensorActivity {
 	
 	private static final int ORIENTATION_SENSOR_ID = 0;
@@ -140,6 +147,7 @@ public class Navigating extends BaseActivity implements SensorActivity {
 	
 	// bind four toobars their listeners
 	private void bindToolbarListener() {
+		// return map home with no directors
 		this.findViewById(R.id.map_home).setOnClickListener(
 			new OnClickListener() {
 				@Override
@@ -154,6 +162,7 @@ public class Navigating extends BaseActivity implements SensorActivity {
 			}
 		);
 		
+		// search place to go
 		this.findViewById(R.id.search_place).setOnClickListener(
 			new OnClickListener() {
 				@Override
@@ -190,8 +199,31 @@ public class Navigating extends BaseActivity implements SensorActivity {
 	private final int MEET_PERSON = 3;
 	private final int SETTINGS = 4;
 	private void toolbarFocus(int order) {
+		//Drawable btnDrawable = resources.getDrawable(R.drawable.home_btn_bg);
+		this.findViewById(R.id.map_home).setBackgroundResource(R.drawable.home_btn_bg);
+		this.findViewById(R.id.search_place).setBackgroundResource(R.drawable.home_btn_bg); 
+		this.findViewById(R.id.meet_person).setBackgroundResource(R.drawable.home_btn_bg);  
+		this.findViewById(R.id.settings).setBackgroundResource(R.drawable.home_btn_bg);
+		
+		// init
+		Drawable iconDrawable = resources.getDrawable(R.drawable.tabbar_1);
+		iconDrawable.setBounds(0, 0, iconDrawable.getMinimumWidth(), iconDrawable.getMinimumHeight());
+		((Button) this.findViewById(R.id.map_home)).setCompoundDrawables(null, iconDrawable, null, null);
+		
+		iconDrawable = resources.getDrawable(R.drawable.tabbar_2);
+		iconDrawable.setBounds(0, 0, iconDrawable.getMinimumWidth(), iconDrawable.getMinimumHeight());
+		((Button) this.findViewById(R.id.search_place)).setCompoundDrawables(null, iconDrawable, null, null);
+				
+		iconDrawable = resources.getDrawable(R.drawable.tabbar_3);
+		iconDrawable.setBounds(0, 0, iconDrawable.getMinimumWidth(), iconDrawable.getMinimumHeight());
+		((Button) this.findViewById(R.id.meet_person)).setCompoundDrawables(null, iconDrawable, null, null);
+				
+		iconDrawable = resources.getDrawable(R.drawable.tabbar_4);
+		iconDrawable.setBounds(0, 0, iconDrawable.getMinimumWidth(), iconDrawable.getMinimumHeight());
+		((Button) this.findViewById(R.id.settings)).setCompoundDrawables(null, iconDrawable, null, null);
+				
 		Drawable btnDrawable = resources.getDrawable(R.drawable.home_btn_bg_d);
-		Drawable iconDrawable = null;
+		
 		switch (order) {
 		case MAP_HOME:
 			this.findViewById(R.id.map_home).setBackgroundDrawable(btnDrawable);  
@@ -225,11 +257,27 @@ public class Navigating extends BaseActivity implements SensorActivity {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		// TODO Auto-generated method stub
 		super.onActivityResult(requestCode, resultCode, data);
+		if(resultCode==RESULT_CANCELED) {
+			toolbarFocus(MAP_HOME);
+		} else
 		if (requestCode == SEARCH_PLACE_CODE){
-			if(resultCode==RESULT_CANCELED) {
-				// DO NOTHING
-			} else if (resultCode==RESULT_OK) {
-				 
+			if (resultCode==RESULT_OK) {
+				ArrayList<Geometry> geoList = new ArrayList<Geometry>();
+				DirectorPoint[] dp = Environment.getInstance(this).directorPoint;
+				float initZ = 0.01f;
+				for (int i = 0; i < dp.length - 1; ++i) {
+					geoList.add(new Director(dp[i].x, dp[i].y, initZ + dp[i].z, dp[i+1].x, dp[i+1].y, initZ + dp[i].z + dp[i+1].z + 0.01f));
+					if (i > 0) {
+						geoList.add(new PositionCircle(dp[i].x, dp[i].y, dp[i].z + initZ + 0.005f, 0.3f, true, 1, 1, 1));
+					}
+					initZ += dp[i].z;
+				}
+				geoList.add(new Target(dp[dp.length - 1].x, dp[dp.length - 1].y, initZ));
+				
+				if (mapSurface != null) {
+					mapSurface.startGuidance(geoList);
+				}
+				toolbarFocus(SEARCH_PLACE);
 			}
 		}
 	}
@@ -262,7 +310,6 @@ public class Navigating extends BaseActivity implements SensorActivity {
 		}
 	}
 	
-	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	@Override
 	public void SensorChanged(int id) {
 		// TODO Auto-generated method stub
@@ -306,9 +353,12 @@ public class Navigating extends BaseActivity implements SensorActivity {
 				
 				double cosin = Math.abs(Math.cos(angle / 180.0 * Math.PI));
 				double minus = cosin * 30 * Math.sqrt(2) / 2.0;
-				compass.setX((float)(15 - minus));
-				compass.setY((float)(15 - minus));
 				
+				if (Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB) {
+					compass.setX((float)(15 - minus));
+					compass.setY((float)(15 - minus));
+				}
+
 			}
 			break;
 		case ACCELEROMETER_SENSOR_ID:

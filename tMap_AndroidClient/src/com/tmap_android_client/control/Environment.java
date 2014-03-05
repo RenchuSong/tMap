@@ -1,6 +1,7 @@
 package com.tmap_android_client.control;
 
 import com.example.tmap_androidclient.R;
+import com.tmap_android_client.datatransfer.DirectorPoint;
 
 import android.app.Activity;
 
@@ -18,6 +19,9 @@ public class Environment {
 	// orientation rotate bias
 	public float orientationBias = 0;
 	public boolean orientationAdjusting = false;
+	
+	// director list
+	public DirectorPoint[] directorPoint = null;
 	
 	private Environment(Activity activity) {
 		this.serverURL = activity.getString(R.string.server_root_url);

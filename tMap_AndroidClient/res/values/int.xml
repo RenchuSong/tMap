@@ -10,6 +10,9 @@
     
     <integer name="MSG_3D_MODEL_LOAD_COMPLETE">0x1001</integer>
     
+    <integer name="MSG_IMAGE_COMPLETE">0x10000</integer>
+    <integer name="MSG_DIRECTING_COMPLETE">0x10005</integer>
+    
     
     <!-- Action Config -->
 <!--     <integer name="INIT_SAMPLE_UNIT_TIMES">5</integer> -->

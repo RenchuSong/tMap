@@ -40,5 +40,6 @@
     <string name="type_8_map">exercise</string>
     <string name="type_9_map">beauty</string>
     
+    <string name="floor_unit">层</string>
     
 </resources>

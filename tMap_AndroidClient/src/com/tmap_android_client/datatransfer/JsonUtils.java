@@ -67,4 +67,9 @@ public class JsonUtils {
 		Gson gson = new Gson();
 		return gson.fromJson(data, BusinessItem[].class);
 	}
+	
+	public static DirectorPoint[] parseDirectorList(String data) {
+		Gson gson = new Gson();
+		return gson.fromJson(data, DirectorPoint[].class);
+	}
 }

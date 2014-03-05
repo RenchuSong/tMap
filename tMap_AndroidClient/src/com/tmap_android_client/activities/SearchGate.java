@@ -66,7 +66,7 @@ public class SearchGate extends BaseActivity {
 						Intent intent = new Intent(SearchGate.this, SearchResult.class);
 						Bundle bundle = new Bundle();
 						bundle.putString("searchText", null);
-						bundle.putString("type", getString(R.string.type_1_map));
+						bundle.putString("type", getString(R.string.type_1));
 						intent.putExtras(bundle); 
 						startActivityForResult(intent, SEARCH_CODE);
 					}
@@ -81,7 +81,7 @@ public class SearchGate extends BaseActivity {
 						Intent intent = new Intent(SearchGate.this, SearchResult.class);
 						Bundle bundle = new Bundle();
 						bundle.putString("searchText", null);
-						bundle.putString("type", getString(R.string.type_2_map));
+						bundle.putString("type", getString(R.string.type_2));
 						intent.putExtras(bundle); 
 						startActivityForResult(intent, SEARCH_CODE);
 					}
@@ -96,7 +96,7 @@ public class SearchGate extends BaseActivity {
 						Intent intent = new Intent(SearchGate.this, SearchResult.class);
 						Bundle bundle = new Bundle();
 						bundle.putString("searchText", null);
-						bundle.putString("type", getString(R.string.type_3_map));
+						bundle.putString("type", getString(R.string.type_3));
 						intent.putExtras(bundle); 
 						startActivityForResult(intent, SEARCH_CODE);
 					}
@@ -111,7 +111,7 @@ public class SearchGate extends BaseActivity {
 						Intent intent = new Intent(SearchGate.this, SearchResult.class);
 						Bundle bundle = new Bundle();
 						bundle.putString("searchText", null);
-						bundle.putString("type", getString(R.string.type_4_map));
+						bundle.putString("type", getString(R.string.type_4));
 						intent.putExtras(bundle); 
 						startActivityForResult(intent, SEARCH_CODE);
 					}
@@ -126,7 +126,7 @@ public class SearchGate extends BaseActivity {
 						Intent intent = new Intent(SearchGate.this, SearchResult.class);
 						Bundle bundle = new Bundle();
 						bundle.putString("searchText", null);
-						bundle.putString("type", getString(R.string.type_5_map));
+						bundle.putString("type", getString(R.string.type_5));
 						intent.putExtras(bundle); 
 						startActivityForResult(intent, SEARCH_CODE);
 					}
@@ -141,7 +141,7 @@ public class SearchGate extends BaseActivity {
 						Intent intent = new Intent(SearchGate.this, SearchResult.class);
 						Bundle bundle = new Bundle();
 						bundle.putString("searchText", null);
-						bundle.putString("type", getString(R.string.type_6_map));
+						bundle.putString("type", getString(R.string.type_6));
 						intent.putExtras(bundle); 
 						startActivityForResult(intent, SEARCH_CODE);
 					}
@@ -156,7 +156,7 @@ public class SearchGate extends BaseActivity {
 						Intent intent = new Intent(SearchGate.this, SearchResult.class);
 						Bundle bundle = new Bundle();
 						bundle.putString("searchText", null);
-						bundle.putString("type", getString(R.string.type_7_map));
+						bundle.putString("type", getString(R.string.type_7));
 						intent.putExtras(bundle); 
 						startActivityForResult(intent, SEARCH_CODE);
 					}
@@ -171,7 +171,7 @@ public class SearchGate extends BaseActivity {
 						Intent intent = new Intent(SearchGate.this, SearchResult.class);
 						Bundle bundle = new Bundle();
 						bundle.putString("searchText", null);
-						bundle.putString("type", getString(R.string.type_8_map));
+						bundle.putString("type", getString(R.string.type_8));
 						intent.putExtras(bundle); 
 						startActivityForResult(intent, SEARCH_CODE);
 					}
@@ -186,7 +186,7 @@ public class SearchGate extends BaseActivity {
 						Intent intent = new Intent(SearchGate.this, SearchResult.class);
 						Bundle bundle = new Bundle();
 						bundle.putString("searchText", null);
-						bundle.putString("type", getString(R.string.type_9_map));
+						bundle.putString("type", getString(R.string.type_9));
 						intent.putExtras(bundle); 
 						startActivityForResult(intent, SEARCH_CODE);
 					}
@@ -204,6 +204,8 @@ public class SearchGate extends BaseActivity {
 			if(resultCode == RESULT_CANCELED) {
 				// DO NOTHING
 			} else if (resultCode == RESULT_OK) {
+				Intent intent=getIntent();
+			    setResult(RESULT_OK, intent);
 				finish(); 
 			}
 		}

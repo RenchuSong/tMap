@@ -31,7 +31,7 @@ class BusinessController extends RController{
 		$businessList = BusinessItem::where("[buildingId] = ? ", $buildingId)
 									->where("[floor] = ?", $floor);
 		if ($type != null) {
-			$businessList = $businessList->where("[type] = ?", $type);
+			$businessList = $businessList->where("[type] = ?", urldecode($type));
 		}
 
 		if (trim($searchText) != "") {
@@ -43,7 +43,7 @@ class BusinessController extends RController{
 											->where("[floor] != ?", $floor);
 
 		if ($type != null) {
-			$businessListDiffFloor = $businessListDiffFloor->where("[type] = ?", $type);
+			$businessListDiffFloor = $businessListDiffFloor->where("[type] = ?", urldecode($type));
 		}
 
 		if (trim($searchText) != "") {
