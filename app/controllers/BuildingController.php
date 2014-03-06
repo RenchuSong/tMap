@@ -110,7 +110,6 @@ class BuildingController extends RController {
 
 
 	public function actionShortestPath($buildingId, $person1_floor, $person1_x, $person1_y, $person2_floor, $person2_x, $person2_y) {
-
 		//$cellList = Cell::getCellList($buildingId);
 		$cellList = Cell::find("buildingId", $buildingId)->all();
 		$keyCellList = array();
@@ -142,12 +141,15 @@ class BuildingController extends RController {
 		}
 
 		if ($person1_cell == $person2_cell) {
-			echo json_encode(array(new _3DPoint($person1_x, $person1_y, 0), new _3DPoint($person2_x, $person2_y, 0)));
+			$a = new _3DPoint($person1_x, $person1_y, 0);
+			$b = new _3DPoint($person2_x, $person2_y, 0);
+			echo json_encode(array($a, $b));
 			exit;
 		}
 
 		//add ladders information into the keyCellList
-		$ladders = Ladder::find("buildingId",$buildingId)->all();
+
+		$ladders = Ladder::where("[buildingId] = ?",$buildingId)->all();
 		foreach ($ladders as $ladder) {
 			$dis = $ladder->getLength();
 			array_push($keyCellList[$ladder->lowCellId]->adjacentCellList,$ladder->highCellId);
@@ -166,6 +168,7 @@ class BuildingController extends RController {
 		$ladderListForPrePoint = array();
 		$distance[$point1->x*1000][$point1->y*1000][$point1->floor] = 0;
 		$prePoint[$point1->x*1000][$point1->y*1000][$point1->floor] = null;
+
 		while (count($cellIdQueue)>0) {
 			$point = array_shift($pointQueue);
 			$i = array_shift($cellIdQueue);
@@ -228,6 +231,7 @@ class BuildingController extends RController {
 				}
 			}
 		}
+
 		//var_dump($prePoint[2][2]);
 		$ansList = array();
 		array_push($ansList,new _3DPoint($person2_x,$person2_y,0));
@@ -246,24 +250,24 @@ class BuildingController extends RController {
 	}
 
 
-	public function actionBuildCells() {
-		$this->actionAddOneCell(1,1,1,	0,		0,	3.5,	4.2,	array(7));
-		$this->actionAddOneCell(2,1,1,	4.5,	0,	8.3,	4.5,	array(7));
-		$this->actionAddOneCell(3,1,1,	0,	4.2,	3.5,	8.5,	array(8));
-		$this->actionAddOneCell(4,1,1,	4.5,4.5,	8.3,	9,		array(8));
-		$this->actionAddOneCell(5,1,1,	0,	8.5,	3.5,	12.55,	array(9));
-		$this->actionAddOneCell(6,1,1,	4.5,	9,	8.3,	12.55,	array(9));
-
-		$this->actionAddOneCell(7,1,1,	3.5,1.6,	4.5,	2.6,	array(1,2,10,12));
-		$this->actionAddOneCell(8,1,1,	3.5,5.8,	4.5,	6.8,	array(3,4,10,11));
-		$this->actionAddOneCell(9,1,1,	3.5,10.1,	4.5,	11.1,	array(5,6,11,13));
-
-		$this->actionAddOneCell(10,1,1,	3.5,2.6,	4.5,	5.8,	array(7,8));
-		$this->actionAddOneCell(11,1,1,	3.5,6.8,	4.5,	10.1,	array(8,9));
-
-		$this->actionAddOneCell(12,1,1,	3.5,0,		4.5,	1.6,	array(7));
-		$this->actionAddOneCell(13,1,1,	3.5,11.1,	4.5,	12.55,	array(9));
-	}
+//	public function actionBuildCells() {
+//		$this->actionAddOneCell(1,1,1,	0,		0,	3.5,	4.2,	array(7));
+//		$this->actionAddOneCell(2,1,1,	4.5,	0,	8.3,	4.5,	array(7));
+//		$this->actionAddOneCell(3,1,1,	0,	4.2,	3.5,	8.5,	array(8));
+//		$this->actionAddOneCell(4,1,1,	4.5,4.5,	8.3,	9,		array(8));
+//		$this->actionAddOneCell(5,1,1,	0,	8.5,	3.5,	12.55,	array(9));
+//		$this->actionAddOneCell(6,1,1,	4.5,	9,	8.3,	12.55,	array(9));
+//
+//		$this->actionAddOneCell(7,1,1,	3.5,1.6,	4.5,	2.6,	array(1,2,10,12));
+//		$this->actionAddOneCell(8,1,1,	3.5,5.8,	4.5,	6.8,	array(3,4,10,11));
+//		$this->actionAddOneCell(9,1,1,	3.5,10.1,	4.5,	11.1,	array(5,6,11,13));
+//
+//		$this->actionAddOneCell(10,1,1,	3.5,2.6,	4.5,	5.8,	array(7,8));
+//		$this->actionAddOneCell(11,1,1,	3.5,6.8,	4.5,	10.1,	array(8,9));
+//
+//		$this->actionAddOneCell(12,1,1,	3.5,0,		4.5,	1.6,	array(7));
+//		$this->actionAddOneCell(13,1,1,	3.5,11.1,	4.5,	12.55,	array(9));
+//	}
 
 	public function actionTest(){
 		//$cellList = Cell::find()->all();

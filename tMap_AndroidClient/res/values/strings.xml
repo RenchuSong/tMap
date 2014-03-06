@@ -5,7 +5,7 @@
     <string name="welcome">欢迎进入土豪地图</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
-    <string name="server_root_url">http://175.186.106.125:80/</string>
+    <string name="server_root_url">http://www.songrenchu.com/</string>
     
     <string name="main_home">地图</string>
     <string name="main_news">搜索</string>
