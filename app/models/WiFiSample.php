@@ -52,28 +52,28 @@ class WiFiSample extends RModel {
 	 */
 	public static function createWiFiSample($jsonWifiSample) {
 
-		$sample = WiFiSample::where("[buildingId] = ?", $jsonWifiSample->buildingId)
-							->where("[floor] = ?", $jsonWifiSample->floor)
-							->where("[x] = ?", $jsonWifiSample->x)
-							->where("[y] = ?", $jsonWifiSample->y)->first();
-
-		if ($sample !== null) {
-			$sample->unPackBSSIVector();
-			$sample2 = new WiFiSample();
-			$sample2->fingerPrintPack = $jsonWifiSample->fingerPrintPack;
-			$sample2->unPackBSSIVector();
-			$wifiList = array_merge(array_keys($sample->bssiVector), array_keys($sample2->bssiVector));
-			foreach ($wifiList as $wifiName) {
-				$newRssi = (isset($sample->bssiVector[$wifiName]) ?
-							$sample->bssiVector[$wifiName]: 0) *
-							$sample->wifiSampleTime +
-							(isset($sample2->bssiVector[$wifiName]) ?
-								$sample2->bssiVector[$wifiName]: 0);
-				$sample->bssiVector[$wifiName] = $newRssi / ($sample->wifiSampleTime + 1);
-			}
-			$sample->wifiSampleTime = $sample->wifiSampleTime + 1;
-			$sample->packBSSIVector();
-		} else {
+//		$sample = WiFiSample::where("[buildingId] = ?", $jsonWifiSample->buildingId)
+//							->where("[floor] = ?", $jsonWifiSample->floor)
+//							->where("[x] = ?", $jsonWifiSample->x)
+//							->where("[y] = ?", $jsonWifiSample->y)->first();
+//
+//		if ($sample !== null) {
+//			$sample->unPackBSSIVector();
+//			$sample2 = new WiFiSample();
+//			$sample2->fingerPrintPack = $jsonWifiSample->fingerPrintPack;
+//			$sample2->unPackBSSIVector();
+//			$wifiList = array_merge(array_keys($sample->bssiVector), array_keys($sample2->bssiVector));
+//			foreach ($wifiList as $wifiName) {
+//				$newRssi = (isset($sample->bssiVector[$wifiName]) ?
+//							$sample->bssiVector[$wifiName]: 0) *
+//							$sample->wifiSampleTime +
+//							(isset($sample2->bssiVector[$wifiName]) ?
+//								$sample2->bssiVector[$wifiName]: 0);
+//				$sample->bssiVector[$wifiName] = $newRssi / ($sample->wifiSampleTime + 1);
+//			}
+//			$sample->wifiSampleTime = $sample->wifiSampleTime + 1;
+//			$sample->packBSSIVector();
+//		} else {
 			$sample = new WiFiSample();
 			$sample->buildingId = $jsonWifiSample->buildingId;
 			$sample->floor = $jsonWifiSample->floor;
@@ -81,7 +81,7 @@ class WiFiSample extends RModel {
 			$sample->y = $jsonWifiSample->y;
 			$sample->fingerPrintPack = $jsonWifiSample->fingerPrintPack;
 			$sample->wifiSampleTime = 1;
-		}
+		//}
 		$sample->save();
 		$sample->unPackBSSIVector();
 		return $sample;
