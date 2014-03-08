@@ -250,7 +250,17 @@ class BuildingController extends RController {
 	}
 
 
-//	public function actionBuildCells() {
+	public function actionBuildCells() {
+		$this->actionAddOneCell(14,1,1,	1.45,	0,		8.53,	3,		array(15, 16));
+		$this->actionAddOneCell(15,1,1,	0,		1.45,	1.45,	11.29,	array(14, 17, 18, 19, 20, 21));
+		$this->actionAddOneCell(16,1,1,	6.5,	3,		8,		11.29,	array(14, 17, 18, 19, 20, 21));
+		$this->actionAddOneCell(17,1,1,	1.45,	3,		6.5,	4.5,	array(15, 16));
+		$this->actionAddOneCell(18,1,1,	1.45,	4.5,	6.5,	6,		array(15, 16));
+		$this->actionAddOneCell(19,1,1,	1.45,	6,		6.5,	7.5,	array(15, 16));
+		$this->actionAddOneCell(20,1,1,	1.45,	8.5,	6.5,	9,		array(15, 16));
+		$this->actionAddOneCell(21,1,1,	1.45,	10,		6.5,	11,		array(15, 16));
+
+
 //		$this->actionAddOneCell(1,1,1,	0,		0,	3.5,	4.2,	array(7));
 //		$this->actionAddOneCell(2,1,1,	4.5,	0,	8.3,	4.5,	array(7));
 //		$this->actionAddOneCell(3,1,1,	0,	4.2,	3.5,	8.5,	array(8));
@@ -267,7 +277,7 @@ class BuildingController extends RController {
 //
 //		$this->actionAddOneCell(12,1,1,	3.5,0,		4.5,	1.6,	array(7));
 //		$this->actionAddOneCell(13,1,1,	3.5,11.1,	4.5,	12.55,	array(9));
-//	}
+	}
 
 	public function actionTest(){
 		//$cellList = Cell::find()->all();

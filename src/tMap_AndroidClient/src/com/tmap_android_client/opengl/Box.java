@@ -50,92 +50,83 @@ public class Box implements Geometry{
 		gl.glRotatef(this.rotateX, 1, 0, 0);
 		gl.glRotatef(this.rotateY, 0, 1, 0);
 		gl.glRotatef(this.rotateZ, 0, 0, 1);
-		
+
 		Geometry plane = null;
-		
-		//bottom
-    	float[] vertices = new float[] {
-    			this.lenX, this.lenY, 0,
-    			this.lenX, 0, 0,
-    			0, 0, 0,
-    			0, 0, 0,
-    			0, this.lenY, 0,
-    			this.lenX, this.lenY, 0,
-    	};
-    	
-    	plane = this.colorBox ?	new ColorPlane(vertices, this.red, this.green, this.blue)
-    							: new MaterialPlane(vertices, this.texId);
-    	plane.drawSelf(gl);
-    	
-    	//up
-    	vertices = new float[] {
-    			this.lenX, this.lenY, this.lenZ,
-    			0, this.lenY, this.lenZ,
-    			0, 0, this.lenZ,
-    			0, 0, this.lenZ,
-    			this.lenX, 0, this.lenZ,
-    			this.lenX, this.lenY, this.lenZ,
-    	};
-    	
-    	plane = this.colorBox ?	new ColorPlane(vertices, this.red, this.green, this.blue)
-    							: new MaterialPlane(vertices, this.texId);
-    	plane.drawSelf(gl);
-    	
-    	//front
-    	vertices = new float[] {
-    			0, 0, 0,
-    			this.lenX, 0, 0,
-    			this.lenX, 0, this.lenZ,
-    			this.lenX, 0, this.lenZ,
-    			0, 0, this.lenZ,
-    			0, 0, 0,
-    	};
-    	
-    	plane = this.colorBox ?	new ColorPlane(vertices, this.red, this.green, this.blue)
-    							: new MaterialPlane(vertices, this.texId);
-    	plane.drawSelf(gl);
-    	
-    	//back
-    	vertices = new float[] {
-    			0, this.lenY, 0,
-    			0, this.lenY, this.lenZ,
-    			this.lenX, this.lenY, this.lenZ,
-    			this.lenX, this.lenY, this.lenZ,
-    			this.lenX, this.lenY, 0,
-    			0, this.lenY, 0,
-    	};
-    	
-    	plane = this.colorBox ?	new ColorPlane(vertices, this.red, this.green, this.blue)
-    							: new MaterialPlane(vertices, this.texId);
-    	plane.drawSelf(gl);
 
-    	//left
-    	vertices = new float[] {
-    			0, this.lenY, 0,
-    			0, 0, 0,
-    			0, 0, this.lenZ,
-    			0, 0, this.lenZ,
-    			0, this.lenY, this.lenZ,
-    			0, this.lenY, 0,
-    	};
-    	
-    	plane = this.colorBox ?	new ColorPlane(vertices, this.red, this.green, this.blue)
-    							: new MaterialPlane(vertices, this.texId);
-    	plane.drawSelf(gl);
+		// bottom
+		float[] vertices = new float[] { this.lenX, this.lenY, 0, this.lenX, 0,
+				0, 0, 0, 0, 0, 0, 0, 0, this.lenY, 0, this.lenX, this.lenY, 0, };
 
-    	//right
-    	vertices = new float[] {
-    			this.lenX, this.lenY, 0,
-    			this.lenX, this.lenY, this.lenZ,
-    			this.lenX, 0, this.lenZ,
-    			this.lenX, 0, this.lenZ,
-    			this.lenX, 0, 0,
-    			this.lenX, this.lenY, 0,
-    	};
-    	
-    	plane = this.colorBox ?	new ColorPlane(vertices, this.red, this.green, this.blue)
-    							: new MaterialPlane(vertices, this.texId);
-    	plane.drawSelf(gl);
+		plane = this.colorBox ? new ColorPlane(vertices, this.red, this.green,
+				this.blue) : new MaterialPlane(vertices, this.texId);
+		plane.drawSelf(gl);
+
+		// up
+		vertices = new float[] { this.lenX, this.lenY, this.lenZ, 0, this.lenY,
+				this.lenZ, 0, 0, this.lenZ, 0, 0, this.lenZ, this.lenX, 0,
+				this.lenZ, this.lenX, this.lenY, this.lenZ, };
+
+		float red = this.red * 1.2f;
+		if (red > 1)
+			red = 1;
+		float green = this.green * 1.2f;
+		if (green > 1)
+			green = 1;
+		float blue = this.blue * 1.2f;
+		if (blue > 1)
+			blue = 1;
+
+		plane = this.colorBox ? new ColorPlane(vertices, red, green, blue)
+				: new MaterialPlane(vertices, this.texId);
+		plane.drawSelf(gl);
+
+		// front
+		vertices = new float[] { 0, 0, 0, this.lenX, 0, 0, this.lenX, 0,
+				this.lenZ, this.lenX, 0, this.lenZ, 0, 0, this.lenZ, 0, 0, 0, };
+
+		plane = this.colorBox ? new ColorPlane(vertices, this.red, this.green,
+				this.blue) : new MaterialPlane(vertices, this.texId);
+		plane.drawSelf(gl);
+
+		// back
+		vertices = new float[] { 0, this.lenY, 0, 0, this.lenY, this.lenZ,
+				this.lenX, this.lenY, this.lenZ, this.lenX, this.lenY,
+				this.lenZ, this.lenX, this.lenY, 0, 0, this.lenY, 0, };
+
+		red = this.red / 1.2f;
+		green = this.green / 1.2f;
+		blue = this.blue / 1.2f;
+		plane = this.colorBox ? new ColorPlane(vertices, red, green, blue)
+				: new MaterialPlane(vertices, this.texId);
+		plane.drawSelf(gl);
+
+		// left
+		vertices = new float[] { 0, this.lenY, 0, 0, 0, 0, 0, 0, this.lenZ, 0,
+				0, this.lenZ, 0, this.lenY, this.lenZ, 0, this.lenY, 0, };
+		red = this.red / 1.1f;
+		green = this.green / 1.1f;
+		blue = this.blue / 1.1f;
+		plane = this.colorBox ? new ColorPlane(vertices, red, green, blue)
+				: new MaterialPlane(vertices, this.texId);
+		plane.drawSelf(gl);
+
+		// right
+		vertices = new float[] { this.lenX, this.lenY, 0, this.lenX, this.lenY,
+				this.lenZ, this.lenX, 0, this.lenZ, this.lenX, 0, this.lenZ,
+				this.lenX, 0, 0, this.lenX, this.lenY, 0, };
+
+		red = this.red * 1.05f;
+		if (red > 1)
+			red = 1;
+		green = this.green * 1.05f;
+		if (green > 1)
+			green = 1;
+		blue = this.blue * 1.05f;
+		if (blue > 1)
+			blue = 1;
+		plane = this.colorBox ? new ColorPlane(vertices, red, green, blue)
+				: new MaterialPlane(vertices, this.texId);
+		plane.drawSelf(gl);
 		gl.glPopMatrix();
 	}
 }

@@ -362,7 +362,7 @@ public class Navigating extends BaseActivity implements SensorActivity {
 				double angle = direction < 45 ? 90 - direction : direction;
 				
 				double cosin = Math.abs(Math.cos(angle / 180.0 * Math.PI));
-				double minus = cosin * 30 * Math.sqrt(2) / 2.0;
+				double minus = cosin * 50 * Math.sqrt(2) / 2.0;
 				
 				if (Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB) {
 					compass.setX((float)(15 - minus));

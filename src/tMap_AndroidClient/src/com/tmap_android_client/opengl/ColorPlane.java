@@ -14,6 +14,7 @@ import javax.microedition.khronos.opengles.GL10;
 public class ColorPlane implements Geometry{
 	private FloatBuffer   mVertexBuffer;
     private IntBuffer   mColorBuffer;
+    private FloatBuffer mNormalBuffer;
     int vCount=0;
     public float[] vertices;
     public float red, green, blue;
@@ -51,11 +52,38 @@ public class ColorPlane implements Geometry{
         mColorBuffer = cbb.asIntBuffer();
         mColorBuffer.put(colors);
         mColorBuffer.position(0);
+        
+
+        float[] vbbbb = new float[vertices.length];
+        int i = 0, j = 1, k = 2;
+        
+        float a1 = vertices[j * 3] - vertices[i * 3];
+    	float a2 = vertices[j * 3 + 1] - vertices[i * 3 + 1];
+    	float a3 = vertices[j * 3 + 2] - vertices[i * 3 + 2];
+    	
+    	float b1 = vertices[k * 3] - vertices[j * 3];
+    	float b2 = vertices[k * 3 + 1] - vertices[j * 3 + 1];
+    	float b3 = vertices[k * 3 + 2] - vertices[j * 3 + 2];
+    	
+    	vbbbb[i * 3] = a2 * b3 - a3 * b2;
+    	vbbbb[i * 3 + 1] = a3 * b1 - a1 * b3;
+    	vbbbb[i * 3 + 2] = a1 * b2 - a2 * b1;
+        
+        for (int ii = 3; ii < vertices.length; ++ii) {
+        	vbbbb[ii] = vbbbb[ii - 3];
+        }
+        
+        ByteBuffer vbb2 = ByteBuffer.allocateDirect(vertices.length*4);
+        vbb2.order(ByteOrder.nativeOrder());
+        mNormalBuffer = vbb2.asFloatBuffer();
+        mNormalBuffer.put(vbbbb);
+        mNormalBuffer.position(0);
     }
 
     public void drawSelf(GL10 gl) {        
         gl.glEnableClientState(GL10.GL_VERTEX_ARRAY);
         gl.glEnableClientState(GL10.GL_COLOR_ARRAY);
+        gl.glEnableClientState(GL10.GL_NORMAL_ARRAY);
         gl.glVertexPointer (
         		3,				
         		GL10.GL_FLOAT,	
@@ -63,6 +91,8 @@ public class ColorPlane implements Geometry{
         		mVertexBuffer	
         );
 		
+        gl.glNormalPointer(GL10.GL_FIXED, 0, mNormalBuffer);
+        
         gl.glColorPointer (
         		4, 				
         		GL10.GL_FIXED, 	

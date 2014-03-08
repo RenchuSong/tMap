@@ -136,8 +136,8 @@ class WifiController extends RController {
 //			);
 
 			echo json_encode(array("buildingId" => 1,
-					"floor" => 0,
-					"x" => 3, "y" => 2
+					"floor" => 1,
+					"x" => 6, "y" => 1
 				)
 			);
 
