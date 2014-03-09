@@ -39,12 +39,12 @@
         
         <activity
             android:name="com.tmap_android_client.activities.Navigating"
-            android:label="@string/welcome" >
+            android:label="@string/welcome">
         </activity>
         
         <activity
             android:name="com.tmap_android_client.activities.SearchGate"
-            android:label="@string/welcome" >
+            android:label="@string/welcome">
             
         </activity>
         
@@ -56,7 +56,7 @@
         
         <activity
             android:name="com.tmap_android_client.activities.Settings"
-            android:label="@string/welcome" >
+            android:label="@string/welcome">
             
         </activity>
         

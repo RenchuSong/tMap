@@ -91,11 +91,36 @@ public class Map3DSurfaceView extends GLSurfaceView{
         return true;
     }
 
+
+    private void initLight0(GL10 gl){
+		//up
+		gl.glEnable(GL10.GL_LIGHT0);
+//		float[] emissonParams={0.3f,0.3f,0.3f, 1.0f};
+//		gl.glLightfv(GL10.GL_LIGHT0, GL10.GL_EMISSION, emissonParams, 0);
+//      gl.glLightf(gl.GL_LIGHT0, gl.GL_QUADRATIC_ATTENUATION, 3);
+	    float[] ambientParams={0.3f,0.3f,0.3f, 1.0f};
+	    gl.glLightfv(GL10.GL_LIGHT0, GL10.GL_AMBIENT, ambientParams,0);            
+	    float[] diffuseParams={0.4f,0.4f,0.4f,1.0f};
+	    gl.glLightfv(GL10.GL_LIGHT0, GL10.GL_DIFFUSE, diffuseParams,0); 
+//	    float[] specularParams={0f, 0f, 0f, 1.0f};
+//	    gl.glLightfv(GL10.GL_LIGHT0, GL10.GL_SPECULAR, specularParams,0);   
+	}
+    
 	private class SceneRenderer implements GLSurfaceView.Renderer {   
     	
         public void onDrawFrame(GL10 gl) {
     		gl.glEnable(GL10.GL_CULL_FACE);
-            gl.glShadeModel(GL10.GL_SMOOTH);
+    		
+            //gl.glShadeModel(GL10.GL_SMOOTH);
+
+            //here
+
+//            gl.glEnable(GL10.GL_LIGHTING);        	
+//
+//            float[] positionParams0={4f,6f,3.5f,1};
+//            gl.glLightfv(GL10.GL_LIGHT0, GL10.GL_POSITION, positionParams0,1);
+//        	initLight0(gl);
+        	
         	gl.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);
             gl.glMatrixMode(GL10.GL_MODELVIEW);
             gl.glLoadIdentity();    
@@ -127,11 +152,14 @@ public class Map3DSurfaceView extends GLSurfaceView{
             float ratio = (float) height/width ;
             gl.glFrustumf( -1, 1,-ratio, ratio, 0.6f, 15);
         }
-
+        
         public void onSurfaceCreated(GL10 gl, EGLConfig config) {
         	gl.glDisable(GL10.GL_DITHER);
             gl.glHint(GL10.GL_PERSPECTIVE_CORRECTION_HINT,GL10.GL_FASTEST);
-            gl.glClearColor(0,0,0.33f,0);            
+            gl.glClearColor(0,0,0.33f,0);   
+            
+            //gl.glShadeModel(GL10.GL_SMOOTH);
+            
             gl.glEnable(GL10.GL_DEPTH_TEST);
             
             // init material 

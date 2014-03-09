@@ -7,7 +7,7 @@
  */
 
 class BuildingWifiList extends RModel {
-	public $id, $buildingId, $wifiPack;
+	public $id, $buildingId, $floor, $wifiPack;
 	public $wifiList = array();								   // Wifi name list that can be received within the building
 
 	public static $table = "building_wifi_list";
@@ -15,6 +15,7 @@ class BuildingWifiList extends RModel {
 	public static $mapping = array(
 		"id" => "id",
 		"buildingId" => "building_id",
+		"floor" => "floor",
 		"wifiPack" => "wifi_name_list",
 	);
 
@@ -40,7 +41,7 @@ class BuildingWifiList extends RModel {
 	 * @return WiFiSample
 	 */
 	public function buildingUpdateWifi() {
-		$samples = WiFiSample::find("buildingId", $this->buildingId)->all();
+		$samples = WiFiSample::find("buildingId", $this->buildingId)->where("[floor] = ?", $this->floor)->all();
 
 		$wifiList = array();
 
@@ -59,8 +60,8 @@ class BuildingWifiList extends RModel {
 	 * @param $id
 	 * @return null|WiFiSample
 	 */
-	public function getBuildingWiFiList($buildingId) {
-		$buildingWifi = BuildingWifiList::get($buildingId);
+	public function getBuildingWiFiList($buildingId, $floor) {
+		$buildingWifi = BuildingWifiList::find("buildingId",$buildingId)->where("[floor] = ?", $floor)->first();
 		if ($buildingWifi !== null) {
 			$buildingWifi->unPackWifiList();
 			return $buildingWifi;

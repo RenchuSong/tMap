@@ -17,6 +17,7 @@ public class Circle implements Geometry{
 	private FloatBuffer   mVertexBuffer;
     private FloatBuffer mTextureBuffer;
     private IntBuffer   mColorBuffer;
+    private FloatBuffer mNormalBuffer;
     int vCount = 0;
 	
 	public Circle(float radius, boolean up, double red, double green, double blue) {
@@ -54,6 +55,22 @@ public class Circle implements Geometry{
 		}
 		
 		vCount=vertices.length / 3;
+		
+		float[] vbbbb = new float[vertices.length];
+        
+    	vbbbb[0] = 0;
+    	vbbbb[1] = 0;
+    	vbbbb[2] = this.up ? 1 : -1;
+        
+        for (int ii = 3; ii < vertices.length; ++ii) {
+        	vbbbb[ii] = vbbbb[ii - 3];
+        }
+        
+        ByteBuffer vbb2 = ByteBuffer.allocateDirect(vertices.length*4);
+        vbb2.order(ByteOrder.nativeOrder());
+        mNormalBuffer = vbb2.asFloatBuffer();
+        mNormalBuffer.put(vbbbb);
+        mNormalBuffer.position(0);
         
         ByteBuffer vbb = ByteBuffer.allocateDirect(vertices.length*4);
         vbb.order(ByteOrder.nativeOrder());
@@ -96,6 +113,8 @@ public class Circle implements Geometry{
 	public void drawSelf(GL10 gl) {
 		// TODO Auto-generated method stub
 		gl.glEnableClientState(GL10.GL_VERTEX_ARRAY);
+		gl.glEnableClientState(GL10.GL_NORMAL_ARRAY);
+		gl.glNormalPointer(GL10.GL_FIXED, 0, mNormalBuffer);
         
 		if (this.colorCircle) {
 			gl.glEnableClientState(GL10.GL_COLOR_ARRAY);
