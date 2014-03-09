@@ -15,13 +15,14 @@ class BuildingController extends RController {
 	/**
 	 * Update building Wifi
 	 */
-	public function actionBuildingUpdateWifi($buildingId = null) {
+	public function actionBuildingUpdateWifi($buildingId = null, $floor = null) {
 		/* TODO verify authority, only admin can update building wifi */
-		if ($buildingId !== null && is_numeric($buildingId)) {			// update a single building
-			$buildingWifi = BuildingWifiList::find("buildingId", $buildingId)->first();
+		if ($buildingId !== null && is_numeric($buildingId) && $floor !== null && is_numeric($floor)) {			// update a single building
+			$buildingWifi = BuildingWifiList::find("buildingId", $buildingId)->where("[floor] = ?", $floor)->first();
 			if ($buildingWifi === null) {
 				$buildingWifi = new BUildingWifiList();
 				$buildingWifi->buildingId = $buildingId;
+				$buildingWifi->floor = $floor;
 			}
 
 			$buildingWifi->buildingUpdateWifi();
@@ -30,6 +31,16 @@ class BuildingController extends RController {
 		}
 		/* TODO update all buildings */
 		throw new RException("Update all building wifi not implemented");
+	}
+
+	public function actionGetBuildingWifiList($buildingId, $floor) {
+		$wifi = BuildingWifiList::getBuildingWiFiList($buildingId, $floor);
+		echo json_encode($wifi->wifiList);
+
+//		$wifi1 = BuildingWifiList::getBuildingWiFiList(1, 0);
+//		$wifi2 = BuildingWifiList::getBuildingWiFiList(1, 1);
+//
+//		echo json_encode(array_intersect($wifi1->wifiList, $wifi2->wifiList));
 	}
 
 	/**

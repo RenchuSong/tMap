@@ -129,3 +129,7 @@ function myKNNDistance(array $arr1, array $arr2) {
 
 	return -$result;
 }
+
+function dist($x1, $y1, $x2, $y2) {
+	return sqrt(($x2 - $x1) * ($x2 - $x1) + ($y2 - $y1) * ($y2 - $y1));
+}
