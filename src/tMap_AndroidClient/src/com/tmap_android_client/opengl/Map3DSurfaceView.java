@@ -150,7 +150,7 @@ public class Map3DSurfaceView extends GLSurfaceView{
             gl.glMatrixMode(GL10.GL_PROJECTION);
             gl.glLoadIdentity();
             float ratio = (float) height/width ;
-            gl.glFrustumf( -1, 1,-ratio, ratio, 0.6f, 15);
+            gl.glFrustumf( -1, 1,-ratio, ratio, 0.6f, 30);
         }
         
         public void onSurfaceCreated(GL10 gl, EGLConfig config) {
