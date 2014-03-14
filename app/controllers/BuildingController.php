@@ -113,8 +113,11 @@ class BuildingController extends RController {
 			else $y0 = $cell->maxY;
 		}
 
+		//var_dump($x0);
+		//var_dump($y0);
+
 		if (isset($x0) && isset($y0)) return new Point($x0,$y0,$cell->floorId);
-		else echo "please check the list of the adjacent cells";
+		else //echo "please check the list of the adjacent cells";
 		return null;
 	}
 
@@ -130,6 +133,9 @@ class BuildingController extends RController {
 			if ($cell->inside($person2_floor,$person2_x,$person2_y)) $person2_cell = $cell->id;
 			$keyCellList[$cell->id] = $cell;
 		}
+
+		//var_dump($person1_cell);
+		//var_dump($person2_cell);
 
 		if (!isset($person1_cell)) {
 			$min = 1e100;
@@ -262,14 +268,24 @@ class BuildingController extends RController {
 
 
 	public function actionBuildCells() {
-		$this->actionAddOneCell(14,1,1,	1.45,	0,		8.53,	3,		array(15, 16));
-		$this->actionAddOneCell(15,1,1,	0,		1.45,	1.45,	11.29,	array(14, 17, 18, 19, 20, 21));
-		$this->actionAddOneCell(16,1,1,	6.5,	3,		8,		11.29,	array(14, 17, 18, 19, 20, 21));
-		$this->actionAddOneCell(17,1,1,	1.45,	3,		6.5,	4.5,	array(15, 16));
-		$this->actionAddOneCell(18,1,1,	1.45,	4.5,	6.5,	6,		array(15, 16));
-		$this->actionAddOneCell(19,1,1,	1.45,	6,		6.5,	7.5,	array(15, 16));
-		$this->actionAddOneCell(20,1,1,	1.45,	8.5,	6.5,	9,		array(15, 16));
-		$this->actionAddOneCell(21,1,1,	1.45,	10,		6.5,	11,		array(15, 16));
+		$this->actionAddOneCell(22, 2, 1, 0, 0, 17, 5.5, array(23, 24, 25, 26));
+
+		$this->actionAddOneCell(23, 2, 1, 0, 5.5, 2.2, 28, array(22, 27));
+		$this->actionAddOneCell(24, 2, 1, 5, 5.5, 6.5, 28, array(22, 27));
+		$this->actionAddOneCell(25, 2, 1, 10.7, 5.5, 12.2, 28, array(22, 27));
+		$this->actionAddOneCell(26, 2, 1, 15, 5.5, 17.2, 28, array(22, 27));
+
+		$this->actionAddOneCell(27, 2, 1, 0, 23.5, 17, 25.5, array(23, 24, 25, 26));
+
+
+//		$this->actionAddOneCell(14,1,1,	1.45,	0,		8.53,	3,		array(15, 16));
+//		$this->actionAddOneCell(15,1,1,	0,		1.45,	1.45,	11.29,	array(14, 17, 18, 19, 20, 21));
+//		$this->actionAddOneCell(16,1,1,	6.5,	3,		8,		11.29,	array(14, 17, 18, 19, 20, 21));
+//		$this->actionAddOneCell(17,1,1,	1.45,	3,		6.5,	4.5,	array(15, 16));
+//		$this->actionAddOneCell(18,1,1,	1.45,	4.5,	6.5,	6,		array(15, 16));
+//		$this->actionAddOneCell(19,1,1,	1.45,	6,		6.5,	7.5,	array(15, 16));
+//		$this->actionAddOneCell(20,1,1,	1.45,	8.5,	6.5,	9,		array(15, 16));
+//		$this->actionAddOneCell(21,1,1,	1.45,	10,		6.5,	11,		array(15, 16));
 
 
 //		$this->actionAddOneCell(1,1,1,	0,		0,	3.5,	4.2,	array(7));

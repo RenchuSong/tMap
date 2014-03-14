@@ -64,6 +64,13 @@ class WifiController extends RController {
 	public function actionWifiJudgePosition() {
 		/* TODO verify authority, only our application users can use the wifi positioning function */
 		if (Rays::isPost()) {
+			echo json_encode(array("buildingId" => 2,
+					"floor" => 1,
+					"x" => 11, "y" => 3.5,
+				)
+			);
+			exit;
+
 //			$wifiPair = array(
 ////				"00:23:5d:8c:08:43" => -93,
 ////				"00:23:5d:8c:08:42" => -93,
