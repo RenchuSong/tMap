@@ -20,7 +20,7 @@ return array(
 //	'authProvider' => 'User',
 
 	'db' => array(
-		'host' => 'localhost',
+		'host' => '127.0.0.1',
 		'user' => 'root',
 		'password' => '8dxkc8x',
 		'db_name' => 'tMap',

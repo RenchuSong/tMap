@@ -320,33 +320,37 @@ public class Navigating extends BaseActivity implements SensorActivity {
 		}
 	}
 	
+	private long timeStamp = 0;
 	@Override
 	public void SensorChanged(int id) {
 		// TODO Auto-generated method stub
 		switch (id) {
 		case ORIENTATION_SENSOR_ID:
 			if (this.mode3D && this.map3DComplete) {
-				//=========================== Map View Angle Change ============================
-				// Y direction
-				float uper = -90 - oriSensor.sensorValues[1];
-					
-				// bias
-				float orientationBias = Environment.getInstance(this).orientationBias;
-			   	// camera matrix
-				float[] camera = new float[]{
-						Environment.getInstance(this).x, 
-						Environment.getInstance(this).y, 
-						1.7f, 
-						Environment.getInstance(this).x + (float)(Math.sin((oriSensor.sensorValues[0] + orientationBias) / 180 * Math.PI)*Math.cos(uper / 180 * Math.PI)),
-						Environment.getInstance(this).y + (float)(Math.cos((oriSensor.sensorValues[0] + orientationBias) / 180 * Math.PI)*Math.cos(uper / 180 * Math.PI)), 
-						1.7f + (float)Math.sin(uper / 180 * Math.PI), 
-						0, 
-						0, 
-						3
-				};
-					
-				mapSurface.setCamera(camera);
-				Environment.getInstance().direction = oriSensor.sensorValues[0] + orientationBias;
+				//=========================== Map View Angle Change ============================		
+				long nowTime = System.currentTimeMillis();
+				if (nowTime - timeStamp > 50) {
+					// Y direction
+					float uper = -90 - oriSensor.sensorValues[1];
+						
+					// bias
+					float orientationBias = Environment.getInstance(this).orientationBias;
+				   	// camera matrix
+					float[] camera = new float[]{
+							Environment.getInstance(this).x, 
+							Environment.getInstance(this).y, 
+							1.7f, 
+							Environment.getInstance(this).x + (float)(Math.sin((oriSensor.sensorValues[0] + orientationBias) / 180 * Math.PI)*Math.cos(uper / 180 * Math.PI)),
+							Environment.getInstance(this).y + (float)(Math.cos((oriSensor.sensorValues[0] + orientationBias) / 180 * Math.PI)*Math.cos(uper / 180 * Math.PI)), 
+							1.7f + (float)Math.sin(uper / 180 * Math.PI), 
+							0, 
+							0, 
+							3
+					};
+					mapSurface.setCamera(camera);
+					timeStamp = nowTime;
+					Environment.getInstance().direction = oriSensor.sensorValues[0] + orientationBias;
+				}
 				
 				//=========================== Compass Direction Change ==========================
 				Matrix mt = new Matrix();

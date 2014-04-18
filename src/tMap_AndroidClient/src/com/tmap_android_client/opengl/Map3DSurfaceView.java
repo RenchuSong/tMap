@@ -15,6 +15,7 @@ import android.graphics.BitmapFactory;
 import android.opengl.GLSurfaceView;
 import android.opengl.GLU;
 import android.opengl.GLUtils;
+import android.util.Log;
 import android.view.MotionEvent;
 
 public class Map3DSurfaceView extends GLSurfaceView{
@@ -106,9 +107,13 @@ public class Map3DSurfaceView extends GLSurfaceView{
 //	    gl.glLightfv(GL10.GL_LIGHT0, GL10.GL_SPECULAR, specularParams,0);   
 	}
     
+    public static GL10 gl;
+    private boolean drawed = false;
 	private class SceneRenderer implements GLSurfaceView.Renderer {   
     	
         public void onDrawFrame(GL10 gl) {
+
+        	Log.v("dataing3", System.currentTimeMillis() + "");
     		gl.glEnable(GL10.GL_CULL_FACE);
     		
             //gl.glShadeModel(GL10.GL_SMOOTH);
@@ -126,10 +131,10 @@ public class Map3DSurfaceView extends GLSurfaceView{
             gl.glLoadIdentity();    
             
             GLU.gluLookAt (
-            	gl, 
-            	gluX, gluY, gluZ,
-            	targetX, targetY, targetZ,
-            	upX, upY, upZ
+                	gl, 
+                	gluX, gluY, gluZ,
+                	targetX, targetY, targetZ,
+                	upX, upY, upZ
             );  
             
             // draw geometries
@@ -143,6 +148,8 @@ public class Map3DSurfaceView extends GLSurfaceView{
                 	geo.drawSelf(gl);
                 }
             }
+            
+            
         }
 
         public void onSurfaceChanged(GL10 gl, int width, int height) {
