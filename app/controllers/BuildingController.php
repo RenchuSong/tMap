@@ -13,6 +13,31 @@ class BuildingController extends RController {
 	}
 
 	/**
+	 * TODO Check auth before invoke actions
+	 */
+//	public function beforeAction() {
+//
+//	}
+
+	/**
+	 * Add a building
+	 */
+	public function actionAddBuilding($longitude, $latitude, $rotate = 0) {
+		if (Building::find("latitude", $latitude)->where("[longitude] = ?", $longitude)->first() === null) {
+			$building = new Building();
+			$building->latitude = $latitude;
+			$building->longitude = $longitude;
+			$building->rotate = is_numeric($rotate) ? $rotate : 0;
+			$building->attributes = array();
+			$building->packAttributes();
+			$building->save();
+			echo json_encode(array("response" => "ok"));
+			return;
+		}
+		throw new RException("building exists");
+	}
+
+	/**
 	 * Update building Wifi
 	 */
 	public function actionBuildingUpdateWifi($buildingId = null, $floor = null) {
