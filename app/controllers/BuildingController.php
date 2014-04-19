@@ -28,12 +28,7 @@ class BuildingController extends RController {
 			$building->latitude = $latitude;
 			$building->longitude = $longitude;
 			$building->rotate = is_numeric($rotate) ? $rotate : 0;
-			if (Rays::isPost()) {
-				$building->attributes = json_decode(Rays::getParam("json", "[]"));
-			} else {
-				$building->attributes = array();
-			}
-			$building->pack();
+			$building->attributes = Rays::getParam("attributes", "[]");
 			$building->save();
 			echo json_encode(array("response" => "ok"));
 			return;
@@ -44,8 +39,25 @@ class BuildingController extends RController {
 	/**
 	 * Add a room
 	 */
-	public function actionAddRoom($buildingId, $floor, $rotate, $x, $y) {
-		
+	public function actionAddRoom($buildingId, $floor, $x, $y, $rotate = 0) {
+		if (Room::find("buildingId", $buildingId)->where("[floor] = ?", $floor)->where("[x] = ?", $x)->where("[y] = ?", $y)->first() === null) {
+			if (Building::find("id", $buildingId)->first() === null) {
+				throw new RException("building not exist");
+			}
+			$room = new Room();
+			$room->buildingId = $buildingId;
+			$room->floor = $floor;
+			$room->rotate = is_numeric($rotate) ? $rotate : 0;
+			$room->x = $x;
+			$room->y = $y;
+			$room->attributes = Rays::getParam("attributes", "[]");
+			$room->boundary = Rays::getParam("boundary", "[]");
+			$room->model = Rays::getParam("model", "[]");
+			$room->save();
+			echo json_encode(array("response" => "ok"));
+			return;
+		}
+		throw new RException("room exists");
 	}
 
 	/**
