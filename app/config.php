@@ -24,7 +24,7 @@ return array(
 		'user' => 'root',
 		'password' => '8dxkc8x',
 		'db_name' => 'tMap',
-		'table_prefix' => '',
+		'table_prefix' => 'tmap_',
 		'charset' => 'utf8',
 	),
 

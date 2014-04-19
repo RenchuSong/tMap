@@ -10,7 +10,7 @@ class Building extends RModel{
 	public $id, $latitude, $longitude, $rotate;
 	public $attributes = null;							// Other attributes describing the building
 
-	public static $table = "tmap_building";
+	public static $table = "building";
 	public static $primary_key = "id";
 	public static $mapping = array(
 		"id" => "id",
@@ -23,7 +23,7 @@ class Building extends RModel{
 	/**
 	 * Unpack attributes
 	 */
-	public function unpackAttributes() {
+	public function unpack() {
 		if ($this->attributes !== null && !is_array($this->attributes)) {
 			$this->attributes = json_decode($this->attributes);
 		}
@@ -32,7 +32,7 @@ class Building extends RModel{
 	/**
 	 * Pack attributes
 	 */
-	public function packAttributes() {
+	public function pack() {
 		if (is_array($this->attributes)) {
 			$this->attributes = json_encode($this->attributes);
 		}

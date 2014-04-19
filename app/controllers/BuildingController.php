@@ -28,13 +28,24 @@ class BuildingController extends RController {
 			$building->latitude = $latitude;
 			$building->longitude = $longitude;
 			$building->rotate = is_numeric($rotate) ? $rotate : 0;
-			$building->attributes = array();
-			$building->packAttributes();
+			if (Rays::isPost()) {
+				$building->attributes = json_decode(Rays::getParam("json", "[]"));
+			} else {
+				$building->attributes = array();
+			}
+			$building->pack();
 			$building->save();
 			echo json_encode(array("response" => "ok"));
 			return;
 		}
 		throw new RException("building exists");
+	}
+
+	/**
+	 * Add a room
+	 */
+	public function actionAddRoom($buildingId, $floor, $rotate, $x, $y) {
+		
 	}
 
 	/**
