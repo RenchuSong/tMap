@@ -14,9 +14,47 @@ class WifiController extends RController {
 		echo json_encode(array("response" => "Hello tMap!"));
 	}
 
+	/**
+	 * TODO Check auth before invoke actions
+	 */
+//	public function beforeAction() {
+//
+//	}
+
+
 	public function actionShowSample($sampleId = -1) {
 		$sample = new WiFiSample();
 		echo json_encode($sample->getWiFiSample($sampleId));
+	}
+
+	/**
+	 * Add a new wifi sample point to database
+	 */
+	public function actionUploadWifi($roomId, $x, $y, $z) {
+		if (Rays::isPost()) {
+			$wifiData = json_decode(Rays::getParam("wifiData", "[]"));
+			if (!count($wifiData)) {
+				throw new RException("wifi empty error");
+			}
+			$wifiPoint = WifiFingerprint::find("roomId", $roomId)->where("[x] = ?", $x)->where("[y] = ?", $y)->where("[z] = ?", $z)->first();
+			if ($wifiPoint === null) {
+				$wifiPoint = new WifiFingerprint();
+				$wifiPoint->roomId = $roomId;
+				$wifiPoint->x = $x;
+				$wifiPoint->y = $y;
+				$wifiPoint->z = $z;
+				$wifiPoint->wifiData = array($wifiData);
+				$wifiPoint->pack();
+			} else {
+				$wifiPoint->unpack();
+				array_push($wifiPoint->wifiData, $wifiData);
+				$wifiPoint->pack();
+			}
+			$wifiPoint->save();
+			echo json_encode(array("response" => "ok"));
+		} else {
+			throw new RException("no wifi data received");
+		}
 	}
 
 	/**

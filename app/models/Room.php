@@ -6,6 +6,7 @@
  * Time: 4:59 PM
  */
 
+// New Version
 class Room extends RModel{
 	public $id, $buildingId, $floor, $rotate, $x, $y, $model;
 	public $attributes = null, $boundary = null;
