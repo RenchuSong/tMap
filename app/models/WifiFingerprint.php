@@ -7,6 +7,8 @@
  */
 
 class WifiFingerprint extends RModel {
+	const EBSILON = 0.0001;
+
 	public $id, $roomId, $x, $y, $z, $wifiData;
 
 	public static $table = "wifi_fingerprint";
@@ -36,5 +38,16 @@ class WifiFingerprint extends RModel {
 		if (is_array($this->wifiData)) {
 			$this->wifiData = json_encode($this->wifiData);
 		}
+	}
+
+	public static function getWifiFingerprintPoint($roomId, $x, $y, $z) {
+		return WifiFingerprint::find("roomId", $roomId)
+			->where("[x] > ?", $x - WifiFingerprint::EBSILON)
+			->where("[x] < ?", $x + WifiFingerprint::EBSILON)
+			->where("[y] > ?", $y - WifiFingerprint::EBSILON)
+			->where("[y] < ?", $y + WifiFingerprint::EBSILON)
+			->where("[z] > ?", $z - WifiFingerprint::EBSILON)
+			->where("[z] < ?", $z + WifiFingerprint::EBSILON)
+			->first();
 	}
 }

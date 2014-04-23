@@ -36,15 +36,8 @@ class WifiController extends RController {
 			if (!count($wifiData)) {
 				throw new RException("wifi empty error");
 			}
-			$ebsilon = 0.0001;
-			$wifiPoint = WifiFingerprint::find("roomId", $roomId)
-				->where("[x] > ?", $x - $ebsilon)
-				->where("[x] < ?", $x + $ebsilon)
-				->where("[y] > ?", $y - $ebsilon)
-				->where("[y] < ?", $y + $ebsilon)
-				->where("[z] > ?", $z - $ebsilon)
-				->where("[z] < ?", $z + $ebsilon)
-				->first();
+
+			$wifiPoint = WifiFingerprint::getWifiFingerprintPoint($roomId, $x, $y, $z);
 			if ($wifiPoint === null) {
 				$wifiPoint = new WifiFingerprint();
 				$wifiPoint->roomId = $roomId;
