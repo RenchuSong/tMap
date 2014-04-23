@@ -6,6 +6,7 @@
  * Time: 2:57 PM
  */
 
+// TODO 老版本代码
 class UserLog extends RModel{
 	public $id, $userPhone, $buildingId, $floor, $x, $y;
 

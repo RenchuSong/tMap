@@ -6,6 +6,7 @@
  * Time: 4:18 PM
  */
 
+// TODO 老版本代码
 require_once(dirname(__FILE__) . '/../util/Util.php');
 
 class WiFiSample extends RModel {

@@ -6,6 +6,7 @@
  * Time: 3:26 PM
  */
 
+// TODO 老版本代码
 class MeetPersonRequest {
 	public static $UN_PROCESSED = 1;
 	public static $ACCEPTED = 2;

@@ -6,6 +6,7 @@
  * Time: 下午8:26
  */
 
+// TODO 老版本代码
 class Point {
 	public $x, $y, $floor;
 	public function Point($x,$y,$floor) {

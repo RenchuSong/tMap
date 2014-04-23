@@ -6,6 +6,7 @@
  * Time: 下午8:43
  */
 
+// TODO 老版本代码
 class BaseStaticFun {
 	public  static function  getDistance($x0 , $y0, $x, $y) {
 		return sqrt(($x0 - $x)*($x0 - $x) + ($y0 - $y)*($y0 - $y));

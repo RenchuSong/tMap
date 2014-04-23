@@ -6,6 +6,7 @@
  * Time: 11:11 AM
  */
 
+// TODO 老版本代码
 class BuildingWifiList extends RModel {
 	public $id, $buildingId, $floor, $wifiPack;
 	public $wifiList = array();								   // Wifi name list that can be received within the building

@@ -6,6 +6,7 @@
  * Time: 10:11 PM
  */
 
+// TODO 老版本代码
 class Cell extends RModel {
 	public $id, $buildingId, $floorId, $shapePack, $adjacentPack, $minX, $minY, $maxX, $maxY;
 	public $verticeList = array();

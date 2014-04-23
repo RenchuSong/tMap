@@ -6,6 +6,7 @@
  * Time: 5:09 PM
  */
 
+// TODO 老版本代码
 class FloorModel extends RModel{
 	public $id, $buildingId, $floorId, $modelPack;
 

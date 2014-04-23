@@ -6,6 +6,7 @@
  * Time: 2:32 PM
  */
 
+// TODO 老版本代码
 class Location {
 	public $buildingId, $floor, $x, $y;
 	public $score;

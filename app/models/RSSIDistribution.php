@@ -6,6 +6,7 @@
  * Time: 9:12 PM
  */
 
+// TODO 老版本代码
 class RSSIDistribution extends RModel{
 	public $id, $buildingId, $floor, $x, $y, $bssid, $distributionPack;
 	public $distribution = array();	// 0 - 1, 2 - 3, 4 - 5, ..., 108 - 109

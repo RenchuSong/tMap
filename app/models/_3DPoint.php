@@ -6,6 +6,7 @@
  * Time: 下午7:50
  */
 
+// TODO 老版本代码
 class _3DPoint {
 	public $x, $y, $z;
 	public function _3DPoint($x,$y,$z) {

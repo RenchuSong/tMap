@@ -6,7 +6,6 @@
  * Time: 7:59 PM
  */
 
-// New Version
 class WifiFingerprint extends RModel {
 	public $id, $roomId, $x, $y, $z, $wifiData;
 

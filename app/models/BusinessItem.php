@@ -6,6 +6,7 @@
  * Time: 11:46 PM
  */
 
+// TODO 老版本代码
 class BusinessItem extends RModel{
 	public $id, $buildingId, $floor, $x, $y, $title, $type, $content, $imageURL, $extra;
 

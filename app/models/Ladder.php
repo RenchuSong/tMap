@@ -6,6 +6,7 @@
  * Time: 下午11:13
  */
 
+// TODO 老版本代码
 class Ladder extends RModel {
 	public $id, $shapePack, $lowCellId, $highCellId, $buildingId, $lowPoint, $highPoint;
 	public $verticeList = array();

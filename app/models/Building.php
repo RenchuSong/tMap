@@ -6,8 +6,6 @@
  * Time: 4:11 PM
  */
 
-
-// New Version
 class Building extends RModel{
 	public $id, $latitude, $longitude, $rotate;
 	public $attributes = null;							// Other attributes describing the building
