@@ -40,6 +40,9 @@ class WifiFingerprint extends RModel {
 		}
 	}
 
+	/**
+	 * Get wifi fingerprint point with x, y, z. Take float error into consideration, use ebsilon to restrict a range
+	 */
 	public static function getWifiFingerprintPoint($roomId, $x, $y, $z) {
 		return WifiFingerprint::find("roomId", $roomId)
 			->where("[x] > ?", $x - WifiFingerprint::EBSILON)
