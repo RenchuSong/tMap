@@ -58,6 +58,32 @@ class WifiController extends RController {
 		}
 	}
 
+	public function actionRoomGetApList($roomId) {
+		if (Room::get($roomId) === null) {
+			throw new RException("Room not exist");
+		}
+		$roomApList = RoomApList::find("roomId", $roomId)->first();
+		if ($roomApList === null) {
+			$roomApList = new RoomApList();
+			$roomApList->roomId = $roomId;
+		}
+		$roomApList->apList = array();
+		$wifiFingerPrint = WifiFingerprint::find("roomId", $roomId)->all();
+		foreach ($wifiFingerPrint as $point) {
+			$point->unpack();
+			foreach ($point->wifiData as $wifiScanItem) {
+				foreach ($wifiScanItem as $bssidrssiPair) {
+					array_push($roomApList->apList, $bssidrssiPair->bssid);
+				}
+			}
+		}
+
+		$roomApList->apList = array_unique($roomApList->apList);
+		$roomApList->pack();
+		$roomApList->save();
+		echo json_encode(array("response" => "ok"));
+	}
+
 	public function actionUpdateDistribution($buildingId, $floor, $x, $y) {
 		RSSIDistribution::getRSSIDistribution($buildingId, $floor, $x, $y);
 	}
