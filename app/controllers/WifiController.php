@@ -58,6 +58,9 @@ class WifiController extends RController {
 		}
 	}
 
+	/**
+	 * Get wifi ap list from a room
+	 */
 	public function actionRoomGetApList($roomId) {
 		if (Room::get($roomId) === null) {
 			throw new RException("Room not exist");
@@ -82,6 +85,10 @@ class WifiController extends RController {
 		$roomApList->pack();
 		$roomApList->save();
 		echo json_encode(array("response" => "ok"));
+	}
+
+	public function actionWifiRssiDistribution($roomId) {
+
 	}
 
 	public function actionUpdateDistribution($buildingId, $floor, $x, $y) {
