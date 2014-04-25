@@ -6,7 +6,9 @@
  * Time: 2:29 PM
  */
 
-class RpApList extends RModel{
+class RpApList extends RModel {
+	const EBSILON = 0.0001;
+
 	public $id, $roomId, $x, $y, $z, $apList;
 
 	public static $table = "rp_ap_list";
@@ -36,5 +38,19 @@ class RpApList extends RModel{
 		if (is_array($this->apList)) {
 			$this->apList = json_encode($this->apList);
 		}
+	}
+
+	/**
+	 * Get wifi fingerprint point with x, y, z. Take float error into consideration, use ebsilon to restrict a range
+	 */
+	public static function getRpApList($roomId, $x, $y, $z) {
+		return RpApList::find("roomId", $roomId)
+			->where("[x] > ?", $x - RpApList::EBSILON)
+			->where("[x] < ?", $x + RpApList::EBSILON)
+			->where("[y] > ?", $y - RpApList::EBSILON)
+			->where("[y] < ?", $y + RpApList::EBSILON)
+			->where("[z] > ?", $z - RpApList::EBSILON)
+			->where("[z] < ?", $z + RpApList::EBSILON)
+			->first();
 	}
 } 

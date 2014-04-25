@@ -7,6 +7,8 @@
  */
 
 class WifiRssiDistribution extends RModel {
+	const EBSILON = 0.0001;
+
 	public $id, $roomId, $x, $y, $z, $bssid, $distribution;
 
 	public static $table = "wifi_rssi_distribution";
@@ -44,5 +46,19 @@ class WifiRssiDistribution extends RModel {
 	 */
 	public static function standardRssi($rssi) {
 		return $rssi;
+	}
+
+	/**
+	 * Get Wifi Rssi Distribution of an RP
+	 */
+	public static function getWifiRssiDistribution($roomId, $x, $y, $z) {
+		return WifiRssiDistribution::find("roomId", $roomId)
+			->where("[x] > ?", $x - WifiRssiDistribution::EBSILON)
+			->where("[x] < ?", $x + WifiRssiDistribution::EBSILON)
+			->where("[y] > ?", $y - WifiRssiDistribution::EBSILON)
+			->where("[y] < ?", $y + WifiRssiDistribution::EBSILON)
+			->where("[z] > ?", $z - WifiRssiDistribution::EBSILON)
+			->where("[z] < ?", $z + WifiRssiDistribution::EBSILON)
+			->all();
 	}
 } 

@@ -61,6 +61,37 @@ class BuildingController extends RController {
 	}
 
 	/**
+	 * Add a RP to a room
+	 */
+	public function actionAddRp($roomId, $x, $y, $z) {
+		$room = Room::get($roomId);
+		if ($room === null) {
+			throw new RException("room not found");
+		}
+		$rpList = RoomRpList::get($roomId);
+		if ($rpList === null) {
+			$rpList = new RoomRpList();
+			$rpList->roomId = $roomId;
+			$rpList->rpList = array();
+		}
+		$rpList->unpack();
+		$rp = new Space3DPoint($x, $y, $z);
+		$flag = true;
+		foreach ($rpList->rpList as $tmpRp) {
+			if ($rp->equalTo($tmpRp)) {
+				$flag = false;
+				break;
+			}
+		}
+		if ($flag) {
+			array_push($rpList->rpList, $rp);
+		}
+		$rpList->pack();
+		$rpList->save();
+		echo json_encode(array("response" => "ok"));
+	}
+
+	/**
 	 * Update building Wifi
 	 */
 	public function actionBuildingUpdateWifi($buildingId = null, $floor = null) {
