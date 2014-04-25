@@ -21,12 +21,6 @@ class WifiController extends RController {
 //
 //	}
 
-
-	public function actionShowSample($sampleId = -1) {
-		$sample = new WiFiSample();
-		echo json_encode($sample->getWiFiSample($sampleId));
-	}
-
 	/**
 	 * Add a new wifi sample point to database
 	 */
@@ -180,10 +174,17 @@ class WifiController extends RController {
 		echo json_encode(array("response" => "ok"));
 	}
 
+	/**
+	 * Wi-Fi locating algorithm
+	 */
+	public function actionWifiLocating() {
+		if (!Rays::isPost()) {
+			$wifiData = json_decode('[{"bssid":"80:56:f2:ea:2f:df","rssi":-67},{"bssid":"dc:7b:94:34:aa:40","rssi":-81},{"bssid":"d0:57:4c:cb:8e:10","rssi":-91},{"bssid":"dc:7b:94:35:9e:e0","rssi":-87},{"bssid":"dc:7b:94:34:86:e0","rssi":-71},{"bssid":"e0:05:c5:ba:99:bc","rssi":-85},{"bssid":"dc:7b:94:34:86:e6","rssi":-71},{"bssid":"5c:63:bf:3f:12:f4","rssi":-72},{"bssid":"dc:7b:94:34:aa:43","rssi":-74},{"bssid":"d0:57:4c:cb:7c:03","rssi":-77},{"bssid":"40:16:9f:a6:b2:66","rssi":-83},{"bssid":"dc:7b:94:35:be:a3","rssi":-87},{"bssid":"d0:57:4c:cb:bc:06","rssi":-88},{"bssid":"c8:d7:19:2e:53:4b","rssi":-90},{"bssid":"d0:57:4c:cb:7c:00","rssi":-78},{"bssid":"00:15:e9:e0:2b:bf","rssi":-82},{"bssid":"d0:57:4c:cb:8e:12","rssi":-86},{"bssid":"dc:7b:94:34:86:e3","rssi":-78},{"bssid":"dc:7b:94:34:aa:46","rssi":-80},{"bssid":"d0:57:4c:cb:bc:0c","rssi":-89},{"bssid":"d0:57:4c:ca:6b:23","rssi":-86},{"bssid":"dc:7b:94:34:aa:42","rssi":-75},{"bssid":"dc:7b:94:34:86:e2","rssi":-76},{"bssid":"d0:57:4c:ca:6b:20","rssi":-87},{"bssid":"dc:7b:94:35:be:a2","rssi":-90}]');
+			$wifiData;
 
-
-	public function actionUpdateDistribution($buildingId, $floor, $x, $y) {
-		RSSIDistribution::getRSSIDistribution($buildingId, $floor, $x, $y);
+		} else {
+			throw new RException("no data received");
+		}
 	}
 
 //	public function actionWatch($x1, $y1, $x2, $y2) {
