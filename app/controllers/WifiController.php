@@ -59,18 +59,105 @@ class WifiController extends RController {
 	}
 
 	/**
-	 * Get wifi ap list from a room
+	 * Filter out temperate aps and get distribution
+	 */
+	public function actionWifiRssiDistribution($roomId, $threshold) {
+		// delete the old distribution
+		$oldDistribution = WifiRssiDistribution::find("roomId", $roomId)->all();
+		foreach ($oldDistribution as $item) {
+			$item->delete();
+		}
+
+		// get data
+		$wifiFingerPrint = WifiFingerprint::find("roomId", $roomId)->all();
+
+		foreach ($wifiFingerPrint as $point) {
+			// count probability of each ap
+			$apList = array();
+			$point->unpack();
+			foreach ($point->wifiData as $wifiScanItem) {
+				foreach ($wifiScanItem as $bssidrssiPair) {
+					if (!isset($apList[$bssidrssiPair->bssid])) {
+						$apList[$bssidrssiPair->bssid] = 1;
+					} else {
+						++$apList[$bssidrssiPair->bssid];
+					}
+				}
+			}
+			// get usable ap list, filter out temperate aps
+			foreach ($apList as $key => $value) {
+				$apList[$key] /= count($point->wifiData);
+				if ($apList[$key] < $threshold) {
+					unset($apList[$key]);
+				}
+			}
+			// count wifi distribution
+			foreach ($apList as $key => $value) {
+				$apList[$key] = array();
+				for ($i = 0; $i > -120; $i--) {
+					$apList[$key][$i] = 0;
+				}
+				$apList[$key][-120] = count($point->wifiData);
+			}
+
+			foreach ($point->wifiData as $wifiScanItem) {
+				foreach ($wifiScanItem as $bssidrssiPair) {
+					if (isset($apList[$bssidrssiPair->bssid])) {
+						$apList[$bssidrssiPair->bssid][WifiRssiDistribution::standardRssi($bssidrssiPair->rssi)]++;
+						$apList[$bssidrssiPair->bssid][-120]--;
+					}
+				}
+			}
+
+			foreach ($apList as $key => $value) {
+				for ($i = 0; $i >= -120; $i--) {
+					$apList[$key][$i] /= count($point->wifiData);
+				}
+
+				$tmpList = array();
+				// smoothing
+				for ($times = 0; $times < 2; ++$times) {
+					$tmpList[0] = 0;
+
+					for ($i = -1; $i >= -115; $i--) {
+						$tmpList[$i] = ($apList[$key][$i + 1] + $apList[$key][$i] + $apList[$key][$i - 1]) / 3;
+					}
+					for ($i = 0; $i >= -115; $i--) {
+						$apList[$key][$i] = $tmpList[$i];
+					}
+				}
+
+				$distribution = new WifiRssiDistribution();
+				$distribution->roomId = $roomId;
+				$distribution->x = $point->x;
+				$distribution->y = $point->y;
+				$distribution->z = $point->z;
+				$distribution->bssid = $key;
+				$distribution->distribution = $apList[$key];
+				$distribution->pack();
+				$distribution->save();
+			}
+		}
+		echo json_encode(array("response" => "ok"));
+	}
+
+	/**
+	 * Get wifi AP list of a room
 	 */
 	public function actionRoomGetApList($roomId) {
 		if (Room::get($roomId) === null) {
 			throw new RException("Room not exist");
 		}
+
 		$roomApList = RoomApList::find("roomId", $roomId)->first();
 		if ($roomApList === null) {
 			$roomApList = new RoomApList();
 			$roomApList->roomId = $roomId;
 		}
 		$roomApList->apList = array();
+
+		// First method: Get AP list from original wifi fingerprint
+		/*
 		$wifiFingerPrint = WifiFingerprint::find("roomId", $roomId)->all();
 		foreach ($wifiFingerPrint as $point) {
 			$point->unpack();
@@ -79,6 +166,12 @@ class WifiController extends RController {
 					array_push($roomApList->apList, $bssidrssiPair->bssid);
 				}
 			}
+		}*/
+
+		// Second method: Get AP from distribution after filtering out temperate aps
+		$distribution = WifiRssiDistribution::find("roomId", $roomId)->all();
+		foreach ($distribution as $item) {
+			array_push($roomApList->apList, $item->bssid);
 		}
 
 		$roomApList->apList = array_unique($roomApList->apList);
@@ -87,9 +180,7 @@ class WifiController extends RController {
 		echo json_encode(array("response" => "ok"));
 	}
 
-	public function actionWifiRssiDistribution($roomId) {
 
-	}
 
 	public function actionUpdateDistribution($buildingId, $floor, $x, $y) {
 		RSSIDistribution::getRSSIDistribution($buildingId, $floor, $x, $y);

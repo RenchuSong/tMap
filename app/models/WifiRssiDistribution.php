@@ -17,6 +17,7 @@ class WifiRssiDistribution extends RModel {
 		"x" => "x",
 		"y" => "y",
 		"z" => "z",
+		"bssid" => "bssid",
 		"distribution" => "distribution",
 	);
 
@@ -36,5 +37,12 @@ class WifiRssiDistribution extends RModel {
 		if (is_array($this->distribution)) {
 			$this->distribution = json_encode($this->distribution);
 		}
+	}
+
+	/**
+	 * Get drawer of the rssi value
+	 */
+	public static function standardRssi($rssi) {
+		return $rssi;
 	}
 } 

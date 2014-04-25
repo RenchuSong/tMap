@@ -19,23 +19,23 @@ return array(
 
 //	'authProvider' => 'User',
 
-	'db' => array(
-		'host' => '10.131.237.46:3306',
-		'user' => 'tmap',
-		'password' => '3289599',
-		'db_name' => 'tmap',
-		'table_prefix' => 'tmap_',
-		'charset' => 'utf8',
-	),
-
 //	'db' => array(
-//		'host' => 'localhost',
-//		'user' => 'root',
-//		'password' => '8dxkc8x',
-//		'db_name' => 'tMap',
+//		'host' => '10.131.237.46:3306',
+//		'user' => 'tmap',
+//		'password' => '3289599',
+//		'db_name' => 'tmap',
 //		'table_prefix' => 'tmap_',
 //		'charset' => 'utf8',
 //	),
+
+	'db' => array(
+		'host' => 'localhost',
+		'user' => 'root',
+		'password' => '8dxkc8x',
+		'db_name' => 'tMap',
+		'table_prefix' => 'tmap_',
+		'charset' => 'utf8',
+	),
 
 	'cache' => array(
 		'cache_dir' => '/cache',
