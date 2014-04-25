@@ -22,7 +22,7 @@ class RoomApList extends RModel{
 	 */
 	public function unpack() {
 		if ($this->apList !== null && !is_array($this->apList)) {
-			$this->apList = json_decode($this->apList);
+			$this->apList = json_decode($this->apList, true);
 		}
 	}
 

@@ -6,11 +6,19 @@
  * Time: 2:32 PM
  */
 
-// TODO 老版本代码
 class Location {
-	public $buildingId, $floor, $x, $y;
+	const MINIMAL_SCORE = -1e100;
+
+	public $buildingId, $roomId, $x, $y, $z;
 	public $score;
 
+	public function Location($buildingId, $roomId, $x, $y, $z) {
+		$this->buildingId = $buildingId;
+		$this->roomId = $roomId;
+		$this->x = $x;
+		$this->y = $y;
+		$this->z = $z;
+	}
 	/**
 	 * judge which location is better
 	 */

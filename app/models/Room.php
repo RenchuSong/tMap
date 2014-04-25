@@ -29,10 +29,10 @@ class Room extends RModel{
 	 */
 	public function unpack() {
 		if ($this->attributes !== null && !is_array($this->attributes)) {
-			$this->attributes = json_decode($this->attributes);
+			$this->attributes = json_decode($this->attributes, true);
 		}
 		if ($this->boundary !== null && !is_array($this->boundary)) {
-			$this->boundary = json_decode($this->boundary);
+			$this->boundary = json_decode($this->boundary, true);
 		}
 	}
 

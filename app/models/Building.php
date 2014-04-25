@@ -25,7 +25,7 @@ class Building extends RModel{
 	 */
 	public function unpack() {
 		if ($this->attributes !== null && !is_array($this->attributes)) {
-			$this->attributes = json_decode($this->attributes);
+			$this->attributes = json_decode($this->attributes, true);
 		}
 	}
 

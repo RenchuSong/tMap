@@ -28,7 +28,7 @@ class WifiRssiDistribution extends RModel {
 	 */
 	public function unpack() {
 		if ($this->distribution !== null && !is_array($this->distribution)) {
-			$this->distribution = json_decode($this->distribution);
+			$this->distribution = json_decode($this->distribution, true);
 		}
 	}
 
