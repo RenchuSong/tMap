@@ -182,24 +182,31 @@ class WifiController extends RController {
 			throw new RException("Room not exist");
 		}
 
-		$rpApList = RpApList::getRpApList($roomId, $x, $y, $z);
-		if ($rpApList === null) {
-			$rpApList = new RpApList();
-			$rpApList->roomId = $roomId;
-			$rpApList->x = $x;
-			$rpApList->y = $y;
-			$rpApList->z = $z;
+		$roomRpList = RoomRpList::find("roomId", $roomId)->first();
+		if (Room::get($roomId) === null) {
+			throw new RException("Room rp list not created");
 		}
-		$rpApList->apList = array();
+		$roomRpList->unpack();
+		foreach ($roomRpList->rpList as $rp) {
+			$rpApList = RpApList::getRpApList($roomId, $rp->x, $rp->y, $rp->z);
+			if ($rpApList === null) {
+				$rpApList = new RpApList();
+				$rpApList->roomId = $roomId;
+				$rpApList->x = $rp->x;
+				$rpApList->y = $rp->y;
+				$rpApList->z = $rp->z;
+			}
+			$rpApList->apList = array();
 
-		$distribution = WifiRssiDistribution::getWifiRssiDistribution($roomId, $x, $y, $z);
-		foreach ($distribution as $item) {
-			array_push($rpApList->apList, $item->bssid);
+			$distribution = WifiRssiDistribution::getWifiRssiDistribution($roomId, $rp->x, $rp->y, $rp->z);
+			foreach ($distribution as $item) {
+				array_push($rpApList->apList, $item->bssid);
+			}
+
+			$rpApList->apList = array_unique($rpApList->apList);
+			$rpApList->pack();
+			$rpApList->save();
 		}
-
-		$rpApList->apList = array_unique($rpApList->apList);
-		$rpApList->pack();
-		$rpApList->save();
 
 		echo json_encode(array("response" => "ok"));
 	}
