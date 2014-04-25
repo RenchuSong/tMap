@@ -258,8 +258,8 @@ class WifiController extends RController {
 				// Merge potential APs not scanned into AP list we need to take into consideration
 				$matrixApList = $usableApList;
 
-				foreach ($roomRpList->rpList as $point) {
-					$rpApList = RpApList::getRpApList($room->id, $point->x, $point->y, $point->z);
+				foreach ($roomRpList->rpList as $rp) {
+					$rpApList = RpApList::getRpApList($room->id, $rp->x, $rp->y, $rp->z);
 					$rpApList->unpack();
 					if (count(array_intersect($rpApList->apList, $usableApList)) / count($usableApList) > 0.7) {
 						$matrixApList = array_merge($matrixApList, $rpApList->apList);
@@ -268,10 +268,32 @@ class WifiController extends RController {
 
 				$matrixApList = array_unique($matrixApList);
 
-				//
+				// Get probability matrix
+				$probMatrix = array();
+				foreach ($roomRpList->rpList as $rp) {
+					$distribution = WifiRssiDistribution::getWifiRssiDistribution($room->id, $rp->x, $rp->y, $rp->z);
+					$rpApProb = array();
+					$rpApDistribution = array();
+					foreach ($distribution as $bssidDistribution) {
+						$rpApDistribution[$bssidDistribution->bssid] = $bssidDistribution;
+					}
+					foreach ($matrixApList as $ap) {
+						// received RSSI of an ap
+						if (in_array($ap, $receiveApList)) {
+							$rssi = $wifiData[$ap];
+						} else {
+							$rssi = -120;
+						}
 
-				var_dump($usableApList);echo "<br/><br/>";
-				var_dump($matrixApList);
+						if (isset($rpApDistribution[$ap])) {
+							array_push($rpApProb, $rpApDistribution[$ap]->distribution[$rssi]);
+						} else {
+							array_push($rpApProb, 0);
+						}
+					}
+					array_push($probMatrix, $rpApProb);
+				}
+				var_dump($probMatrix);
 			}
 			//$roomApList = RoomRpList::find("roomId", $)
 		} else {
