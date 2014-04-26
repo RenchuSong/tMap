@@ -26,4 +26,12 @@ class Space3DPoint {
 		}
 		return false;
 	}
+
+	public function distance($other) {
+		return sqrt(
+			($this->x - $other->x) * ($this->x - $other->x) +
+			($this->y - $other->y) * ($this->y - $other->y) +
+			($this->z - $other->z) * ($this->z - $other->z)
+		);
+	}
 }

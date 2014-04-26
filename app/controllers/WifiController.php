@@ -223,15 +223,34 @@ class WifiController extends RController {
 			}*/
 
 			// TODO debug model, hard code wifi data
-			$wifiData = json_decode('[{"bssid":"80:56:f2:ea:2f:df","rssi":-67},{"bssid":"dc:7b:94:34:aa:40","rssi":-81},{"bssid":"d0:57:4c:cb:8e:10","rssi":-91},{"bssid":"dc:7b:94:35:9e:e0","rssi":-87},{"bssid":"dc:7b:94:34:86:e0","rssi":-71},{"bssid":"e0:05:c5:ba:99:bc","rssi":-85},{"bssid":"dc:7b:94:34:86:e6","rssi":-71},{"bssid":"5c:63:bf:3f:12:f4","rssi":-72},{"bssid":"dc:7b:94:34:aa:43","rssi":-74},{"bssid":"d0:57:4c:cb:7c:03","rssi":-77},{"bssid":"40:16:9f:a6:b2:66","rssi":-83},{"bssid":"dc:7b:94:35:be:a3","rssi":-87},{"bssid":"d0:57:4c:cb:bc:06","rssi":-88},{"bssid":"c8:d7:19:2e:53:4b","rssi":-90},{"bssid":"d0:57:4c:cb:7c:00","rssi":-78},{"bssid":"00:15:e9:e0:2b:bf","rssi":-82},{"bssid":"d0:57:4c:cb:8e:12","rssi":-86},{"bssid":"dc:7b:94:34:86:e3","rssi":-78},{"bssid":"dc:7b:94:34:aa:46","rssi":-80},{"bssid":"d0:57:4c:cb:bc:0c","rssi":-89},{"bssid":"d0:57:4c:ca:6b:23","rssi":-86},{"bssid":"dc:7b:94:34:aa:42","rssi":-75},{"bssid":"dc:7b:94:34:86:e2","rssi":-76},{"bssid":"d0:57:4c:ca:6b:20","rssi":-87},{"bssid":"dc:7b:94:35:be:a2","rssi":-90}]');
+
 			//$wifiData = json_decode('[{"bssid":"80:56:f2:ea:2f:df","rssi":-59},{"bssid":"d0:57:4c:cb:8d:76","rssi":-85},{"bssid":"5c:63:bf:3f:12:f4","rssi":-79},{"bssid":"e0:05:c5:ba:99:bc","rssi":-85},{"bssid":"d0:57:4c:cb:7c:06","rssi":-81},{"bssid":"dc:7b:94:34:86:e0","rssi":-72},{"bssid":"dc:7b:94:34:aa:40","rssi":-74},{"bssid":"dc:7b:94:34:86:ef","rssi":-89},{"bssid":"dc:7b:94:34:aa:4f","rssi":-85},{"bssid":"d0:57:4c:cb:8e:10","rssi":-79},{"bssid":"d0:57:4c:cb:7c:00","rssi":-88},{"bssid":"d0:57:4c:cb:7c:02","rssi":-81},{"bssid":"dc:7b:94:34:aa:43","rssi":-74},{"bssid":"d0:57:4c:cb:8e:16","rssi":-80},{"bssid":"d0:57:4c:cb:7c:03","rssi":-82},{"bssid":"dc:7b:94:34:86:e9","rssi":-89},{"bssid":"d0:57:4c:cb:8d:73","rssi":-86},{"bssid":"40:16:9f:a6:b2:66","rssi":-86},{"bssid":"dc:7b:94:34:35:83","rssi":-87},{"bssid":"dc:7b:94:35:a4:56","rssi":-90},{"bssid":"14:cf:92:e0:7f:b0","rssi":-92},{"bssid":"00:24:01:93:34:dc","rssi":-93},{"bssid":"d0:57:4c:cb:8e:12","rssi":-79},{"bssid":"dc:7b:94:34:aa:4d","rssi":-85},{"bssid":"00:15:e9:e0:2b:bf","rssi":-83},{"bssid":"dc:7b:94:34:86:ed","rssi":-89},{"bssid":"dc:7b:94:35:9e:e0","rssi":-89},{"bssid":"d0:57:4c:cb:bc:00","rssi":-89},{"bssid":"dc:7b:94:35:a4:50","rssi":-89},{"bssid":"dc:7b:94:35:9e:e2","rssi":-91},{"bssid":"dc:7b:94:34:35:80","rssi":-92}]');
 			//$wifiData = json_decode('[{"bssid":"80:56:f2:ea:2f:df","rssi":-46},{"bssid":"dc:7b:94:34:86:e3","rssi":-83},{"bssid":"5c:63:bf:3f:12:f4","rssi":-85},{"bssid":"dc:7b:94:34:aa:46","rssi":-71},{"bssid":"d0:57:4c:cb:7c:0c","rssi":-90},{"bssid":"d0:57:4c:cb:8d:7c","rssi":-80},{"bssid":"d0:57:4c:cb:bc:0c","rssi":-84},{"bssid":"d0:57:4c:cb:8e:13","rssi":-85},{"bssid":"dc:7b:94:34:86:e0","rssi":-83},{"bssid":"d0:57:4c:cb:7c:0f","rssi":-90},{"bssid":"dc:7b:94:34:aa:40","rssi":-72},{"bssid":"dc:7b:94:34:86:ef","rssi":-86},{"bssid":"d0:57:4c:cb:8e:10","rssi":-80},{"bssid":"d0:57:4c:cb:bc:06","rssi":-85},{"bssid":"d0:57:4c:cb:8d:76","rssi":-85},{"bssid":"d0:57:4c:cb:bc:03","rssi":-85},{"bssid":"e0:05:c5:ba:99:bc","rssi":-86},{"bssid":"dc:7b:94:35:9e:e3","rssi":-86},{"bssid":"d0:57:4c:cb:7c:06","rssi":-90},{"bssid":"d0:57:4c:cb:8d:7f","rssi":-79},{"bssid":"d0:57:4c:cb:bc:0f","rssi":-83},{"bssid":"dc:7b:94:35:9e:e0","rssi":-85},{"bssid":"d0:57:4c:cb:8d:72","rssi":-86},{"bssid":"d0:57:4c:cb:8d:70","rssi":-87},{"bssid":"d0:57:4c:cb:7c:00","rssi":-88}]');
 
-			// The wifi ap list received at this locating time
+
+			// 3.6 3.2 1.6
+			//$wifiData = json_decode('[{"bssid":"80:56:f2:ea:2f:df","rssi":-67},{"bssid":"dc:7b:94:34:aa:40","rssi":-81},{"bssid":"d0:57:4c:cb:8e:10","rssi":-91},{"bssid":"dc:7b:94:35:9e:e0","rssi":-87},{"bssid":"dc:7b:94:34:86:e0","rssi":-71},{"bssid":"e0:05:c5:ba:99:bc","rssi":-85},{"bssid":"dc:7b:94:34:86:e6","rssi":-71},{"bssid":"5c:63:bf:3f:12:f4","rssi":-72},{"bssid":"dc:7b:94:34:aa:43","rssi":-74},{"bssid":"d0:57:4c:cb:7c:03","rssi":-77},{"bssid":"40:16:9f:a6:b2:66","rssi":-83},{"bssid":"dc:7b:94:35:be:a3","rssi":-87},{"bssid":"d0:57:4c:cb:bc:06","rssi":-88},{"bssid":"c8:d7:19:2e:53:4b","rssi":-90},{"bssid":"d0:57:4c:cb:7c:00","rssi":-78},{"bssid":"00:15:e9:e0:2b:bf","rssi":-82},{"bssid":"d0:57:4c:cb:8e:12","rssi":-86},{"bssid":"dc:7b:94:34:86:e3","rssi":-78},{"bssid":"dc:7b:94:34:aa:46","rssi":-80},{"bssid":"d0:57:4c:cb:bc:0c","rssi":-89},{"bssid":"d0:57:4c:ca:6b:23","rssi":-86},{"bssid":"dc:7b:94:34:aa:42","rssi":-75},{"bssid":"dc:7b:94:34:86:e2","rssi":-76},{"bssid":"d0:57:4c:ca:6b:20","rssi":-87},{"bssid":"dc:7b:94:35:be:a2","rssi":-90}]');
+
+			// 3.6 6.4 1
+			//$wifiData = json_decode('[{"bssid":"80:56:f2:ea:2f:df","rssi":-42},{"bssid":"dc:7b:94:34:86:e6","rssi":-68},{"bssid":"d0:57:4c:cb:8e:13","rssi":-70},{"bssid":"dc:7b:94:34:aa:49","rssi":-83},{"bssid":"5c:63:bf:3f:12:f4","rssi":-82},{"bssid":"dc:7b:94:34:aa:43","rssi":-82},{"bssid":"dc:7b:94:35:9e:e3","rssi":-82},{"bssid":"d0:57:4c:cb:bc:0c","rssi":-88},{"bssid":"d0:57:4c:cb:7c:0c","rssi":-88},{"bssid":"d0:57:4c:ca:6b:23","rssi":-87},{"bssid":"5e:85:56:8d:56:a2","rssi":-90},{"bssid":"dc:7b:94:34:86:e3","rssi":-91},{"bssid":"00:24:01:93:34:dc","rssi":-92},{"bssid":"dc:7b:94:34:86:e0","rssi":-66},{"bssid":"d0:57:4c:cb:8d:72","rssi":-69},{"bssid":"d0:57:4c:cb:8d:70","rssi":-70},{"bssid":"d0:57:4c:cb:8e:10","rssi":-70},{"bssid":"dc:7b:94:34:86:ef","rssi":-75},{"bssid":"dc:7b:94:34:a9:00","rssi":-81},{"bssid":"dc:7b:94:35:9e:e0","rssi":-81},{"bssid":"dc:7b:94:34:aa:40","rssi":-81},{"bssid":"d0:57:4c:ca:6b:20","rssi":-86},{"bssid":"d0:57:4c:cb:9e:1f","rssi":-91},{"bssid":"dc:7b:94:35:c8:a2","rssi":-87}]');
+
+			// 3.4 6 0.8
+			//$wifiData = json_decode('[{"bssid":"80:56:f2:ea:2f:df","rssi":-22},{"bssid":"dc:7b:94:34:aa:49","rssi":-82},{"bssid":"dc:7b:94:34:aa:43","rssi":-78},{"bssid":"d0:57:4c:cb:7c:0c","rssi":-89},{"bssid":"00:24:01:93:34:dc","rssi":-92},{"bssid":"dc:7b:94:34:86:e0","rssi":-75},{"bssid":"d0:57:4c:cb:8d:72","rssi":-78},{"bssid":"d0:57:4c:cb:8d:70","rssi":-78},{"bssid":"d0:57:4c:cb:8e:10","rssi":-74},{"bssid":"dc:7b:94:34:86:ef","rssi":-89},{"bssid":"dc:7b:94:34:aa:40","rssi":-69},{"bssid":"d0:57:4c:cb:8d:7c","rssi":-78},{"bssid":"dc:7b:94:34:aa:4c","rssi":-82},{"bssid":"d0:57:4c:cb:8d:76","rssi":-88},{"bssid":"d0:57:4c:ca:6b:26","rssi":-88},{"bssid":"dc:7b:94:35:9e:46","rssi":-89},{"bssid":"d0:57:4c:cb:8d:7f","rssi":-78},{"bssid":"dc:7b:94:34:aa:4f","rssi":-82},{"bssid":"1a:cf:e9:17:1b:9f","rssi":-89},{"bssid":"d0:57:4c:ca:6b:2d","rssi":-90},{"bssid":"d0:57:4c:cb:7c:02","rssi":-87},{"bssid":"dc:7b:94:35:a4:52","rssi":-88}]');
+
+			// 0 0 1.3
+			//$wifiData = json_decode('[{"bssid":"80:56:f2:ea:2f:df","rssi":-54},{"bssid":"dc:7b:94:34:aa:43","rssi":-73},{"bssid":"d0:57:4c:cb:7c:0c","rssi":-82},{"bssid":"dc:7b:94:34:86:e0","rssi":-74},{"bssid":"dc:7b:94:34:86:ef","rssi":-86},{"bssid":"dc:7b:94:34:aa:40","rssi":-74},{"bssid":"dc:7b:94:35:9e:46","rssi":-85},{"bssid":"d0:57:4c:cb:7c:02","rssi":-78},{"bssid":"5c:63:bf:3f:12:f4","rssi":-61},{"bssid":"dc:7b:94:34:86:e3","rssi":-74},{"bssid":"40:16:9f:a6:b2:66","rssi":-76},{"bssid":"e0:05:c5:ba:99:bc","rssi":-78},{"bssid":"d0:57:4c:cb:bc:09","rssi":-84},{"bssid":"d0:57:4c:cb:bc:0c","rssi":-84},{"bssid":"dc:7b:94:34:86:ec","rssi":-87},{"bssid":"d0:57:4c:ca:e2:53","rssi":-84},{"bssid":"d0:57:4c:cb:bc:06","rssi":-85},{"bssid":"d0:57:4c:cb:7c:0f","rssi":-83},{"bssid":"d0:57:4c:cb:bc:0f","rssi":-84},{"bssid":"d0:57:4c:cb:7c:00","rssi":-81},{"bssid":"d0:57:4c:ca:e2:50","rssi":-83},{"bssid":"d0:57:4c:ca:6b:20","rssi":-84},{"bssid":"dc:7b:94:35:9e:e0","rssi":-85},{"bssid":"00:15:e9:e0:2b:bf","rssi":-85},{"bssid":"d0:57:4c:cb:bc:02","rssi":-86},{"bssid":"dc:7b:94:35:d7:70","rssi":-89},{"bssid":"dc:7b:94:35:be:a0","rssi":-90}]');
+
+			// outside 1.3
+			$wifiData = json_decode('[{"bssid":"80:56:f2:ea:2f:df","rssi":-53},{"bssid":"dc:7b:94:34:86:e9","rssi":-68},{"bssid":"dc:7b:94:34:86:ec","rssi":-68},{"bssid":"d0:57:4c:cb:8d:79","rssi":-74},{"bssid":"d0:57:4c:cb:8d:7c","rssi":-75},{"bssid":"5c:63:bf:3f:12:f4","rssi":-72},{"bssid":"d0:57:4c:cb:8d:76","rssi":-76},{"bssid":"dc:7b:94:34:aa:49","rssi":-81},{"bssid":"94:0c:6d:64:ce:c6","rssi":-77},{"bssid":"d0:57:4c:cb:8e:1c","rssi":-83},{"bssid":"5c:63:bf:40:df:36","rssi":-80},{"bssid":"dc:7b:94:34:a9:09","rssi":-85},{"bssid":"dc:7b:94:34:aa:43","rssi":-81},{"bssid":"d0:57:4c:cb:bb:56","rssi":-83},{"bssid":"dc:7b:94:35:9e:e3","rssi":-85},{"bssid":"b0:48:7a:7f:af:f4","rssi":-85},{"bssid":"e0:05:c5:ba:99:bc","rssi":-86},{"bssid":"00:24:01:93:34:dc","rssi":-86},{"bssid":"dc:7b:94:34:e8:c6","rssi":-87},{"bssid":"d0:57:4c:ca:d5:a6","rssi":-88},{"bssid":"c0:3f:0e:81:20:37","rssi":-89},{"bssid":"dc:7b:94:34:86:e0","rssi":-59},{"bssid":"dc:7b:94:34:86:ef","rssi":-66},{"bssid":"dc:7b:94:34:86:ed","rssi":-68},{"bssid":"d0:57:4c:cb:8d:7d","rssi":-74},{"bssid":"d0:57:4c:cb:8d:7f","rssi":-74},{"bssid":"d0:57:4c:cb:8d:72","rssi":-76},{"bssid":"dc:7b:94:35:9f:72","rssi":-77},{"bssid":"d0:57:4c:cb:8d:70","rssi":-79},{"bssid":"dc:7b:94:34:a9:00","rssi":-82},{"bssid":"d0:57:4c:cb:7c:00","rssi":-82},{"bssid":"dc:7b:94:34:aa:40","rssi":-83},{"bssid":"dc:7b:94:35:c7:20","rssi":-85},{"bssid":"dc:7b:94:35:9e:e0","rssi":-86},{"bssid":"d0:57:4c:cb:9e:10","rssi":-87},{"bssid":"d0:57:4c:ca:d5:a0","rssi":-87}]');
+
+			// The wifi ap list received at this locating time, and get wifi BSSID-Rssi pair
 			$receiveApList = array();
+			$wifiPair = array();
 			foreach ($wifiData as $wifiItem) {
 				array_push($receiveApList, $wifiItem->bssid);
+				$wifiPair[$wifiItem->bssid] = $wifiItem->rssi;
 			}
+
 
 			// TODO filter which building the person is in, and which rooms the person may be in
 			$buildingId = Building::find()->first()->id;
@@ -280,12 +299,13 @@ class WifiController extends RController {
 					foreach ($matrixApList as $ap) {
 						// received RSSI of an ap
 						if (in_array($ap, $receiveApList)) {
-							$rssi = $wifiData[$ap];
+							$rssi = $wifiPair[$ap];
 						} else {
 							$rssi = -120;
 						}
 
 						if (isset($rpApDistribution[$ap])) {
+							$rpApDistribution[$ap]->unpack();
 							array_push($rpApProb, $rpApDistribution[$ap]->distribution[$rssi]);
 						} else {
 							array_push($rpApProb, 0);
@@ -293,7 +313,53 @@ class WifiController extends RController {
 					}
 					array_push($probMatrix, $rpApProb);
 				}
-				var_dump($probMatrix);
+
+				// AP filter
+				$apLocation = array();
+				for ($i = 0; $i < count($matrixApList); ++$i) {
+					$prob1 = -1e100;
+					$prob2 = -1e100;
+					for ($j = 0; $j < count($roomRpList->rpList); ++$j) {
+						if ($probMatrix[$j][$i] > $prob1) {
+							$prob1 = $probMatrix[$j][$i];
+							$rp1 = $j;
+						}
+					}
+					for ($j = 0; $j < count($roomRpList->rpList); ++$j) {
+						if ($j != $rp1 && $probMatrix[$j][$i] > $prob2) {
+							$prob2 = $probMatrix[$j][$i];
+							$rp2 = $j;
+						}
+					}
+					array_push($apLocation,
+						new Space3DPoint(
+							($roomRpList->rpList[$rp1]->x + $roomRpList->rpList[$rp2]->x) / 2,
+							($roomRpList->rpList[$rp1]->y + $roomRpList->rpList[$rp2]->y) / 2,
+							($roomRpList->rpList[$rp1]->z + $roomRpList->rpList[$rp2]->z) / 2
+						)
+					);
+				}
+
+				$apValid = array();
+				$hasAp = false;
+				foreach ($apLocation as $location) {
+					$count = 0;
+					foreach ($apLocation as $other) {
+						if ($location->distance($other) < 3) {
+							++$count;
+						}
+					}
+					array_push($apValid, $count > (count($apLocation) + 1) / 2);
+				}
+
+
+				for ($i = 0; $i < count($apValid); ++$i) {
+					if ($apValid[$i]) {
+						echo $apLocation[$i]->x." ".$apLocation[$i]->y." ".$apLocation[$i]->z."<br/>";
+					}
+				}
+				//echo json_encode($apValid);
+				//echo json_encode($probMatrix);
 			}
 			//$roomApList = RoomRpList::find("roomId", $)
 		} else {
