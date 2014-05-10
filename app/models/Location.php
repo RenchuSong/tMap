@@ -12,12 +12,13 @@ class Location {
 	public $buildingId, $roomId, $x, $y, $z;
 	public $score;
 
-	public function Location($buildingId, $roomId, $x, $y, $z) {
+	public function Location($buildingId, $roomId, $x, $y, $z, $score) {
 		$this->buildingId = $buildingId;
 		$this->roomId = $roomId;
 		$this->x = $x;
 		$this->y = $y;
 		$this->z = $z;
+		$this->score = $score;
 	}
 	/**
 	 * judge which location is better

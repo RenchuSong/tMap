@@ -256,8 +256,8 @@ class WifiController extends RController {
 			$buildingId = Building::find()->first()->id;
 			$roomList = Room::find("buildingId", $buildingId)->all();
 
-			$result = new Location($buildingId, 0, 0, 0, 0);
-			$result->score = Location::MINIMAL_SCORE;
+			$result = new Location($buildingId, -1, 0, 0, 0, Location::MINIMAL_SCORE);
+
 			foreach ($roomList as $room) {
 				$roomApList = RoomApList::find("roomId", $room->id)->first();
 				if ($roomApList === null) {
