@@ -217,10 +217,10 @@ class WifiController extends RController {
 	public function actionWifiLocating() {
 		if (!Rays::isPost()) {
 
-			/*$wifiData = json_decode(Rays::getParam("wifiData", "[]"));
+			$wifiData = json_decode(Rays::getParam("wifiData", "[]"));
 			if (!count($wifiData)) {
 				throw new RException("wifi empty error");
-			}*/
+			}
 
 			// TODO debug model, hard code wifi data
 
@@ -229,7 +229,7 @@ class WifiController extends RController {
 
 
 			// 3.6 3.2 1.6
-			$wifiData = json_decode('[{"bssid":"80:56:f2:ea:2f:df","rssi":-67},{"bssid":"dc:7b:94:34:aa:40","rssi":-81},{"bssid":"d0:57:4c:cb:8e:10","rssi":-91},{"bssid":"dc:7b:94:35:9e:e0","rssi":-87},{"bssid":"dc:7b:94:34:86:e0","rssi":-71},{"bssid":"e0:05:c5:ba:99:bc","rssi":-85},{"bssid":"dc:7b:94:34:86:e6","rssi":-71},{"bssid":"5c:63:bf:3f:12:f4","rssi":-72},{"bssid":"dc:7b:94:34:aa:43","rssi":-74},{"bssid":"d0:57:4c:cb:7c:03","rssi":-77},{"bssid":"40:16:9f:a6:b2:66","rssi":-83},{"bssid":"dc:7b:94:35:be:a3","rssi":-87},{"bssid":"d0:57:4c:cb:bc:06","rssi":-88},{"bssid":"c8:d7:19:2e:53:4b","rssi":-90},{"bssid":"d0:57:4c:cb:7c:00","rssi":-78},{"bssid":"00:15:e9:e0:2b:bf","rssi":-82},{"bssid":"d0:57:4c:cb:8e:12","rssi":-86},{"bssid":"dc:7b:94:34:86:e3","rssi":-78},{"bssid":"dc:7b:94:34:aa:46","rssi":-80},{"bssid":"d0:57:4c:cb:bc:0c","rssi":-89},{"bssid":"d0:57:4c:ca:6b:23","rssi":-86},{"bssid":"dc:7b:94:34:aa:42","rssi":-75},{"bssid":"dc:7b:94:34:86:e2","rssi":-76},{"bssid":"d0:57:4c:ca:6b:20","rssi":-87},{"bssid":"dc:7b:94:35:be:a2","rssi":-90}]');
+			//$wifiData = json_decode('[{"bssid":"80:56:f2:ea:2f:df","rssi":-67},{"bssid":"dc:7b:94:34:aa:40","rssi":-81},{"bssid":"d0:57:4c:cb:8e:10","rssi":-91},{"bssid":"dc:7b:94:35:9e:e0","rssi":-87},{"bssid":"dc:7b:94:34:86:e0","rssi":-71},{"bssid":"e0:05:c5:ba:99:bc","rssi":-85},{"bssid":"dc:7b:94:34:86:e6","rssi":-71},{"bssid":"5c:63:bf:3f:12:f4","rssi":-72},{"bssid":"dc:7b:94:34:aa:43","rssi":-74},{"bssid":"d0:57:4c:cb:7c:03","rssi":-77},{"bssid":"40:16:9f:a6:b2:66","rssi":-83},{"bssid":"dc:7b:94:35:be:a3","rssi":-87},{"bssid":"d0:57:4c:cb:bc:06","rssi":-88},{"bssid":"c8:d7:19:2e:53:4b","rssi":-90},{"bssid":"d0:57:4c:cb:7c:00","rssi":-78},{"bssid":"00:15:e9:e0:2b:bf","rssi":-82},{"bssid":"d0:57:4c:cb:8e:12","rssi":-86},{"bssid":"dc:7b:94:34:86:e3","rssi":-78},{"bssid":"dc:7b:94:34:aa:46","rssi":-80},{"bssid":"d0:57:4c:cb:bc:0c","rssi":-89},{"bssid":"d0:57:4c:ca:6b:23","rssi":-86},{"bssid":"dc:7b:94:34:aa:42","rssi":-75},{"bssid":"dc:7b:94:34:86:e2","rssi":-76},{"bssid":"d0:57:4c:ca:6b:20","rssi":-87},{"bssid":"dc:7b:94:35:be:a2","rssi":-90}]');
 
 			// 3.6 6.4 1
 			//$wifiData = json_decode('[{"bssid":"80:56:f2:ea:2f:df","rssi":-42},{"bssid":"dc:7b:94:34:86:e6","rssi":-68},{"bssid":"d0:57:4c:cb:8e:13","rssi":-70},{"bssid":"dc:7b:94:34:aa:49","rssi":-83},{"bssid":"5c:63:bf:3f:12:f4","rssi":-82},{"bssid":"dc:7b:94:34:aa:43","rssi":-82},{"bssid":"dc:7b:94:35:9e:e3","rssi":-82},{"bssid":"d0:57:4c:cb:bc:0c","rssi":-88},{"bssid":"d0:57:4c:cb:7c:0c","rssi":-88},{"bssid":"d0:57:4c:ca:6b:23","rssi":-87},{"bssid":"5e:85:56:8d:56:a2","rssi":-90},{"bssid":"dc:7b:94:34:86:e3","rssi":-91},{"bssid":"00:24:01:93:34:dc","rssi":-92},{"bssid":"dc:7b:94:34:86:e0","rssi":-66},{"bssid":"d0:57:4c:cb:8d:72","rssi":-69},{"bssid":"d0:57:4c:cb:8d:70","rssi":-70},{"bssid":"d0:57:4c:cb:8e:10","rssi":-70},{"bssid":"dc:7b:94:34:86:ef","rssi":-75},{"bssid":"dc:7b:94:34:a9:00","rssi":-81},{"bssid":"dc:7b:94:35:9e:e0","rssi":-81},{"bssid":"dc:7b:94:34:aa:40","rssi":-81},{"bssid":"d0:57:4c:ca:6b:20","rssi":-86},{"bssid":"d0:57:4c:cb:9e:1f","rssi":-91},{"bssid":"dc:7b:94:35:c8:a2","rssi":-87}]');
@@ -484,16 +484,30 @@ class WifiController extends RController {
 							--$yRange;
 						}
 					}
-					echo $xList[$anchorX]." ".$yList[$anchorY];
+					$scoreBox = 0;
+					$calX = 0; $calY = 0; $calZ = 0;
+					for ($i = 0; $i < 2; ++$i) {
+						for ($j = 0; $j < 2; ++$j) {
+							for ($k = 0; $k < 2; ++$k) {
+								$scoreBox += $gridMatrixScore[$anchorX + $i][$anchorY + $j][$anchorZ + $k];
+								$calX += $xList[$anchorX + $i] * $gridMatrixScore[$anchorX + $i][$anchorY + $j][$anchorZ + $k];
+								$calY += $yList[$anchorY + $i] * $gridMatrixScore[$anchorX + $i][$anchorY + $j][$anchorZ + $k];
+								$calZ += $zList[$anchorZ + $i] * $gridMatrixScore[$anchorX + $i][$anchorY + $j][$anchorZ + $k];
+							}
+						}
+					}
+					$newLocation = new Location($buildingId, $room->id, $calX / $scoreBox, $calY / $scoreBox, $calZ / $scoreBox, $scoreBox);
+					if ($newLocation->betterThan($result)) {
+						$result = $newLocation;
+					}
 				}
-
-
-				//echo json_encode($gridMatrixScore);
-
-				//echo json_encode($apValid);
-				//echo json_encode($probMatrix);
 			}
-			//$roomApList = RoomRpList::find("roomId", $)
+
+			if ($result->score > 0) {
+				echo json_encode($result);
+			} else {
+				throw new RException("locating failed");
+			}
 		} else {
 			throw new RException("no data received");
 		}
