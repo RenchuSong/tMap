@@ -369,7 +369,17 @@ class WifiController extends RController {
 					continue;
 				}
 
-//
+				// Score of each point
+				$wScore = array();
+				for ($i = 0; $i < count($roomRpList->rpList); ++$i) {
+					$wScore[$i] = 0;
+					for ($j = 0; $j < count($apValid); ++$j) {
+						if ($apValid[$j]) {
+							$wScore[$i] += $probMatrix[$i][$j];
+						}
+					}
+				}
+
 //				for ($i = 0; $i < count($apValid); ++$i) {
 //					if ($apValid[$i]) {
 //						//echo $apLocation[$i]->x." ".$apLocation[$i]->y." ".$apLocation[$i]->z."<br/>";
@@ -383,7 +393,102 @@ class WifiController extends RController {
 				$yList = array();
 				$zList = array();
 
+				foreach ($roomRpList->rpList as $rp) {
+					array_push($xList, $rp->x);
+					array_push($yList, $rp->y);
+					array_push($zList, $rp->z);
+				}
 
+				$xList = array_values(array_unique($xList));
+				$yList = array_values(array_unique($yList));
+				$zList = array_values(array_unique($zList));
+
+				$gridMatrix = array();
+				for ($i = 0; $i < count($xList); ++$i) {
+					$x = $xList[$i];
+					for ($j = 0; $j < count($yList); ++$j) {
+						$y = $yList[$j];
+						for ($k = 0; $k < count($zList); ++$k) {
+							$z = $zList[$k];
+							$gridMatrix[$i][$j][$k] = -1;
+							for ($tp = 0; $tp < count($roomRpList->rpList); ++$tp) {
+								if ((new Space3DPoint($x, $y, $z))->equalToValue(
+									$roomRpList->rpList[$tp]->x,
+									$roomRpList->rpList[$tp]->y,
+									$roomRpList->rpList[$tp]->z)
+								) {
+									$gridMatrix[$i][$j][$k] = $tp;
+									break;
+								}
+							}
+						}
+					}
+				}
+
+				// X, Y, Z partial sum
+				$gridMatrixScore = array();
+				for ($i = 0; $i < count($xList); ++$i) {
+					for ($j = 0; $j < count($yList); ++$j) {
+						for ($k = 0; $k < count($zList); ++$k) {
+							if ($gridMatrix[$i][$j][$k] == -1) {
+								$gridMatrixScore[$i][$j][$k] = 0;
+							} else {
+								$gridMatrixScore[$i][$j][$k] = $wScore[$gridMatrix[$i][$j][$k]];
+							}
+//							if ($i > 0) {
+//								$gridMatrixScore[$i][$j][$k] += $gridMatrixScore[$i - 1][$j][$k];
+//							}
+//							if ($j > 0) {
+//								$gridMatrixScore[$i][$j][$k] += $gridMatrixScore[$i][$j - 1][$k];
+//							}
+//							if ($i > 0 && $j > 0) {
+//								$gridMatrixScore[$i][$j][$k] -= $gridMatrixScore[$i - 1][$j - 1][$k];
+//							}
+						}
+					}
+				}
+
+				// Contract range
+				for ($anchorZ = 0; $anchorZ < 2; ++$anchorZ) {
+					$anchorX = 0; $anchorY = 0;
+					$xRange = count($xList);
+					$yRange = count($yList);
+					while ($xRange > 2 || $yRange > 2) {
+						if ($xRange > $yRange) {
+							$score1 = 0; $score2 = 0;
+							for ($i = 1; $i < $xRange; ++$i) {
+								for ($j = 0; $j < $yRange; ++$j) {
+									$score1 += $gridMatrixScore[$anchorX + $i - 1][$anchorY + $j][$anchorZ]
+										+ $gridMatrixScore[$anchorX + $i - 1][$anchorY + $j][$anchorZ + 1];
+									$score2 += $gridMatrixScore[$anchorX + $i][$anchorY + $j][$anchorZ]
+										+ $gridMatrixScore[$anchorX + $i][$anchorY + $j][$anchorZ + 1];
+								}
+							}
+							if ($score1 < $score2) {
+								++$anchorX;
+							}
+							--$xRange;
+						} else {
+							$score1 = 0; $score2 = 0;
+							for ($i = 0; $i < $xRange; ++$i) {
+								for ($j = 1; $j < $yRange; ++$j) {
+									$score1 += $gridMatrixScore[$anchorX + $i][$anchorY + $j - 1][$anchorZ]
+										+ $gridMatrixScore[$anchorX + $i][$anchorY + $j - 1][$anchorZ + 1];
+									$score2 += $gridMatrixScore[$anchorX + $i][$anchorY + $j][$anchorZ]
+										+ $gridMatrixScore[$anchorX + $i][$anchorY + $j][$anchorZ + 1];
+								}
+							}
+							if ($score1 < $score2) {
+								++$anchorY;
+							}
+							--$yRange;
+						}
+					}
+					echo $xList[$anchorX]." ".$yList[$anchorY];
+				}
+
+
+				//echo json_encode($gridMatrixScore);
 
 				//echo json_encode($apValid);
 				//echo json_encode($probMatrix);
