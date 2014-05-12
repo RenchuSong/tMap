@@ -215,13 +215,16 @@ class WifiController extends RController {
 	 * Wi-Fi locating algorithm
 	 */
 	public function actionWifiLocating() {
-		if (!Rays::isPost()) {
+		if (Rays::isPost()) {
 
 			$wifiData = json_decode(Rays::getParam("wifiData", "[]"));
 			if (!count($wifiData)) {
 				throw new RException("wifi empty error");
 			}
 
+
+//			echo json_encode(new Location(1, 1, rand(0, 1000) / 200, rand(0, 1000) / 125, rand(0, 1000) / 500, Location::MINIMAL_SCORE));
+//			exit;
 			// TODO debug model, hard code wifi data
 
 			//$wifiData = json_decode('[{"bssid":"80:56:f2:ea:2f:df","rssi":-59},{"bssid":"d0:57:4c:cb:8d:76","rssi":-85},{"bssid":"5c:63:bf:3f:12:f4","rssi":-79},{"bssid":"e0:05:c5:ba:99:bc","rssi":-85},{"bssid":"d0:57:4c:cb:7c:06","rssi":-81},{"bssid":"dc:7b:94:34:86:e0","rssi":-72},{"bssid":"dc:7b:94:34:aa:40","rssi":-74},{"bssid":"dc:7b:94:34:86:ef","rssi":-89},{"bssid":"dc:7b:94:34:aa:4f","rssi":-85},{"bssid":"d0:57:4c:cb:8e:10","rssi":-79},{"bssid":"d0:57:4c:cb:7c:00","rssi":-88},{"bssid":"d0:57:4c:cb:7c:02","rssi":-81},{"bssid":"dc:7b:94:34:aa:43","rssi":-74},{"bssid":"d0:57:4c:cb:8e:16","rssi":-80},{"bssid":"d0:57:4c:cb:7c:03","rssi":-82},{"bssid":"dc:7b:94:34:86:e9","rssi":-89},{"bssid":"d0:57:4c:cb:8d:73","rssi":-86},{"bssid":"40:16:9f:a6:b2:66","rssi":-86},{"bssid":"dc:7b:94:34:35:83","rssi":-87},{"bssid":"dc:7b:94:35:a4:56","rssi":-90},{"bssid":"14:cf:92:e0:7f:b0","rssi":-92},{"bssid":"00:24:01:93:34:dc","rssi":-93},{"bssid":"d0:57:4c:cb:8e:12","rssi":-79},{"bssid":"dc:7b:94:34:aa:4d","rssi":-85},{"bssid":"00:15:e9:e0:2b:bf","rssi":-83},{"bssid":"dc:7b:94:34:86:ed","rssi":-89},{"bssid":"dc:7b:94:35:9e:e0","rssi":-89},{"bssid":"d0:57:4c:cb:bc:00","rssi":-89},{"bssid":"dc:7b:94:35:a4:50","rssi":-89},{"bssid":"dc:7b:94:35:9e:e2","rssi":-91},{"bssid":"dc:7b:94:34:35:80","rssi":-92}]');
