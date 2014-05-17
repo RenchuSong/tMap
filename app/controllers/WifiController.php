@@ -499,5 +499,5 @@ class WifiController extends RController {
 			throw new RException("no data received");
 		}
 	}
-	
+
 }
