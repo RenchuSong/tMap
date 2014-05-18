@@ -256,7 +256,8 @@ class WifiController extends RController {
 
 
 			// TODO filter which building the person is in, and which rooms the person may be in
-			$buildingId = Building::find()->first()->id;
+			//$buildingId = Building::find()->first()->id;
+			$buildingId = 3;
 			$roomList = Room::find("buildingId", $buildingId)->all();
 
 			$result = new Location($buildingId, -1, 0, 0, 0, Location::MINIMAL_SCORE);

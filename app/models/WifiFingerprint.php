@@ -27,7 +27,7 @@ class WifiFingerprint extends RModel {
 	 */
 	public function unpack() {
 		if ($this->wifiData !== null && !is_array($this->wifiData)) {
-			$this->wifiData = json_decode($this->wifiData, true);
+			$this->wifiData = json_decode($this->wifiData);
 		}
 	}
 
