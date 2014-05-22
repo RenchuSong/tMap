@@ -68,7 +68,9 @@ class BuildingController extends RController {
 		if ($room === null) {
 			throw new RException("room not found");
 		}
-		$rpList = RoomRpList::get($roomId);
+
+		$rpList = RoomRpList::find("roomId", $roomId)->first();
+
 		if ($rpList === null) {
 			$rpList = new RoomRpList();
 			$rpList->roomId = $roomId;
@@ -103,7 +105,7 @@ class BuildingController extends RController {
 			$rpList->roomId = $roomId;
 			$rpList->rpList = array();
 		}
-		
+
 		$rpList->unpack();
 
 		for ($i = 0; $i < $xNumber; ++$i) {
