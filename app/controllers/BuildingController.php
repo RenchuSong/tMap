@@ -91,6 +91,43 @@ class BuildingController extends RController {
 		echo json_encode(array("response" => "ok"));
 	}
 
+	public function actionAddRpList($roomId, $minX, $deltaX, $xNumber, $minY, $deltaY, $yNumber, $z) {
+		$room = Room::get($roomId);
+		if ($room === null) {
+			throw new RException("room not found");
+		}
+		$rpList = RoomRpList::find("roomId", $roomId)->first();
+
+		if ($rpList === null) {
+			$rpList = new RoomRpList();
+			$rpList->roomId = $roomId;
+			$rpList->rpList = array();
+		}
+		
+		$rpList->unpack();
+
+		for ($i = 0; $i < $xNumber; ++$i) {
+			for ($j = 0; $j < $yNumber; ++$j) {
+				$rp = new Space3DPoint($minX + $i * $deltaX, $minY + $j * $deltaY, $z);
+				$flag = true;
+				foreach ($rpList->rpList as $tmpRp) {
+					if ($rp->equalTo($tmpRp)) {
+						$flag = false;
+						break;
+					}
+				}
+				if ($flag) {
+					array_push($rpList->rpList, $rp);
+				}
+			}
+		}
+
+		$rpList->pack();
+		$rpList->save();
+		echo json_encode(array("response" => "ok"));
+
+	}
+
 	/**
 	 * Update building Wifi
 	 */
