@@ -215,16 +215,14 @@ class WifiController extends RController {
 	 * Wi-Fi locating algorithm
 	 */
 	public function actionWifiLocating() {
-		if (!Rays::isPost()) {
+		if (Rays::isPost()) {
 
+			$wifiData = json_decode(Rays::getParam("wifiData", "[]"));
+			if (!count($wifiData)) {
+				throw new RException("wifi empty error");
+			}
 
-//			$wifiData = json_decode(Rays::getParam("wifiData", "[]"));
-//			if (!count($wifiData)) {
-//				throw new RException("wifi empty error");
-//			}
-
-
-			$wifiData = json_decode('[{"bssid":"02:06:03:40:54:80","rssi":-70},{"bssid":"02:06:03:40:54:81","rssi":-68},{"bssid":"58:66:ba:94:59:30","rssi":-68},{"bssid":"58:66:ba:94:58:10","rssi":-54},{"bssid":"58:66:ba:94:95:f0","rssi":-59},{"bssid":"58:66:ba:94:5a:70","rssi":-89},{"bssid":"80:f6:2e:27:63:b0","rssi":-62},{"bssid":"58:66:ba:94:53:d0","rssi":-56},{"bssid":"0c:da:41:1e:22:30","rssi":-65},{"bssid":"58:66:ba:94:5b:30","rssi":-68},{"bssid":"58:66:ba:77:17:30","rssi":-73},{"bssid":"58:66:ba:94:55:d0","rssi":-75},{"bssid":"02:06:03:40:58:81","rssi":-75},{"bssid":"58:66:ba:94:52:10","rssi":-76},{"bssid":"58:66:ba:94:57:70","rssi":-77}]');
+			//$wifiData = json_decode('[{"bssid":"02:06:03:40:54:80","rssi":-70},{"bssid":"02:06:03:40:54:81","rssi":-68},{"bssid":"58:66:ba:94:59:30","rssi":-68},{"bssid":"58:66:ba:94:58:10","rssi":-54},{"bssid":"58:66:ba:94:95:f0","rssi":-59},{"bssid":"58:66:ba:94:5a:70","rssi":-89},{"bssid":"80:f6:2e:27:63:b0","rssi":-62},{"bssid":"58:66:ba:94:53:d0","rssi":-56},{"bssid":"0c:da:41:1e:22:30","rssi":-65},{"bssid":"58:66:ba:94:5b:30","rssi":-68},{"bssid":"58:66:ba:77:17:30","rssi":-73},{"bssid":"58:66:ba:94:55:d0","rssi":-75},{"bssid":"02:06:03:40:58:81","rssi":-75},{"bssid":"58:66:ba:94:52:10","rssi":-76},{"bssid":"58:66:ba:94:57:70","rssi":-77}]');
 
 //			echo json_encode(new Location(1, 1, rand(0, 1000) / 200, rand(0, 1000) / 125, rand(0, 1000) / 500, Location::MINIMAL_SCORE));
 //			exit;
@@ -392,7 +390,7 @@ class WifiController extends RController {
 				for ($i = 1; $i < count($yList); ++$i) {
 					$avgRpDist = max($avgRpDist, $yList[$i] - $yList[$i - 1]);
 				}
-				
+
 				$apValid = array();
 				$hasAp = false;
 				foreach ($apLocation as $location) {
